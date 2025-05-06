@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: task-manager-qa-app
+    ports:
+      - "3001:3000"
+    volumes:
+      - .:/app
+    command: npm start
+    environment:
+      - NODE_ENV=development
+
+  tests:
+    image: mcr.microsoft.com/playwright:v1.52.0-jammy
+    container_name: task-manager-qa-tests
+    working_dir: /tests
+    volumes:
+      - .:/tests
+    command: npx playwright test
+    depends_on:
+      - app
