@@ -16,26 +16,28 @@
     const input = document.getElementById('task-input');
     const list = document.getElementById('task-list');
     async function loadTasks() {
-      const res = await fetch('/api/tasks');
+      const res = await fetch(`${window.location.origin}/api/tasks`);
       const tasks = await res.json();
       list.innerHTML = '';
       tasks.forEach(task => {
         const li = document.createElement('li');
         li.className = 'list-group-item d-flex justify-content-between align-items-center';
-        li.innerHTML = \`\${task.title}
-          <button class="btn btn-sm btn-danger" onclick="deleteTask(\${task.id})">x</button>\`;
+        li.innerHTML = `
+    <span>${task.title}</span>
+    <button class="btn btn-sm btn-danger" onclick="deleteTask(${task.id})">x</button>
+  `;
         list.appendChild(li);
       });
     }
     async function deleteTask(id) {
-      await fetch('/api/tasks/' + id, { method: 'DELETE' });
+      await fetch(`${window.location.origin}/api/tasks/${id}`, { method: 'DELETE' });
       loadTasks();
     }
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const title = input.value.trim();
       if (!title) return;
-      await fetch('/api/tasks', {
+      await fetch(`${window.location.origin}/api/tasks`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title })
