@@ -9,12 +9,14 @@
   <form id="task-form">
     <input type="text" id="task-input" placeholder="New task..." class="form-control mb-2" />
     <button type="submit" class="btn btn-primary">Add Task</button>
+    <button type="button" id="remove-all-btn" class="btn btn-danger ms-2">Remove All</button>
   </form>
   <ul id="task-list" class="list-group mt-3"></ul>
   <script>
     const form = document.getElementById('task-form');
     const input = document.getElementById('task-input');
     const list = document.getElementById('task-list');
+    const removeAllBtn = document.getElementById('remove-all-btn');
     async function loadTasks() {
       const res = await fetch(`${window.location.origin}/api/tasks`);
       const tasks = await res.json();
@@ -46,6 +48,13 @@
       loadTasks();
     });
     loadTasks();
+
+    removeAllBtn.addEventListener('click', async () => {
+      if (confirm('Are you sure you want to delete all tasks?')) {
+        const res = await fetch(`${window.location.origin}/api/tasks`, { method: 'DELETE' });
+        if (res.ok) loadTasks();
+      }
+    });
   </script>
 </body>
 </html>

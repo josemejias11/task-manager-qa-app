@@ -1,3 +1,8 @@
+app.delete('/api/tasks', (req, res) => {
+  const data = { tasks: [] };
+  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+  res.status(204).end();
+});
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
