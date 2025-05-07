@@ -24,6 +24,11 @@ jobs:
       - name: Install Playwright
         run: npx playwright install --with-deps
 
+      - name: Start the app
+        run: |
+          npm run start &
+          npx wait-on http://localhost:3000
+
       - name: Run tests with Allure reporter
         run: npm run test:allure
         env:
@@ -31,11 +36,6 @@ jobs:
 
       - name: Generate Allure report
         run: npm run allure:generate
-
-      - name: Start the app
-        run: |
-          npm run start &
-          npx wait-on http://localhost:3000
 
       # - name: Run Playwright tests
       #   run: npx playwright test
