@@ -3,9 +3,11 @@ const { test, expect } = require('@playwright/test');
 test.describe('Task Management', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(process.env.BASE_URL || 'http://localhost:3000');
-    const deleteButtons = await page.locator('#task-list .btn-danger').all();
-    for (const btn of deleteButtons) {
-      await btn.click();
+    await page.locator('#task-list').waitFor({ state: 'visible', timeout: 5000 });
+    const deleteButtons = await page.locator('#task-list .btn-danger');
+    const count = await deleteButtons.count();
+    for (let i = 0; i < count; i++) {
+      await deleteButtons.nth(i).click();
     }
   });
 
