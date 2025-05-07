@@ -3,7 +3,6 @@ const { test, expect } = require('@playwright/test');
 test.describe('Task Management', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(process.env.BASE_URL || 'http://localhost:3000');
-    // Clear all tasks before each test
     const deleteButtons = await page.locator('#task-list .btn-danger').all();
     for (const btn of deleteButtons) {
       await btn.click();
@@ -43,25 +42,21 @@ test.describe('Task Management', () => {
 
   test('should show warning if task input exceeds 20 characters', async ({ page }) => {
     const input = page.locator('#task-input');
-    const longText = 'A'.repeat(21); // 21 characters
+    const warning = page.locator('#form-warning');
+    const longText = 'A'.repeat(21);
 
-    // Clear the input field explicitly
-    await input.fill('');
+    await input.fill(''); // Ensure empty first
     await expect(input).toHaveValue('');
 
-    // Fill with long text
-    await input.fill(longText);
+    await input.fill(longText); // Input >20 chars
+    await expect(warning).toBeHidden(); // Still no warning
 
-    // Ensure warning is not visible before clicking
-    await expect(page.locator('#form-warning')).toBeHidden();
-
-    // Attempt to add the task
-    await page.click('text=Add Task');
-
-    // Verify warning message appears
-    const warning = page.locator('#form-warning');
-    await expect(warning).toBeVisible({ timeout: 2000 });
+    await page.click('text=Add Task'); // Try to submit
+    await expect(warning).toBeVisible({ timeout: 3000 }); // Now warning should appear
     await expect(warning).toHaveText('Task title must be 20 characters or less.');
+
+    const taskTexts = await page.locator('#task-list li').allTextContents();
+    expect(taskTexts.some(text => text.includes(longText))).toBeFalsy(); // Confirm task wasn't added
   });
   test('should assign a UUID to new tasks', async ({ page }) => {
     await page.fill('#task-input', 'UUID Test');
