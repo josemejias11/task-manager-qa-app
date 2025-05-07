@@ -50,7 +50,7 @@ test.describe('Task Management', () => {
     await input.fill(''); // Ensure empty first
     await expect(input).toHaveValue('');
 
-    await input.fill(longText); // Input >20 chars
+    await input.fill(longText); // Fill input with more than 20 characters (should not be allowed to add task)
     await expect(warning).toBeHidden(); // Still no warning
 
     await page.click('text=Add Task'); // Try to submit
