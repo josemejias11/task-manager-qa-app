@@ -1,3 +1,20 @@
 {
-  "tasks": []
+  "tasks": [
+    {
+      "id": 1746588493583,
+      "title": "Test Playwright Task"
+    },
+    {
+      "id": 1746588494024,
+      "title": "Another CI Test Task"
+    },
+    {
+      "id": 1746588668130,
+      "title": "Test Playwright Task"
+    },
+    {
+      "id": 1746588668447,
+      "title": "Another CI Test Task"
+    }
+  ]
 }
