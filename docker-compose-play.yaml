@@ -14,11 +14,8 @@ services:
     working_dir: /tests
     volumes:
       - .:/tests
-      - allure-results:/tests/allure-results
+      - ./allure-results:/tests/allure-results
     command: npx playwright test --reporter=allure-playwright
     depends_on:
       - app
     network_mode: service:app
-
-volumes:
-  allure-results:

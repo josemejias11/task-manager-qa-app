@@ -1,3 +1,0 @@
-"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","193","should add a task","","Tue May 06 21:59:15 CST 2025","failed","Tue May 06 21:59:15 CST 2025","","playwright/tests/task.spec.js","",""
-"","86","should clear the input after adding a task","","Tue May 06 21:59:16 CST 2025","failed","Tue May 06 21:59:16 CST 2025","","playwright/tests/task.spec.js","",""

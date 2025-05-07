@@ -4,5 +4,6 @@ WORKDIR /app
 COPY . .
 RUN npm install
 RUN npx playwright install --with-deps
+RUN npm install -g allure-commandline --save-dev
 
 CMD ["npm", "start"]
