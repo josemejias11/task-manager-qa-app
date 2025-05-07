@@ -27,9 +27,22 @@ test.describe('Task Management', () => {
 
   test('should not add a task if input is empty', async ({ page }) => {
     const initialCount = await page.locator('#task-list li').count();
+
+    // Try with empty input
+    await page.fill('#task-input', '');
     await page.click('text=Add Task');
-    const finalCount = await page.locator('#task-list li').count();
-    expect(finalCount).toBe(initialCount);
+    await expect(page.locator('#form-warning')).toBeVisible({ timeout: 2000 });
+    await expect(page.locator('#form-warning')).toHaveText('Task title cannot be empty.');
+    const afterEmptyCount = await page.locator('#task-list li').count();
+    expect(afterEmptyCount).toBe(initialCount);
+
+    // Try with whitespace-only input
+    await page.fill('#task-input', '   ');
+    await page.click('text=Add Task');
+    await expect(page.locator('#form-warning')).toBeVisible({ timeout: 2000 });
+    await expect(page.locator('#form-warning')).toHaveText('Task title cannot be empty.');
+    const afterSpaceCount = await page.locator('#task-list li').count();
+    expect(afterSpaceCount).toBe(initialCount);
   });
 
   test('should allow adding multiple tasks', async ({ page }) => {
@@ -46,5 +59,13 @@ test.describe('Task Management', () => {
     await page.fill('#task-input', longText);
     await page.click('text=Add Task');
     await expect(page.locator('#task-list')).toContainText(longText);
+  });
+  test('should assign a UUID to new tasks', async ({ page }) => {
+    await page.fill('#task-input', 'UUID Test');
+    await page.click('text=Add Task');
+
+    const deleteButtons = await page.locator('#task-list .btn-danger');
+    const dataId = await deleteButtons.first().getAttribute('data-id');
+    expect(dataId).toMatch(/^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$/i);
   });
 });

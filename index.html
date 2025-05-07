@@ -11,50 +11,93 @@
     <button type="submit" class="btn btn-primary">Add Task</button>
     <button type="button" id="remove-all-btn" class="btn btn-danger ms-2">Remove All</button>
   </form>
+  <div id="form-warning" class="text-danger mt-2" style="display:none;"></div>
   <ul id="task-list" class="list-group mt-3"></ul>
   <script>
+    const API_BASE = window.location.origin;
     const form = document.getElementById('task-form');
     const input = document.getElementById('task-input');
     const list = document.getElementById('task-list');
     const removeAllBtn = document.getElementById('remove-all-btn');
+
     async function loadTasks() {
-      const res = await fetch(`${window.location.origin}/api/tasks`);
-      const tasks = await res.json();
-      list.innerHTML = '';
-      tasks.forEach(task => {
-        const li = document.createElement('li');
-        li.className = 'list-group-item d-flex justify-content-between align-items-center';
-        li.innerHTML = `
-    <span>${task.title}</span>
-    <button class="btn btn-sm btn-danger" onclick="deleteTask(${task.id})">x</button>
-  `;
-        list.appendChild(li);
-      });
+      try {
+        const res = await fetch(`${API_BASE}/api/tasks`);
+        const tasks = await res.json();
+        list.innerHTML = '';
+        tasks.forEach(({ id, title }) => {
+          const li = document.createElement('li');
+          li.className = 'list-group-item d-flex justify-content-between align-items-center';
+
+          const span = document.createElement('span');
+          span.textContent = title;
+
+          const btn = document.createElement('button');
+          btn.className = 'btn btn-sm btn-danger btn-delete-task';
+          btn.setAttribute('data-id', id);
+          btn.setAttribute('aria-label', `Delete task ${title}`);
+          btn.textContent = 'x';
+
+          btn.addEventListener('click', async () => {
+            try {
+              await deleteTask(id);
+            } catch (err) {
+              console.warn('Failed to delete task', err);
+            }
+          });
+
+          li.appendChild(span);
+          li.appendChild(btn);
+          list.appendChild(li);
+        });
+      } catch (err) {
+        console.error('Failed to load tasks:', err);
+      }
     }
+
     async function deleteTask(id) {
-      await fetch(`${window.location.origin}/api/tasks/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API_BASE}/api/tasks/${id}`, { method: 'DELETE' });
+      if (!res.ok) {
+        console.warn(`Failed to delete task with id ${id}`);
+        throw new Error(`Failed to delete task with id ${id}`);
+      }
       loadTasks();
     }
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const title = input.value.trim();
-      if (!title) return;
-      await fetch(`${window.location.origin}/api/tasks`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title })
-      });
-      input.value = '';
-      loadTasks();
-    });
-    loadTasks();
-
-    removeAllBtn.addEventListener('click', async () => {
-      if (confirm('Are you sure you want to delete all tasks?')) {
-        const res = await fetch(`${window.location.origin}/api/tasks`, { method: 'DELETE' });
-        if (res.ok) loadTasks();
+      const warning = document.getElementById('form-warning');
+      if (!title) {
+        warning.textContent = 'Task title cannot be empty.';
+        warning.style.display = 'block';
+        return;
+      }
+      warning.style.display = 'none';
+      try {
+        await fetch(`${API_BASE}/api/tasks`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title })
+        });
+        input.value = '';
+        loadTasks();
+      } catch (err) {
+        console.error('Failed to add task:', err);
       }
     });
+
+    removeAllBtn.addEventListener('click', async () => {
+      if (!confirm('Are you sure you want to delete all tasks?')) return;
+      try {
+        const res = await fetch(`${API_BASE}/api/tasks`, { method: 'DELETE' });
+        if (res.ok) loadTasks();
+      } catch (err) {
+        console.error('Failed to delete all tasks:', err);
+      }
+    });
+
+    loadTasks();
   </script>
 </body>
 </html>

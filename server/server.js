@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const { v4: uuidv4 } = require('uuid'); // UUID support
 const app = express();
 
 app.use(express.json());
@@ -10,27 +11,69 @@ const DB_FILE = path.join(__dirname, '../db.json');
 
 app.delete('/api/tasks', (req, res) => {
   const data = { tasks: [] };
-  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+  try {
+    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+  } catch (err) {
+    console.error('Failed to write db.json', err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   res.status(204).end();
 });
 
 app.get('/api/tasks', (req, res) => {
-  const data = JSON.parse(fs.readFileSync(DB_FILE));
+  let data = { tasks: [] };
+  try {
+    data = JSON.parse(fs.readFileSync(DB_FILE));
+  } catch (err) {
+    console.error('Failed to read or parse db.json', err);
+  }
   res.json(data.tasks || []);
 });
 
 app.post('/api/tasks', (req, res) => {
-  const data = JSON.parse(fs.readFileSync(DB_FILE));
-  const newTask = { id: Date.now(), title: req.body.title };
+  const { title } = req.body;
+  if (!title || typeof title !== 'string' || title.trim() === '') {
+    return res.status(400).json({ error: 'Title is required and must be a non-empty string' });
+  }
+
+  let data = { tasks: [] };
+  try {
+    data = JSON.parse(fs.readFileSync(DB_FILE));
+  } catch (err) {
+    console.error('Failed to read db.json', err);
+  }
+  const newTask = { id: uuidv4(), title: title.trim() };
   data.tasks.push(newTask);
-  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+  try {
+    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+  } catch (err) {
+    console.error('Failed to write db.json', err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   res.status(201).json(newTask);
 });
 
 app.delete('/api/tasks/:id', (req, res) => {
-  const data = JSON.parse(fs.readFileSync(DB_FILE));
-  data.tasks = data.tasks.filter(task => task.id !== parseInt(req.params.id));
-  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+  let data = { tasks: [] };
+  try {
+    data = JSON.parse(fs.readFileSync(DB_FILE));
+  } catch (err) {
+    console.error('Failed to read db.json', err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+  const originalLength = data.tasks.length;
+  data.tasks = data.tasks.filter(task => task.id !== req.params.id);
+
+  if (data.tasks.length === originalLength) {
+    return res.status(404).json({ error: 'Task not found' });
+  }
+
+  try {
+    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+  } catch (err) {
+    console.error('Failed to write db.json', err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
   res.status(204).end();
 });
 

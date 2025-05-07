@@ -33,7 +33,7 @@ test.describe('Task API', () => {
     const { id } = await create.json();
 
     const del = await apiContext.delete(`/api/tasks/${id}`);
-    expect(del.status()).toBe(200);
+    expect(del.status()).toBe(204);
   });
 
   test('should not create a task with empty title', async () => {
@@ -47,5 +47,19 @@ test.describe('Task API', () => {
     const fakeId = 'nonexistent-id-123';
     const response = await apiContext.delete(`/api/tasks/${fakeId}`);
     expect(response.status()).toBe(404);
+  });
+  test('should return a UUID as task id', async () => {
+    const response = await apiContext.post('/api/tasks', {
+      data: { title: 'Check UUID' }
+    });
+    const body = await response.json();
+    expect(body.id).toMatch(/^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$/i);
+  });
+
+  test('should not create task with whitespace-only title', async () => {
+    const response = await apiContext.post('/api/tasks', {
+      data: { title: '   ' }
+    });
+    expect(response.status()).toBe(400);
   });
 });
