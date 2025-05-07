@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "server/server.js",
   "scripts": {
+    "test:ci": "wait-on http://localhost:3000 && npx playwright test",
     "start": "node server/server.js",
     "test": "npx playwright test",
     "test:allure": "npx playwright test --reporter=allure-playwright",
@@ -17,6 +18,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.52.0",
-    "allure-playwright": "^3.2.1"
+    "allure-playwright": "^3.2.1",
+    "wait-on": "^8.0.3"
   }
 }
