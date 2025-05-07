@@ -68,4 +68,17 @@ test.describe('Task Management', () => {
     const dataId = await deleteButtons.first().getAttribute('data-id');
     expect(dataId).toMatch(/^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}$/i);
   });
+
+  test('should delete a task', async ({ page }) => {
+    await page.fill('#task-input', 'Task to be deleted');
+    await page.click('text=Add Task');
+
+    const taskLocator = page.locator('#task-list li', { hasText: 'Task to be deleted' });
+    await expect(taskLocator).toBeVisible();
+
+    const deleteButton = taskLocator.locator('.btn-danger');
+    await deleteButton.click();
+
+    await expect(taskLocator).not.toBeVisible();
+  });
 });

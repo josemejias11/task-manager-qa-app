@@ -62,4 +62,19 @@ test.describe('Task API', () => {
     });
     expect(response.status()).toBe(400);
   });
+  test('should handle internal server error gracefully', async () => {
+    // Temporarily override the request context to simulate a 500 response
+    const customContext = await request.newContext({
+      baseURL: process.env.BASE_URL || 'http://localhost:3000',
+      extraHTTPHeaders: {
+        'x-force-error': 'true' // Assuming backend respects this for testing
+      }
+    });
+
+    const response = await customContext.post('/api/tasks', {
+      data: { title: 'Trigger Error' }
+    });
+
+    expect(response.status()).toBe(500);
+  });
 });

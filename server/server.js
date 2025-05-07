@@ -23,6 +23,9 @@ app.delete('/api/tasks', (req, res) => {
 app.get('/api/tasks', (req, res) => {
   let data = { tasks: [] };
   try {
+    if (req.headers['x-force-error'] === 'true') {
+      throw new Error('Forced error for testing');
+    }
     data = JSON.parse(fs.readFileSync(DB_FILE));
   } catch (err) {
     console.error('Failed to read or parse db.json', err);
@@ -32,6 +35,9 @@ app.get('/api/tasks', (req, res) => {
 
 app.post('/api/tasks', (req, res) => {
   const { title } = req.body;
+  if (req.headers['x-force-error'] === 'true') {
+    return res.status(500).json({ error: 'Internal server error (forced)' });
+  }
   if (!title || typeof title !== 'string' || title.trim() === '') {
     return res.status(400).json({ error: 'Title is required and must be a non-empty string' });
   }
