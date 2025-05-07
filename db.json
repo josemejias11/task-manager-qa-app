@@ -15,6 +15,14 @@
     {
       "id": 1746588668447,
       "title": "Another CI Test Task"
+    },
+    {
+      "id": 1746589007582,
+      "title": "Test Playwright Task"
+    },
+    {
+      "id": 1746589007903,
+      "title": "Another CI Test Task"
     }
   ]
 }
