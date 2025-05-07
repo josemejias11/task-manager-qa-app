@@ -2,7 +2,7 @@
 
 A simple task manager with UI + API, built for QA automation demos.
 
-## 🚀 Features
+## Features
 
 - Add/delete tasks (UI)
 - REST API: `/api/tasks`
@@ -11,13 +11,13 @@ A simple task manager with UI + API, built for QA automation demos.
 - Allure reporting
 - GitHub Actions CI workflow
 
-## 🧰 Requirements
+## Requirements
 
 - [Docker](https://www.docker.com/)
 - [Node.js](https://nodejs.org/) (for local testing)
 - [Allure CLI](https://docs.qameta.io/allure/) (optional, can use `npx`)
 
-## 🧪 Test Execution
+## Test Execution
 
 ### Run All Tests in Docker with Allure
 ```bash
@@ -48,7 +48,7 @@ npx playwright test playwright/tests/api.spec.js
 npx playwright test playwright/tests/task.spec.js
 ```
 
-## 📊 Allure Report
+## Allure Report
 
 To generate manually:
 ```bash
@@ -61,14 +61,14 @@ To clean old results:
 rm -rf allure-results allure-report
 ```
 
-## 🐳 Docker Usage
+## Docker Usage
 
 ```bash
 docker build -t task-manager-qa .
 docker run -p 3000:3000 task-manager-qa
 ```
 
-## 🧱 Folder Structure
+## Folder Structure
 
 ```
 .
@@ -80,7 +80,7 @@ docker run -p 3000:3000 task-manager-qa
 └── package.json
 ```
 
-## ⚙️ GitHub Actions CI
+## GitHub Actions CI
 
 GitHub workflow runs tests on push and PR to `main`. File: `.github/workflows/playwright-ci.yml`
 
