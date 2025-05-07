@@ -3,6 +3,11 @@ const { test, expect } = require('@playwright/test');
 test.describe('Task Management', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(process.env.BASE_URL || 'http://localhost:3000');
+    // Clear all tasks before each test
+    const deleteButtons = await page.locator('#task-list .btn-danger').all();
+    for (const btn of deleteButtons) {
+      await btn.click();
+    }
   });
 
   test('should add a task', async ({ page }) => {
@@ -21,8 +26,10 @@ test.describe('Task Management', () => {
   });
 
   test('should not add a task if input is empty', async ({ page }) => {
+    const initialCount = await page.locator('#task-list li').count();
     await page.click('text=Add Task');
-    await expect(page.locator('#task-list')).not.toContainText('');
+    const finalCount = await page.locator('#task-list li').count();
+    expect(finalCount).toBe(initialCount);
   });
 
   test('should allow adding multiple tasks', async ({ page }) => {
@@ -30,7 +37,8 @@ test.describe('Task Management', () => {
     await page.click('text=Add Task');
     await page.fill('#task-input', 'Second Task');
     await page.click('text=Add Task');
-    await expect(page.locator('#task-list')).toContainText(['First Task', 'Second Task']);
+    await expect(page.locator('#task-list')).toContainText('First Task');
+    await expect(page.locator('#task-list')).toContainText('Second Task');
   });
 
   test('should handle very long task input', async ({ page }) => {
