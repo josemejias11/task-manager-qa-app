@@ -41,6 +41,9 @@ app.post('/api/tasks', (req, res) => {
   if (!title || typeof title !== 'string' || title.trim() === '') {
     return res.status(400).json({ error: 'Title is required and must be a non-empty string' });
   }
+  if (title.trim().length > 20) {
+    return res.status(400).json({ error: 'Task title must be 20 characters or less.' });
+  }
 
   let data = { tasks: [] };
   try {

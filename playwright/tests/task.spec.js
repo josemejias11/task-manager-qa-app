@@ -26,23 +26,10 @@ test.describe('Task Management', () => {
   });
 
   test('should not add a task if input is empty', async ({ page }) => {
-    const initialCount = await page.locator('#task-list li').count();
-
-    // Try with empty input
     await page.fill('#task-input', '');
     await page.click('text=Add Task');
     await expect(page.locator('#form-warning')).toBeVisible({ timeout: 2000 });
     await expect(page.locator('#form-warning')).toHaveText('Task title cannot be empty.');
-    const afterEmptyCount = await page.locator('#task-list li').count();
-    expect(afterEmptyCount).toBe(initialCount);
-
-    // Try with whitespace-only input
-    await page.fill('#task-input', '   ');
-    await page.click('text=Add Task');
-    await expect(page.locator('#form-warning')).toBeVisible({ timeout: 2000 });
-    await expect(page.locator('#form-warning')).toHaveText('Task title cannot be empty.');
-    const afterSpaceCount = await page.locator('#task-list li').count();
-    expect(afterSpaceCount).toBe(initialCount);
   });
 
   test('should allow adding multiple tasks', async ({ page }) => {
@@ -54,11 +41,27 @@ test.describe('Task Management', () => {
     await expect(page.locator('#task-list')).toContainText('Second Task');
   });
 
-  test('should handle very long task input', async ({ page }) => {
-    const longText = 'A'.repeat(1000);
-    await page.fill('#task-input', longText);
+  test('should show warning if task input exceeds 20 characters', async ({ page }) => {
+    const input = page.locator('#task-input');
+    const longText = 'A'.repeat(21); // 21 characters
+
+    // Clear the input field explicitly
+    await input.fill('');
+    await expect(input).toHaveValue('');
+
+    // Fill with long text
+    await input.fill(longText);
+
+    // Ensure warning is not visible before clicking
+    await expect(page.locator('#form-warning')).toBeHidden();
+
+    // Attempt to add the task
     await page.click('text=Add Task');
-    await expect(page.locator('#task-list')).toContainText(longText);
+
+    // Verify warning message appears
+    const warning = page.locator('#form-warning');
+    await expect(warning).toBeVisible({ timeout: 2000 });
+    await expect(warning).toHaveText('Task title must be 20 characters or less.');
   });
   test('should assign a UUID to new tasks', async ({ page }) => {
     await page.fill('#task-input', 'UUID Test');

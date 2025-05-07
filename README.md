@@ -68,6 +68,16 @@ docker build -t task-manager-qa .
 docker run -p 3000:3000 task-manager-qa
 ```
 
+### Run Only the App Container (Detached Mode)
+
+To start only the application service in detached mode:
+
+```bash
+docker compose -f docker-compose-play.yaml up -d app
+```
+
+Make sure the service is named `app` in your `docker-compose-play.yaml`. If it's named differently, replace `app` with the actual service name.
+
 ## Folder Structure
 
 ```

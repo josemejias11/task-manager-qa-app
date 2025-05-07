@@ -68,11 +68,19 @@
       e.preventDefault();
       const title = input.value.trim();
       const warning = document.getElementById('form-warning');
+
       if (!title) {
         warning.textContent = 'Task title cannot be empty.';
         warning.style.display = 'block';
         return;
       }
+
+      if (title.length > 20) {
+        warning.textContent = 'Task title must be 20 characters or less.';
+        warning.style.display = 'block';
+        return;
+      }
+
       warning.style.display = 'none';
       try {
         await fetch(`${API_BASE}/api/tasks`, {
