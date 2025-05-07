@@ -4,7 +4,7 @@ module.exports = defineConfig({
   testDir: './tests',
   reporter: [
     ['html'],
-    ['allure-playwright', { outputFolder: 'allure-results' }]
+    ['allure-playwright']
   ],
   use: {
     baseURL: 'http://localhost:3000',
