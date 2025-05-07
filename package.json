@@ -7,7 +7,7 @@
     "test": "npx playwright test",
     "test:allure": "npx playwright test --reporter=allure-playwright",
     "allure:generate": "npx allure generate allure-results --clean",
-    "allure:open": "npx allure open",
+    "allure:open": "npx allure open allure-report",
     "test:docker-allure": "docker compose -f docker-compose-play.yaml build --no-cache && docker compose -f docker-compose-play.yaml up -d && sleep 5 && npm run allure:generate && npm run allure:open"
   },
   "dependencies": {

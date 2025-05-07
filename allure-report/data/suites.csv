@@ -1,0 +1,5 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","371","should add a task","","Wed May 07 08:50:34 CST 2025","passed","Wed May 07 08:50:35 CST 2025","","playwright/tests/task.spec.js","",""
+"","325","should clear the input after adding a task","","Wed May 07 08:52:34 CST 2025","passed","Wed May 07 08:52:35 CST 2025","Task Management","playwright/tests/task.spec.js","",""
+"","342","should add a task","","Wed May 07 08:52:34 CST 2025","passed","Wed May 07 08:52:34 CST 2025","Task Management","playwright/tests/task.spec.js","",""
+"","341","should clear the input after adding a task","","Wed May 07 08:50:35 CST 2025","passed","Wed May 07 08:50:35 CST 2025","","playwright/tests/task.spec.js","",""
