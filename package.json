@@ -19,6 +19,7 @@
   "devDependencies": {
     "@playwright/test": "^1.52.0",
     "allure-commandline": "^2.24.0",
+    "allure-playwright": "^3.2.1",
     "wait-on": "^8.0.3"
   }
 }
