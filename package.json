@@ -7,8 +7,8 @@
     "start": "node server/server.js",
     "test": "npx playwright test",
     "test:allure": "npx playwright test --reporter=allure-playwright",
-    "allure:generate": "npx allure generate allure-results --clean",
-    "allure:open": "npx allure open allure-report",
+    "allure:generate": "allure generate allure-results --clean",
+    "allure:open": "allure open",
     "test:docker-allure": "docker compose -f docker-compose-play.yaml build --no-cache && docker compose -f docker-compose-play.yaml up -d && sleep 5 && npm run allure:generate && npm run allure:open"
   },
   "dependencies": {
@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.52.0",
-    "allure-playwright": "^3.2.1",
+    "allure-commandline": "^2.24.0",
     "wait-on": "^8.0.3"
   }
 }
