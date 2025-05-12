@@ -13,9 +13,10 @@ app.use(cors()); // Enable CORS for all routes
 // Constants
 const DB_FILE = path.join(__dirname, '../db.json');
 const DEFAULT_DB = { tasks: [] };
+const PORT = process.env.PORT || 3000;
 
 // Error handling middleware
-const errorHandler = (err, req, res, next) => {
+const errorHandler = (err, req, res, _next) => {
   console.error('Server error:', err);
   res.status(500).json({ error: 'Internal server error' });
 };
@@ -191,7 +192,7 @@ app.get('*', (req, res) => {
 app.use(errorHandler);
 
 // Start server
-app.listen(3000, () => {
-  console.log('Server running on http://localhost:3000');
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
   console.log('DB_FILE path:', DB_FILE);
 });
