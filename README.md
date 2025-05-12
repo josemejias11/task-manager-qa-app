@@ -122,10 +122,12 @@ By default, tests now run in headed mode (with a visible browser). This makes it
 
 ```javascript
 // playwright.config.js
-use: {
-  headless: false,
-  // other configuration...
-}
+module.exports = {
+  use: {
+    headless: false,
+    // other configuration...
+  }
+};
 ```
 
 If you prefer to run tests in headless mode (without a visible browser), you can:
