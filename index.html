@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Task Manager</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
@@ -34,103 +36,248 @@
 <body class="p-4">
   <h1>Task Manager</h1>
   <form id="task-form">
-    <input type="text" id="task-input" placeholder="New task..." class="form-control mb-2" />
+    <input type="text" id="task-input" placeholder="New task..." class="form-control mb-2" maxlength="20" />
     <button type="submit" class="btn btn-primary">Add Task</button>
     <button type="button" id="remove-all-btn" class="btn btn-danger ms-2">Remove All</button>
   </form>
   <div id="form-warning" class="text-danger mt-2" style="display:none;"></div>
   <ul id="task-list" class="list-group mt-3"></ul>
+
   <script>
+    /**
+     * Task Manager Application
+     * 
+     * A simple task management application with CRUD operations.
+     * Uses the Fetch API to communicate with the backend.
+     */
+    
+    // Constants and DOM element references
     const API_BASE = window.location.origin;
     const form = document.getElementById('task-form');
     const input = document.getElementById('task-input');
     const list = document.getElementById('task-list');
     const removeAllBtn = document.getElementById('remove-all-btn');
-
-    async function loadTasks() {
+    const formWarning = document.getElementById('form-warning');
+    
+    // ----- Utility Functions -----
+    
+    /**
+     * Validate a task title according to business rules
+     * @param {string} title - The task title to validate
+     * @returns {Object} - Validation result with isValid and errorMessage properties
+     */
+    const validateTaskTitle = (title) => {
+      if (!title || title.trim() === '') {
+        return { 
+          isValid: false, 
+          errorMessage: 'Task title cannot be empty.' 
+        };
+      }
+      
+      if (title.trim().length > 20) {
+        return { 
+          isValid: false, 
+          errorMessage: 'Task title must be 20 characters or less.' 
+        };
+      }
+      
+      return { isValid: true };
+    };
+    
+    /**
+     * Show a validation error message
+     * @param {string} message - The error message to display
+     * @param {HTMLElement} element - The element to show the message in (default: formWarning)
+     */
+    const showValidationError = (message, element = formWarning) => {
+      if (element) {
+        element.textContent = message;
+        element.style.display = 'block';
+      } else {
+        // Fallback to alert if the element is not available
+        alert(message);
+      }
+    };
+    
+    /**
+     * Hide the validation error message
+     * @param {HTMLElement} element - The element to hide (default: formWarning)
+     */
+    const hideValidationError = (element = formWarning) => {
+      if (element) {
+        element.style.display = 'none';
+      }
+    };
+    
+    /**
+     * Create and send a request to the API
+     * @param {string} url - The API endpoint
+     * @param {Object} options - Request options
+     * @returns {Promise<any>} - The API response
+     */
+    const apiRequest = async (url, options = {}) => {
+      // Add cache-busting parameter to avoid browser caching
+      const cacheBuster = `_=${new Date().getTime()}`;
+      const separator = url.includes('?') ? '&' : '?';
+      const fullUrl = `${API_BASE}${url}${separator}${cacheBuster}`;
+      
+      // Set default headers
+      const headers = {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache',
+        ...(options.headers || {})
+      };
+      
+      const response = await fetch(fullUrl, { ...options, headers });
+      
+      if (!response.ok) {
+        throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+      }
+      
+      // For DELETE requests, don't try to parse JSON
+      if (options.method === 'DELETE') {
+        return null;
+      }
+      
+      return await response.json();
+    };
+    
+    /**
+     * Show a notification that fades out after a few seconds
+     * @param {HTMLElement} container - The element containing the notification
+     */
+    const showNotification = (container) => {
+      const notification = container.querySelector('.update-notification');
+      if (!notification) return;
+      
+      notification.style.display = 'inline';
+      notification.classList.add('show');
+      
+      // Hide the notification after 3 seconds
+      setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+          notification.style.display = 'none';
+        }, 300);
+      }, 3000);
+    };
+    
+    // ----- Task API Functions -----
+    
+    /**
+     * Load all tasks from the server and render them
+     */
+    const loadTasks = async () => {
       try {
         console.log('Loading tasks...');
-        // Add cache-busting parameter to avoid browser caching
-        const timestamp = new Date().getTime();
-        const res = await fetch(`${API_BASE}/api/tasks?_=${timestamp}`);
-        const tasks = await res.json();
+        const tasks = await apiRequest('/api/tasks');
         console.log('Tasks received from server:', tasks);
+        
+        // Create a document fragment for better performance
+        const fragment = document.createDocumentFragment();
+        
+        // Clear the list
         list.innerHTML = '';
-        tasks.forEach(({ id, title, completed }) => {
-          console.log(`Rendering task: ID=${id}, Title="${title}", Completed=${completed}`);
-          
-          const li = document.createElement('li');
-          li.className = 'list-group-item d-flex justify-content-between align-items-center';
-          li.setAttribute('data-id', id);
-
-          // Create container for task content (checkbox and title)
-          const taskContent = document.createElement('div');
-          taskContent.className = 'd-flex align-items-center flex-grow-1';
-          
-          // Create checkbox for task completion
-          const checkbox = document.createElement('input');
-          checkbox.type = 'checkbox';
-          checkbox.className = 'form-check-input me-2';
-          checkbox.checked = completed || false;
-          checkbox.setAttribute('data-id', id);
-          checkbox.addEventListener('change', () => toggleTaskCompletion(id, checkbox.checked));
-
-          const span = document.createElement('span');
-          span.textContent = title;
-          span.className = 'task-title flex-grow-1';
-          console.log(`Setting span text content to: "${title}"`);
-          
-          // Create notification element (hidden by default)
-          const notification = document.createElement('span');
-          notification.className = 'update-notification';
-          notification.textContent = 'Updated!';
-          notification.style.display = 'none';
-          if (completed) {
-            span.classList.add('task-completed');
-          }
-
-          taskContent.appendChild(checkbox);
-          taskContent.appendChild(span);
-          taskContent.appendChild(notification);
-          li.appendChild(taskContent);
-
-          // Create button container
-          const btnContainer = document.createElement('div');
-          btnContainer.className = 'btn-group-task';
-
-          // Create edit button
-          const editBtn = document.createElement('button');
-          editBtn.className = 'btn btn-sm btn-secondary';
-          editBtn.setAttribute('data-id', id);
-          editBtn.setAttribute('aria-label', `Edit task ${title}`);
-          editBtn.textContent = 'Edit';
-          editBtn.addEventListener('click', () => enterEditMode(li, id, title));
-
-          // Create delete button
-          const deleteBtn = document.createElement('button');
-          deleteBtn.className = 'btn btn-sm btn-danger';
-          deleteBtn.setAttribute('data-id', id);
-          deleteBtn.setAttribute('aria-label', `Delete task ${title}`);
-          deleteBtn.textContent = 'Delete';
-          deleteBtn.addEventListener('click', async () => {
-            try {
-              await deleteTask(id);
-            } catch (err) {
-              console.warn('Failed to delete task', err);
-            }
-          });
-
-          btnContainer.appendChild(editBtn);
-          btnContainer.appendChild(deleteBtn);
-          li.appendChild(btnContainer);
-          list.appendChild(li);
+        
+        // Render each task
+        tasks.forEach(task => {
+          const taskElement = createTaskElement(task);
+          fragment.appendChild(taskElement);
         });
+        
+        // Add all tasks to the DOM in one operation
+        list.appendChild(fragment);
       } catch (err) {
         console.error('Failed to load tasks:', err);
       }
-    }
-
-    function enterEditMode(listItem, id, currentTitle) {
+    };
+    
+    /**
+     * Create a task element for the DOM
+     * @param {Object} task - The task object from the API
+     * @returns {HTMLElement} - The task list item element
+     */
+    const createTaskElement = ({ id, title, completed }) => {
+      console.log(`Creating task element: ID=${id}, Title="${title}", Completed=${completed}`);
+      
+      // Create list item
+      const li = document.createElement('li');
+      li.className = 'list-group-item d-flex justify-content-between align-items-center';
+      li.setAttribute('data-id', id);
+      
+      // Create container for task content (checkbox and title)
+      const taskContent = document.createElement('div');
+      taskContent.className = 'd-flex align-items-center flex-grow-1';
+      
+      // Create checkbox for task completion
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.className = 'form-check-input me-2';
+      checkbox.checked = completed || false;
+      checkbox.setAttribute('data-id', id);
+      checkbox.addEventListener('change', () => toggleTaskCompletion(id, checkbox.checked));
+      
+      // Create title span
+      const span = document.createElement('span');
+      span.textContent = title;
+      span.className = 'task-title flex-grow-1';
+      if (completed) {
+        span.classList.add('task-completed');
+      }
+      
+      // Create notification element (hidden by default)
+      const notification = document.createElement('span');
+      notification.className = 'update-notification';
+      notification.textContent = 'Updated!';
+      notification.style.display = 'none';
+      
+      // Assemble task content
+      taskContent.appendChild(checkbox);
+      taskContent.appendChild(span);
+      taskContent.appendChild(notification);
+      li.appendChild(taskContent);
+      
+      // Create button container
+      const btnContainer = document.createElement('div');
+      btnContainer.className = 'btn-group-task';
+      
+      // Create edit button
+      const editBtn = document.createElement('button');
+      editBtn.className = 'btn btn-sm btn-secondary';
+      editBtn.setAttribute('data-id', id);
+      editBtn.setAttribute('aria-label', `Edit task ${title}`);
+      editBtn.textContent = 'Edit';
+      editBtn.addEventListener('click', () => enterEditMode(li, id, title));
+      
+      // Create delete button
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'btn btn-sm btn-danger';
+      deleteBtn.setAttribute('data-id', id);
+      deleteBtn.setAttribute('aria-label', `Delete task ${title}`);
+      deleteBtn.textContent = 'Delete';
+      deleteBtn.addEventListener('click', async () => {
+        try {
+          await deleteTask(id);
+        } catch (err) {
+          console.warn('Failed to delete task', err);
+        }
+      });
+      
+      // Assemble button container
+      btnContainer.appendChild(editBtn);
+      btnContainer.appendChild(deleteBtn);
+      li.appendChild(btnContainer);
+      
+      return li;
+    };
+    
+    /**
+     * Enter edit mode for a task
+     * @param {HTMLElement} listItem - The task list item element
+     * @param {string} id - The task ID
+     * @param {string} currentTitle - The current task title
+     */
+    const enterEditMode = (listItem, id, currentTitle) => {
       // Store the current state
       const taskContent = listItem.querySelector('div:first-child');
       const originalContent = taskContent.innerHTML;
@@ -185,9 +332,17 @@
       // Focus the input
       editInput.focus();
       editInput.select();
-    }
-
-    async function saveTaskEdit(id, newTitle, listItem, originalContent, btnContainer) {
+    };
+    
+    /**
+     * Save edited task
+     * @param {string} id - The task ID
+     * @param {string} newTitle - The new task title
+     * @param {HTMLElement} listItem - The task list item element
+     * @param {string} originalContent - The original HTML content
+     * @param {HTMLElement} btnContainer - The button container element
+     */
+    const saveTaskEdit = async (id, newTitle, listItem, originalContent, btnContainer) => {
       console.log(`saveTaskEdit started for task ${id}`, {
         newTitle,
         listItemId: listItem.getAttribute('data-id')
@@ -196,17 +351,11 @@
       const taskContent = listItem.querySelector('div:first-child');
       
       // Validate the new title
-      if (!newTitle) {
-        console.warn('Validation failed: Title cannot be empty');
-        alert('Task title cannot be empty.');
-        // Show the button container again on validation error
-        btnContainer.style.display = 'flex';
-        return;
-      }
-      
-      if (newTitle.length > 20) {
-        console.warn('Validation failed: Title too long', {newTitle, length: newTitle.length});
-        alert('Task title must be 20 characters or less.');
+      const validation = validateTaskTitle(newTitle);
+      if (!validation.isValid) {
+        console.warn(`Validation failed: ${validation.errorMessage}`);
+        alert(validation.errorMessage);
+        
         // Show the button container again on validation error
         btnContainer.style.display = 'flex';
         return;
@@ -232,143 +381,16 @@
           completed: isCompleted
         };
         
-        console.log('Sending PATCH request with payload:', payload);
-        
-        // Add cache-busting parameter to avoid browser caching
-        const timestamp = new Date().getTime();
-        const res = await fetch(`${API_BASE}/api/tasks/${id}?_=${timestamp}`, {
+        // Send the update to the server
+        const updatedTask = await apiRequest(`/api/tasks/${id}`, {
           method: 'PATCH',
-          headers: { 
-            'Content-Type': 'application/json',
-            'Cache-Control': 'no-cache'
-          },
           body: JSON.stringify(payload)
         });
         
-        if (!res.ok) {
-          throw new Error(`Failed to update task title for task with id ${id}`);
-        }
-        
-        // Parse the response to verify the update was successful
-        const updatedTask = await res.json();
         console.log('Server response - updated task:', updatedTask);
         
         // Verify the title was updated correctly
         if (updatedTask.title !== newTitle) {
           console.warn('Title mismatch! Server returned:', updatedTask.title, 'but we sent:', newTitle);
         } else {
-          console.log('Title updated successfully! Server confirmed the new title:', updatedTask.title);
-        }
-        
-        // Show the button container again before reloading tasks
-        btnContainer.style.display = 'flex';
-        
-        // Wait a small amount of time to ensure the change is processed
-        await new Promise(resolve => setTimeout(resolve, 100));
-        
-        // Manually update the task name in the DOM before reloading
-        const span = listItem.querySelector('.task-title');
-        if (span) {
-          console.log(`Updating task title in DOM from "${span.textContent}" to "${newTitle}"`);
-          span.textContent = newTitle;
-        }
-        
-        // Show updated notification
-        const notification = listItem.querySelector('.update-notification');
-        if (notification) {
-          notification.style.display = 'inline';
-          notification.classList.add('show');
-          
-          // Hide the notification after 3 seconds
-          setTimeout(() => {
-            notification.classList.remove('show');
-            setTimeout(() => {
-              notification.style.display = 'none';
-            }, 300);
-          }, 3000);
-        }
-        
-        console.log('Forcing reload of tasks to reflect changes');
-        await loadTasks();
-      } catch (err) {
-        console.error('Failed to update task title:', err);
-        // Restore original content on error
-        taskContent.innerHTML = originalContent;
-        // Show the button container again on error
-        btnContainer.style.display = 'flex';
-      }
-    }
-
-    async function deleteTask(id) {
-      const res = await fetch(`${API_BASE}/api/tasks/${id}`, { method: 'DELETE' });
-      if (!res.ok) {
-        throw new Error(`Failed to delete task with id ${id}`);
-      }
-      loadTasks();
-    }
-
-    async function toggleTaskCompletion(id, completed) {
-      try {
-        const res = await fetch(`${API_BASE}/api/tasks/${id}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ completed })
-        });
-        
-        if (!res.ok) {
-          throw new Error(`Failed to update task completion status for task with id ${id}`);
-        }
-        
-        await loadTasks(); // Reload the tasks to reflect changes
-      } catch (err) {
-        console.error('Failed to update task completion status:', err);
-      }
-    }
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const title = input.value.trim();
-      const warning = document.getElementById('form-warning');
-
-      if (!title) {
-        warning.textContent = 'Task title cannot be empty.';
-        warning.style.display = 'block';
-        return;
-      }
-
-      if (title.length > 20) {
-        warning.textContent = 'Task title must be 20 characters or less.';
-        warning.style.display = 'block';
-        return;
-      }
-
-      warning.style.display = 'none';
-      try {
-        await fetch(`${API_BASE}/api/tasks`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ title })
-        });
-        input.value = '';
-        await loadTasks();
-      } catch (err) {
-        console.error('Failed to add task:', err);
-      }
-    });
-
-    removeAllBtn.addEventListener('click', async () => {
-      if (!confirm('Are you sure you want to delete all tasks?')) return;
-      try {
-        const res = await fetch(`${API_BASE}/api/tasks`, { method: 'DELETE' });
-        if (res.ok) await loadTasks();
-      } catch (err) {
-        console.error('Failed to delete all tasks:', err);
-      }
-    });
-
-    (async () => {
-      await loadTasks();
-    })();
-  </script>
-</body>
-</html>
+          console.log('Title updated successfully! Server confirmed the new title
