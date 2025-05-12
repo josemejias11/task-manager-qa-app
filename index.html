@@ -434,14 +434,34 @@
       
       try {
         hideValidationError();
+        console.log('Adding new task with title:', title);
+        
         const newTask = await apiRequest('/api/tasks', {
           method: 'POST',
           body: JSON.stringify({ title: title.trim() })
         });
         
+        console.log('Task created successfully:', newTask);
+        
         // Create and add the new task element
         const taskElement = createTaskElement(newTask);
+        
+        // Ensure the element was created properly
+        if (!taskElement) {
+          console.error('Failed to create task element for:', newTask);
+          return newTask;
+        }
+        
+        // Append the new task to the list
         list.appendChild(taskElement);
+        console.log(`Task "${newTask.title}" (ID: ${newTask.id}) added to UI`);
+        
+        // Force DOM update to ensure the task is visible
+        setTimeout(() => {
+          list.style.display = 'none';
+          list.offsetHeight; // Force reflow
+          list.style.display = '';
+        }, 0);
         
         return newTask;
       } catch (err) {
@@ -566,10 +586,15 @@
       const title = input.value.trim();
       console.log('Form submitted with title:', title, 'Length:', title.length);
       
+      // Clear the input field immediately to enable adding multiple tasks in succession
+      const originalValue = input.value;
+      input.value = '';
+      
       const task = await addTask(title);
-      if (task) {
-        // Clear the input field
-        input.value = '';
+      
+      // Only restore the input value if task creation failed
+      if (!task) {
+        input.value = originalValue;
       }
     });
     
