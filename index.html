@@ -3,6 +3,33 @@
 <head>
   <title>Task Manager</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    .task-completed {
+      text-decoration: line-through;
+      color: #6c757d;
+    }
+    .edit-input {
+      flex-grow: 1;
+      margin-right: 5px;
+    }
+    .btn-group-task {
+      display: flex;
+      gap: 5px;
+    }
+    .update-notification {
+      color: green;
+      background-color: #e7f7e7;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 10px;
+      font-size: 0.8rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .update-notification.show {
+      opacity: 1;
+    }
+  </style>
 </head>
 <body class="p-4">
   <h1>Task Manager</h1>
@@ -22,23 +49,70 @@
 
     async function loadTasks() {
       try {
-        const res = await fetch(`${API_BASE}/api/tasks`);
+        console.log('Loading tasks...');
+        // Add cache-busting parameter to avoid browser caching
+        const timestamp = new Date().getTime();
+        const res = await fetch(`${API_BASE}/api/tasks?_=${timestamp}`);
         const tasks = await res.json();
+        console.log('Tasks received from server:', tasks);
         list.innerHTML = '';
-        tasks.forEach(({ id, title }) => {
+        tasks.forEach(({ id, title, completed }) => {
+          console.log(`Rendering task: ID=${id}, Title="${title}", Completed=${completed}`);
+          
           const li = document.createElement('li');
           li.className = 'list-group-item d-flex justify-content-between align-items-center';
+          li.setAttribute('data-id', id);
+
+          // Create container for task content (checkbox and title)
+          const taskContent = document.createElement('div');
+          taskContent.className = 'd-flex align-items-center flex-grow-1';
+          
+          // Create checkbox for task completion
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.className = 'form-check-input me-2';
+          checkbox.checked = completed || false;
+          checkbox.setAttribute('data-id', id);
+          checkbox.addEventListener('change', () => toggleTaskCompletion(id, checkbox.checked));
 
           const span = document.createElement('span');
           span.textContent = title;
+          span.className = 'task-title flex-grow-1';
+          console.log(`Setting span text content to: "${title}"`);
+          
+          // Create notification element (hidden by default)
+          const notification = document.createElement('span');
+          notification.className = 'update-notification';
+          notification.textContent = 'Updated!';
+          notification.style.display = 'none';
+          if (completed) {
+            span.classList.add('task-completed');
+          }
 
-          const btn = document.createElement('button');
-          btn.className = 'btn btn-sm btn-danger btn-delete-task';
-          btn.setAttribute('data-id', id);
-          btn.setAttribute('aria-label', `Delete task ${title}`);
-          btn.textContent = 'x';
+          taskContent.appendChild(checkbox);
+          taskContent.appendChild(span);
+          taskContent.appendChild(notification);
+          li.appendChild(taskContent);
 
-          btn.addEventListener('click', async () => {
+          // Create button container
+          const btnContainer = document.createElement('div');
+          btnContainer.className = 'btn-group-task';
+
+          // Create edit button
+          const editBtn = document.createElement('button');
+          editBtn.className = 'btn btn-sm btn-secondary';
+          editBtn.setAttribute('data-id', id);
+          editBtn.setAttribute('aria-label', `Edit task ${title}`);
+          editBtn.textContent = 'Edit';
+          editBtn.addEventListener('click', () => enterEditMode(li, id, title));
+
+          // Create delete button
+          const deleteBtn = document.createElement('button');
+          deleteBtn.className = 'btn btn-sm btn-danger';
+          deleteBtn.setAttribute('data-id', id);
+          deleteBtn.setAttribute('aria-label', `Delete task ${title}`);
+          deleteBtn.textContent = 'Delete';
+          deleteBtn.addEventListener('click', async () => {
             try {
               await deleteTask(id);
             } catch (err) {
@@ -46,8 +120,9 @@
             }
           });
 
-          li.appendChild(span);
-          li.appendChild(btn);
+          btnContainer.appendChild(editBtn);
+          btnContainer.appendChild(deleteBtn);
+          li.appendChild(btnContainer);
           list.appendChild(li);
         });
       } catch (err) {
@@ -55,13 +130,199 @@
       }
     }
 
+    function enterEditMode(listItem, id, currentTitle) {
+      // Store the current state
+      const taskContent = listItem.querySelector('div:first-child');
+      const originalContent = taskContent.innerHTML;
+      
+      // Hide the button container (Edit and Delete buttons)
+      const btnContainer = listItem.querySelector('.btn-group-task');
+      btnContainer.style.display = 'none';
+      
+      // Create edit form
+      const editForm = document.createElement('form');
+      editForm.className = 'd-flex align-items-center flex-grow-1';
+      editForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const newTitle = editInput.value.trim();
+        console.log(`Edit form submitted for task ${id}. Original title: "${currentTitle}", New title: "${newTitle}"`);
+        saveTaskEdit(id, newTitle, listItem, originalContent, btnContainer);
+      });
+      
+      // Create edit input
+      const editInput = document.createElement('input');
+      editInput.type = 'text';
+      editInput.className = 'form-control edit-input';
+      editInput.value = currentTitle;
+      editInput.maxLength = 20;
+      
+      // Create save button
+      const saveBtn = document.createElement('button');
+      saveBtn.type = 'submit';
+      saveBtn.className = 'btn btn-sm btn-success me-1';
+      saveBtn.textContent = 'Save';
+      
+      // Create cancel button
+      const cancelBtn = document.createElement('button');
+      cancelBtn.type = 'button';
+      cancelBtn.className = 'btn btn-sm btn-secondary';
+      cancelBtn.textContent = 'Cancel';
+      cancelBtn.addEventListener('click', () => {
+        taskContent.innerHTML = originalContent;
+        // Show the button container again
+        listItem.querySelector('.btn-group-task').style.display = 'flex';
+      });
+      
+      // Add buttons to form
+      editForm.appendChild(editInput);
+      editForm.appendChild(saveBtn);
+      editForm.appendChild(cancelBtn);
+      
+      // Replace task content with edit form
+      taskContent.innerHTML = '';
+      taskContent.appendChild(editForm);
+      
+      // Focus the input
+      editInput.focus();
+      editInput.select();
+    }
+
+    async function saveTaskEdit(id, newTitle, listItem, originalContent, btnContainer) {
+      console.log(`saveTaskEdit started for task ${id}`, {
+        newTitle,
+        listItemId: listItem.getAttribute('data-id')
+      });
+      
+      const taskContent = listItem.querySelector('div:first-child');
+      
+      // Validate the new title
+      if (!newTitle) {
+        console.warn('Validation failed: Title cannot be empty');
+        alert('Task title cannot be empty.');
+        // Show the button container again on validation error
+        btnContainer.style.display = 'flex';
+        return;
+      }
+      
+      if (newTitle.length > 20) {
+        console.warn('Validation failed: Title too long', {newTitle, length: newTitle.length});
+        alert('Task title must be 20 characters or less.');
+        // Show the button container again on validation error
+        btnContainer.style.display = 'flex';
+        return;
+      }
+      
+      try {
+        // Get the current completed status from the checkbox
+        const checkbox = taskContent.querySelector('input[type="checkbox"]') || 
+                         listItem.querySelector('.form-check-input');
+        
+        // Default to false if checkbox can't be found
+        const isCompleted = checkbox ? checkbox.checked : false;
+        
+        console.log('Attempting to update task:', { 
+          id, 
+          newTitle, 
+          completed: isCompleted 
+        });
+        
+        // Create request payload with both title and completed status
+        const payload = { 
+          title: newTitle,
+          completed: isCompleted
+        };
+        
+        console.log('Sending PATCH request with payload:', payload);
+        
+        // Add cache-busting parameter to avoid browser caching
+        const timestamp = new Date().getTime();
+        const res = await fetch(`${API_BASE}/api/tasks/${id}?_=${timestamp}`, {
+          method: 'PATCH',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache'
+          },
+          body: JSON.stringify(payload)
+        });
+        
+        if (!res.ok) {
+          throw new Error(`Failed to update task title for task with id ${id}`);
+        }
+        
+        // Parse the response to verify the update was successful
+        const updatedTask = await res.json();
+        console.log('Server response - updated task:', updatedTask);
+        
+        // Verify the title was updated correctly
+        if (updatedTask.title !== newTitle) {
+          console.warn('Title mismatch! Server returned:', updatedTask.title, 'but we sent:', newTitle);
+        } else {
+          console.log('Title updated successfully! Server confirmed the new title:', updatedTask.title);
+        }
+        
+        // Show the button container again before reloading tasks
+        btnContainer.style.display = 'flex';
+        
+        // Wait a small amount of time to ensure the change is processed
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        // Manually update the task name in the DOM before reloading
+        const span = listItem.querySelector('.task-title');
+        if (span) {
+          console.log(`Updating task title in DOM from "${span.textContent}" to "${newTitle}"`);
+          span.textContent = newTitle;
+        }
+        
+        // Show updated notification
+        const notification = listItem.querySelector('.update-notification');
+        if (notification) {
+          notification.style.display = 'inline';
+          notification.classList.add('show');
+          
+          // Hide the notification after 3 seconds
+          setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+              notification.style.display = 'none';
+            }, 300);
+          }, 3000);
+        }
+        
+        console.log('Forcing reload of tasks to reflect changes');
+        await loadTasks();
+      } catch (err) {
+        console.error('Failed to update task title:', err);
+        // Restore original content on error
+        taskContent.innerHTML = originalContent;
+        // Show the button container again on error
+        btnContainer.style.display = 'flex';
+      }
+    }
+
     async function deleteTask(id) {
       const res = await fetch(`${API_BASE}/api/tasks/${id}`, { method: 'DELETE' });
       if (!res.ok) {
-        console.warn(`Failed to delete task with id ${id}`);
         throw new Error(`Failed to delete task with id ${id}`);
       }
       loadTasks();
+    }
+
+    async function toggleTaskCompletion(id, completed) {
+      try {
+        const res = await fetch(`${API_BASE}/api/tasks/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ completed })
+        });
+        
+        if (!res.ok) {
+          throw new Error(`Failed to update task completion status for task with id ${id}`);
+        }
+        
+        await loadTasks(); // Reload the tasks to reflect changes
+      } catch (err) {
+        console.error('Failed to update task completion status:', err);
+      }
     }
 
     form.addEventListener('submit', async (e) => {
@@ -89,7 +350,7 @@
           body: JSON.stringify({ title })
         });
         input.value = '';
-        loadTasks();
+        await loadTasks();
       } catch (err) {
         console.error('Failed to add task:', err);
       }
@@ -99,13 +360,15 @@
       if (!confirm('Are you sure you want to delete all tasks?')) return;
       try {
         const res = await fetch(`${API_BASE}/api/tasks`, { method: 'DELETE' });
-        if (res.ok) loadTasks();
+        if (res.ok) await loadTasks();
       } catch (err) {
         console.error('Failed to delete all tasks:', err);
       }
     });
 
-    loadTasks();
+    (async () => {
+      await loadTasks();
+    })();
   </script>
 </body>
 </html>

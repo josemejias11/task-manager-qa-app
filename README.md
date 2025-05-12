@@ -5,7 +5,8 @@ A simple task manager with UI + API, built for QA automation demos.
 ## Features
 
 - Add/delete tasks (UI)
-- REST API: `/api/tasks`
+- Edit task titles and toggle completion status (UI)
+- Complete REST API: `/api/tasks` (GET, POST, PATCH, DELETE)
 - Playwright tests (UI + API)
 - Dockerized environment
 - Allure reporting

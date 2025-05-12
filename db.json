@@ -1,3 +1,9 @@
 {
-  "tasks": []
+  "tasks": [
+    {
+      "id": "f5e50b64-4320-4c7e-a2f4-e71ace7da0dd",
+      "title": "Task to toggle",
+      "completed": false
+    }
+  ]
 }

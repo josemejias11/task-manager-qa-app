@@ -51,7 +51,7 @@ app.post('/api/tasks', (req, res) => {
   } catch (err) {
     console.error('Failed to read db.json', err);
   }
-  const newTask = { id: uuidv4(), title: title.trim() };
+  const newTask = { id: uuidv4(), title: title.trim(), completed: false };
   data.tasks.push(newTask);
   try {
     fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
@@ -86,8 +86,74 @@ app.delete('/api/tasks/:id', (req, res) => {
   res.status(204).end();
 });
 
+app.patch('/api/tasks/:id', (req, res) => {
+  // Extract only the fields we're interested in from the request body
+  const { title } = req.body;
+  const completed = req.body.completed;
+  
+  // For debug purposes
+  console.log('PATCH request body:', req.body);
+  console.log('Extracted title:', title, 'type:', typeof title);
+  console.log('Extracted completed:', completed, 'type:', typeof completed);
+  
+  // At least one of completed or title must be provided
+  if (completed === undefined && title === undefined) {
+    return res.status(400).json({ error: 'At least one of completed or title must be provided' });
+  }
+  
+  // Validate completed if provided
+  if (completed !== undefined && typeof completed !== 'boolean') {
+    return res.status(400).json({ error: 'Completed status must be a boolean value' });
+  }
+  
+  // Validate title if provided
+  if (title !== undefined) {
+    if (typeof title !== 'string' || title.trim() === '') {
+      return res.status(400).json({ error: 'Title must be a non-empty string' });
+    }
+    if (title.trim().length > 20) {
+      return res.status(400).json({ error: 'Task title must be 20 characters or less' });
+    }
+  }
+
+  let data = { tasks: [] };
+  try {
+    data = JSON.parse(fs.readFileSync(DB_FILE));
+  } catch (err) {
+    console.error('Failed to read db.json', err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+
+  const taskIndex = data.tasks.findIndex(task => task.id === req.params.id);
+  if (taskIndex === -1) {
+    return res.status(404).json({ error: 'Task not found' });
+  }
+
+  // Update the completed status if provided
+  if (completed !== undefined) {
+    data.tasks[taskIndex].completed = completed;
+  }
+  
+  // Update the title if provided
+  if (title !== undefined) {
+    data.tasks[taskIndex].title = title.trim();
+  }
+
+  try {
+    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+  } catch (err) {
+    console.error('Failed to write db.json', err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+
+  res.json(data.tasks[taskIndex]);
+});
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../index.html'));
 });
 
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+app.listen(3000, () => {
+  console.log('Server running on http://localhost:3000');
+  console.log('DB_FILE path:', DB_FILE);
+});
