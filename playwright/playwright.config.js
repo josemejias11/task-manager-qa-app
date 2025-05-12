@@ -11,7 +11,7 @@ module.exports = defineConfig({
     trace: 'on',
     screenshot: 'on',
     video: 'on-first-retry',
-    headless: true,
+    headless: false,
     actionTimeout: 60000,
     navigationTimeout: 60000,
     launchOptions: {

@@ -116,6 +116,26 @@ npm run allure:generate
 npm run allure:open
 ```
 
+### Run Tests in Headed Mode
+
+By default, tests now run in headed mode (with a visible browser). This makes it easier to debug and visualize test execution. The configuration is set in `playwright/playwright.config.js`:
+
+```javascript
+// playwright.config.js
+use: {
+  headless: false,
+  // other configuration...
+}
+```
+
+If you prefer to run tests in headless mode (without a visible browser), you can:
+
+1. Update the configuration file to set `headless: true`
+2. Or run tests with the `--headless` flag:
+   ```bash
+   npx playwright test --headless
+   ```
+
 ### Run API Tests Only
 Make sure the server is running first, then:
 ```bash
