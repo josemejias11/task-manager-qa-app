@@ -36,7 +36,7 @@
 <body class="p-4">
   <h1>Task Manager</h1>
   <form id="task-form">
-    <input type="text" id="task-input" placeholder="New task..." class="form-control mb-2" maxlength="20" />
+    <input type="text" id="task-input" placeholder="New task..." class="form-control mb-2" />
     <button type="submit" class="btn btn-primary">Add Task</button>
     <button type="button" id="remove-all-btn" class="btn btn-danger ms-2">Remove All</button>
   </form>
@@ -93,6 +93,7 @@
       if (element) {
         element.textContent = message;
         element.style.display = 'block';
+        console.log('Showing validation error:', message);
       } else {
         // Fallback to alert if the element is not available
         alert(message);
@@ -393,4 +394,187 @@
         if (updatedTask.title !== newTitle) {
           console.warn('Title mismatch! Server returned:', updatedTask.title, 'but we sent:', newTitle);
         } else {
-          console.log('Title updated successfully! Server confirmed the new title
+          console.log('Title updated successfully! Server confirmed the new title');
+        }
+        
+        // Re-render the task with updated information
+        const updatedElement = createTaskElement(updatedTask);
+        listItem.replaceWith(updatedElement);
+        
+        // Show the "Updated!" notification
+        const notification = updatedElement.querySelector('.update-notification');
+        if (notification) {
+          showNotification(updatedElement);
+        }
+      } catch (err) {
+        console.error('Failed to save task edit:', err);
+        alert('Failed to update task. Please try again.');
+        
+        // Restore original content on error
+        taskContent.innerHTML = originalContent;
+      } finally {
+        // Always show the button container again
+        btnContainer.style.display = 'flex';
+      }
+    };
+    
+    /**
+     * Add a new task
+     * @param {string} title - The task title
+     * @returns {Promise<Object>} - The created task
+     */
+    const addTask = async (title) => {
+      // Validate the title
+      const validation = validateTaskTitle(title);
+      if (!validation.isValid) {
+        showValidationError(validation.errorMessage);
+        console.log('Task validation failed:', validation.errorMessage, 'Title length:', title.length);
+        return null;
+      }
+      
+      try {
+        hideValidationError();
+        const newTask = await apiRequest('/api/tasks', {
+          method: 'POST',
+          body: JSON.stringify({ title: title.trim() })
+        });
+        
+        // Create and add the new task element
+        const taskElement = createTaskElement(newTask);
+        list.appendChild(taskElement);
+        
+        return newTask;
+      } catch (err) {
+        console.error('Failed to add task:', err);
+        showValidationError('Failed to add task. Please try again.');
+        return null;
+      }
+    };
+    
+    /**
+     * Delete a task
+     * @param {string} id - The task ID
+     */
+    const deleteTask = async (id) => {
+      try {
+        // Find the task element
+        const taskElement = document.querySelector(`li[data-id="${id}"]`);
+        if (!taskElement) {
+          console.warn(`Task element with ID ${id} not found.`);
+          return;
+        }
+        
+        // Optimistically remove the task from the DOM
+        taskElement.remove();
+        
+        // Delete the task on the server
+        await apiRequest(`/api/tasks/${id}`, {
+          method: 'DELETE'
+        });
+        
+        console.log(`Task ${id} deleted successfully`);
+      } catch (err) {
+        console.error('Failed to delete task:', err);
+        
+        // If there was an error, reload all tasks to restore the correct state
+        await loadTasks();
+      }
+    };
+    
+    /**
+     * Delete all tasks
+     */
+    const deleteAllTasks = async () => {
+      try {
+        // Confirm before deleting all tasks
+        if (!confirm('Are you sure you want to delete all tasks?')) {
+          return;
+        }
+        
+        // Clear the list (optimistic update)
+        list.innerHTML = '';
+        
+        // Delete all tasks on the server
+        await apiRequest('/api/tasks', {
+          method: 'DELETE'
+        });
+        
+        console.log('All tasks deleted successfully');
+      } catch (err) {
+        console.error('Failed to delete all tasks:', err);
+        
+        // If there was an error, reload all tasks to restore the correct state
+        await loadTasks();
+      }
+    };
+    
+    /**
+     * Toggle task completion status
+     * @param {string} id - The task ID
+     * @param {boolean} completed - The new completion status
+     */
+    const toggleTaskCompletion = async (id, completed) => {
+      try {
+        // Find the task element
+        const taskElement = document.querySelector(`li[data-id="${id}"]`);
+        if (!taskElement) {
+          console.warn(`Task element with ID ${id} not found.`);
+          return;
+        }
+        
+        // Optimistically update the UI
+        const titleSpan = taskElement.querySelector('.task-title');
+        if (completed) {
+          titleSpan.classList.add('task-completed');
+        } else {
+          titleSpan.classList.remove('task-completed');
+        }
+        
+        // Update the task on the server
+        await apiRequest(`/api/tasks/${id}`, {
+          method: 'PATCH',
+          body: JSON.stringify({ completed })
+        });
+        
+        console.log(`Task ${id} completion status updated to ${completed}`);
+      } catch (err) {
+        console.error('Failed to update task completion status:', err);
+        
+        // If there was an error, reload all tasks to restore the correct state
+        await loadTasks();
+      }
+    };
+    
+    // ----- Event Listeners -----
+    
+    // Initialize the application when the DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('DOM loaded, initializing Task Manager app...');
+      
+      // Load tasks from the server
+      loadTasks();
+      
+      // Clear validation error when input changes
+      input.addEventListener('input', () => {
+        hideValidationError();
+      });
+    });
+    
+    // Handle form submission (adding a new task)
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = input.value.trim();
+      console.log('Form submitted with title:', title, 'Length:', title.length);
+      
+      const task = await addTask(title);
+      if (task) {
+        // Clear the input field
+        input.value = '';
+      }
+    });
+    
+    // Handle Remove All button click
+    removeAllBtn.addEventListener('click', deleteAllTasks);
+  </script>
+</body>
+</html>

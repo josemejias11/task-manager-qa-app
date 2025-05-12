@@ -79,34 +79,57 @@ npm run format
 
 ## Testing
 
+> **Important**: The application server must be running for tests to work properly. When running tests manually, make sure to start the server first.
+
 ### Run All Tests
+There are two ways to run tests:
+
+#### Option 1: Start the server first, then run tests
 ```bash
+# Terminal 1: Start the server
+npm start
+
+# Terminal 2: Run the tests
 npm test
 ```
 
+#### Option 2: Use the CI command that handles server startup
+```bash
+npm run test:ci
+```
+
 ### Run Tests with Continuous Integration
+The test:ci command starts the server, waits for it to be ready, and then runs the tests:
+
 ```bash
 npm run test:ci
 ```
 
 ### Run Tests with Allure Reporting
+Make sure the server is running first, then:
 ```bash
+# Run tests with Allure reporter
 npm run test:allure
+
+# Generate and open the report
 npm run allure:generate
 npm run allure:open
 ```
 
 ### Run API Tests Only
+Make sure the server is running first, then:
 ```bash
 npx playwright test playwright/tests/api.spec.js
 ```
 
 ### Run UI Tests Only
+Make sure the server is running first, then:
 ```bash
 npx playwright test playwright/tests/task.spec.js
 ```
 
 ### Run Tests in Docker with Allure
+This command handles the entire process in one step (no need to start the server separately):
 ```bash
 npm run test:docker-allure
 ```
