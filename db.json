@@ -1,3 +1,84 @@
 {
-  "tasks": []
+  "tasks": [
+    {
+      "id": "35175faf-1e8e-4393-86b4-bc40f92bfa22",
+      "title": "Invalid Status Task",
+      "completed": false
+    },
+    {
+      "id": "09ae9b4d-7b71-476a-80c4-6da8df333933",
+      "title": "New API Task",
+      "completed": false
+    },
+    {
+      "id": "87bdd5f2-0e40-42d3-8fac-7484804eb356",
+      "title": "Status Update Task",
+      "completed": true
+    },
+    {
+      "id": "029a8c49-9a44-4183-872b-d40236e61eaf",
+      "title": "Check UUID",
+      "completed": false
+    },
+    {
+      "id": "82af6b71-19f1-4751-9f79-0487077b5ba0",
+      "title": "Fully Updated Task",
+      "completed": true
+    },
+    {
+      "id": "bada332e-4683-4705-97c7-bcab20496e78",
+      "title": "Updated Title Only",
+      "completed": false
+    },
+    {
+      "id": "b2ca5c5c-3f03-48c5-b04e-7d19f1da2589",
+      "title": "Empty Update Task",
+      "completed": false
+    },
+    {
+      "id": "5c0d8170-2713-49a9-b745-529f31b123dd",
+      "title": "Valid Title Task",
+      "completed": false
+    },
+    {
+      "id": "41810aac-2079-4718-9a93-54c602716116",
+      "title": "New API Task",
+      "completed": false
+    },
+    {
+      "id": "faabadbf-5188-4836-802f-4d210eab7f12",
+      "title": "Invalid Status Task",
+      "completed": false
+    },
+    {
+      "id": "d65d2979-f109-405a-9a00-2d4374d7c504",
+      "title": "Status Update Task",
+      "completed": true
+    },
+    {
+      "id": "e87cf406-fd25-49cf-a8ce-8efb199e2796",
+      "title": "Check UUID",
+      "completed": false
+    },
+    {
+      "id": "d5c68603-2471-4e5d-a9b5-0e1972ec729e",
+      "title": "Fully Updated Task",
+      "completed": true
+    },
+    {
+      "id": "5f67f02f-f34e-4c72-a7c5-c9fb430a39e3",
+      "title": "Updated Title Only",
+      "completed": false
+    },
+    {
+      "id": "6ee8f061-a170-4a8d-96b7-88244e3f2b01",
+      "title": "Empty Update Task",
+      "completed": false
+    },
+    {
+      "id": "cb416a22-601b-41d9-9239-ff3e3a85c120",
+      "title": "Valid Title Task",
+      "completed": false
+    }
+  ]
 }
