@@ -12,6 +12,8 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"**/*.{js,json}\"",
     "test": "npx playwright test",
+    "test:headed": "HEADLESS=false npx playwright test",
+    "test:headless": "HEADLESS=true npx playwright test",
     "test:ci": "wait-on http://localhost:3000 && npx playwright test",
     "test:allure": "npx playwright test --reporter=allure-playwright",
     "allure:generate": "allure generate allure-results --clean",
