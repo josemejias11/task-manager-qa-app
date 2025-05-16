@@ -84,18 +84,13 @@ npm run format
 ### Run All Tests
 There are two ways to run tests:
 
-#### Option 1: Start the server first, then run tests
+#### Start the server first, then run tests
 ```bash
 # Terminal 1: Start the server
 npm start
 
 # Terminal 2: Run the tests
 npm test
-```
-
-#### Option 2: Use the CI command that handles server startup
-```bash
-npm run test:ci
 ```
 
 ### Run Tests with Continuous Integration
