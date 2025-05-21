@@ -1,0 +1,26 @@
+.task-completed {
+  text-decoration: line-through;
+  color: #6c757d;
+}
+.edit-input {
+  flex-grow: 1;
+  margin-right: 5px;
+}
+.btn-group-task {
+  display: flex;
+  gap: 5px;
+}
+.update-notification {
+  color: green;
+  background-color: #e7f7e7;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: 10px;
+  font-size: 0.8rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.update-notification.show {
+  opacity: 1;
+}
+

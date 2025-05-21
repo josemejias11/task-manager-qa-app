@@ -7,7 +7,7 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(express.static(__dirname + '/../'));
+app.use(express.static(__dirname + '/../public'));
 app.use(cors()); // Enable CORS for all routes
 
 // Constants
@@ -185,7 +185,7 @@ app.patch('/api/tasks/:id', (req, res) => {
 
 // Catch-all route for SPA
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../index.html'));
+  res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
 // Error handling middleware (must be after all routes)
