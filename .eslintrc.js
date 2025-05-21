@@ -3,11 +3,7 @@ module.exports = {
     node: true,
     es2021: true,
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:node/recommended',
-    'prettier',
-  ],
+  extends: ['eslint:recommended', 'plugin:node/recommended', 'prettier'],
   parserOptions: {
     ecmaVersion: 2021,
   },
@@ -16,11 +12,11 @@ module.exports = {
     'no-console': 'off', // Allow console.log for this project
     'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     'no-undef': 'error',
-    
+
     // Stylistic preferences
-    'quotes': ['error', 'single', { avoidEscape: true }],
-    'semi': ['error', 'always'],
-    
+    quotes: ['error', 'single', { avoidEscape: true }],
+    semi: ['error', 'always'],
+
     // Node.js specific
     'node/exports-style': ['error', 'module.exports'],
     'node/file-extension-in-import': ['error', 'never'],
@@ -28,9 +24,9 @@ module.exports = {
     'node/prefer-global/console': ['error', 'always'],
     'node/prefer-global/process': ['error', 'always'],
     'node/no-unsupported-features/es-syntax': 'off', // Allow modern ES syntax
-    
+
     // Best practices
-    'eqeqeq': ['error', 'always', { 'null': 'ignore' }],
+    eqeqeq: ['error', 'always', { null: 'ignore' }],
     'prefer-const': 'warn',
     'no-var': 'error',
   },
@@ -50,4 +46,3 @@ module.exports = {
     },
   ],
 };
-

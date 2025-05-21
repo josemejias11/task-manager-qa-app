@@ -32,7 +32,7 @@ const readDatabase = () => {
   }
 };
 
-const writeDatabase = (data) => {
+const writeDatabase = data => {
   try {
     fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
     return true;
@@ -43,7 +43,7 @@ const writeDatabase = (data) => {
 };
 
 // Task validation utilities
-const validateTaskTitle = (title) => {
+const validateTaskTitle = title => {
   if (!title || typeof title !== 'string' || title.trim() === '') {
     return { valid: false, error: 'Title is required and must be a non-empty string' };
   }
@@ -58,12 +58,12 @@ const validateTaskUpdate = (title, completed) => {
   if (completed === undefined && title === undefined) {
     return { valid: false, error: 'At least one of completed or title must be provided' };
   }
-  
+
   // Validate completed if provided
   if (completed !== undefined && typeof completed !== 'boolean') {
     return { valid: false, error: 'Completed status must be a boolean value' };
   }
-  
+
   // Validate title if provided
   if (title !== undefined) {
     const titleValidation = validateTaskTitle(title);
@@ -71,7 +71,7 @@ const validateTaskUpdate = (title, completed) => {
       return titleValidation;
     }
   }
-  
+
   return { valid: true };
 };
 
@@ -101,23 +101,23 @@ app.get('/api/tasks', (req, res) => {
 app.post('/api/tasks', (req, res) => {
   try {
     const { title } = req.body;
-    
+
     if (req.headers['x-force-error'] === 'true') {
       return res.status(500).json({ error: 'Internal server error (forced)' });
     }
-    
+
     // Validate task title
     const validation = validateTaskTitle(title);
     if (!validation.valid) {
       return res.status(400).json({ error: validation.error });
     }
-    
+
     // Read database, add task, write database
     const data = readDatabase();
     const newTask = { id: uuidv4(), title: title.trim(), completed: false };
     data.tasks.push(newTask);
     writeDatabase(data);
-    
+
     res.status(201).json(newTask);
   } catch (err) {
     res.status(500).json({ error: 'Internal server error' });
@@ -129,11 +129,11 @@ app.delete('/api/tasks/:id', (req, res) => {
     const data = readDatabase();
     const originalLength = data.tasks.length;
     data.tasks = data.tasks.filter(task => task.id !== req.params.id);
-    
+
     if (data.tasks.length === originalLength) {
       return res.status(404).json({ error: 'Task not found' });
     }
-    
+
     writeDatabase(data);
     res.status(204).end();
   } catch (err) {
@@ -146,35 +146,35 @@ app.patch('/api/tasks/:id', (req, res) => {
     // Extract fields from request body
     const { title } = req.body;
     const completed = req.body.completed;
-    
+
     // For debug purposes - maintaining the same logging
     console.log('PATCH request body:', req.body);
     console.log('Extracted title:', title, 'type:', typeof title);
     console.log('Extracted completed:', completed, 'type:', typeof completed);
-    
+
     // Validate update fields
     const validation = validateTaskUpdate(title, completed);
     if (!validation.valid) {
       return res.status(400).json({ error: validation.error });
     }
-    
+
     // Get task from database
     const data = readDatabase();
     const taskIndex = data.tasks.findIndex(task => task.id === req.params.id);
-    
+
     if (taskIndex === -1) {
       return res.status(404).json({ error: 'Task not found' });
     }
-    
+
     // Update the task
     if (completed !== undefined) {
       data.tasks[taskIndex].completed = completed;
     }
-    
+
     if (title !== undefined) {
       data.tasks[taskIndex].title = title.trim();
     }
-    
+
     // Save changes
     writeDatabase(data);
     res.json(data.tasks[taskIndex]);

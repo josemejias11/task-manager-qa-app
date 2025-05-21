@@ -93,11 +93,6 @@ npm start
 npm test
 ```
 
-#### Option 2: Use the CI command that handles server startup
-```bash
-npm run test:ci
-```
-
 ### Run Tests with Continuous Integration
 The test:ci command starts the server, waits for it to be ready, and then runs the tests:
 
@@ -114,20 +109,6 @@ npm run test:allure
 # Generate and open the report
 npm run allure:generate
 npm run allure:open
-```
-
-### Run Tests in Headed Mode
-
-By default, tests now run in headed mode (with a visible browser). This makes it easier to debug and visualize test execution. The configuration is set in `playwright/playwright.config.js`:
-
-```javascript
-// playwright.config.js
-module.exports = {
-  use: {
-    headless: false,
-    // other configuration...
-  }
-};
 ```
 
 If you prefer to run tests in headless mode (without a visible browser), you can:

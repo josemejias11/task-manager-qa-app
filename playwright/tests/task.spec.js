@@ -5,26 +5,22 @@ test.describe.parallel('Task API', () => {
 
   const createTask = async (title = 'Sample Task') => {
     const response = await apiContext.post('/api/tasks', {
-      data: { title }
+      data: { title },
     });
     expect(response.status()).toBe(201);
     return response.json();
   };
 
-  const deleteTask = async (id) => {
-    await apiContext.delete(`/api/tasks/${id}`);
-  };
-
   test.beforeAll(async () => {
     apiContext = await request.newContext({
-      baseURL: process.env.BASE_URL || 'http://localhost:3000'
+      baseURL: process.env.BASE_URL || 'http://localhost:3000',
     });
   });
 
   test('should create a new task', async () => {
     await test.step('Send POST request', async () => {
       const response = await apiContext.post('/api/tasks', {
-        data: { title: 'New API Task' }
+        data: { title: 'New API Task' },
       });
       expect(response.status()).toBe(201);
       const body = await response.json();
@@ -48,7 +44,7 @@ test.describe.parallel('Task API', () => {
 
   test('should not create a task with empty title', async () => {
     const response = await apiContext.post('/api/tasks', {
-      data: { title: '' }
+      data: { title: '' },
     });
     expect(response.status()).toBe(400);
   });
@@ -66,7 +62,7 @@ test.describe.parallel('Task API', () => {
 
   test('should not create task with whitespace-only title', async () => {
     const response = await apiContext.post('/api/tasks', {
-      data: { title: '   ' }
+      data: { title: '   ' },
     });
     expect(response.status()).toBe(400);
   });
@@ -74,11 +70,11 @@ test.describe.parallel('Task API', () => {
   test('should handle internal server error gracefully', async () => {
     const customContext = await request.newContext({
       baseURL: process.env.BASE_URL || 'http://localhost:3000',
-      extraHTTPHeaders: { 'x-force-error': 'true' }
+      extraHTTPHeaders: { 'x-force-error': 'true' },
     });
 
     const response = await customContext.post('/api/tasks', {
-      data: { title: 'Trigger Error' }
+      data: { title: 'Trigger Error' },
     });
 
     expect(response.status()).toBe(500);
@@ -88,7 +84,7 @@ test.describe.parallel('Task API', () => {
     const createdTask = await createTask('Title Update Task');
 
     const updateResponse = await apiContext.patch(`/api/tasks/${createdTask.id}`, {
-      data: { title: 'Updated Title Only' }
+      data: { title: 'Updated Title Only' },
     });
 
     expect(updateResponse.status()).toBe(200);
@@ -104,7 +100,7 @@ test.describe.parallel('Task API', () => {
     expect(createdTask.completed).toBe(false);
 
     const updateResponse = await apiContext.patch(`/api/tasks/${createdTask.id}`, {
-      data: { completed: true }
+      data: { completed: true },
     });
 
     expect(updateResponse.status()).toBe(200);
@@ -119,7 +115,7 @@ test.describe.parallel('Task API', () => {
     const createdTask = await createTask('Full Update Task');
 
     const updateResponse = await apiContext.patch(`/api/tasks/${createdTask.id}`, {
-      data: { title: 'Fully Updated Task', completed: true }
+      data: { title: 'Fully Updated Task', completed: true },
     });
 
     expect(updateResponse.status()).toBe(200);
@@ -134,12 +130,12 @@ test.describe.parallel('Task API', () => {
     const createdTask = await createTask('Valid Title Task');
 
     const emptyTitleResponse = await apiContext.patch(`/api/tasks/${createdTask.id}`, {
-      data: { title: '' }
+      data: { title: '' },
     });
     expect(emptyTitleResponse.status()).toBe(400);
 
     const longTitleResponse = await apiContext.patch(`/api/tasks/${createdTask.id}`, {
-      data: { title: 'This title is way too long' }
+      data: { title: 'This title is way too long' },
     });
     expect(longTitleResponse.status()).toBe(400);
   });
@@ -148,7 +144,7 @@ test.describe.parallel('Task API', () => {
     const createdTask = await createTask('Invalid Status Task');
 
     const response = await apiContext.patch(`/api/tasks/${createdTask.id}`, {
-      data: { completed: 'not-a-boolean' }
+      data: { completed: 'not-a-boolean' },
     });
     expect(response.status()).toBe(400);
   });
@@ -156,7 +152,7 @@ test.describe.parallel('Task API', () => {
   test('should return 404 for updating non-existent task', async () => {
     const fakeId = 'nonexistent-id-123';
     const response = await apiContext.patch(`/api/tasks/${fakeId}`, {
-      data: { title: 'Won\'t Update' }
+      data: { title: "Won't Update" },
     });
     expect(response.status()).toBe(404);
   });
@@ -165,7 +161,7 @@ test.describe.parallel('Task API', () => {
     const createdTask = await createTask('Empty Update Task');
 
     const response = await apiContext.patch(`/api/tasks/${createdTask.id}`, {
-      data: {}
+      data: {},
     });
     expect(response.status()).toBe(400);
   });
