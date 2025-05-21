@@ -24,8 +24,7 @@ const errorHandler = (err, req, res, _next) => {
 // Database utility functions
 const readDatabase = () => {
   try {
-    const data = JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
-    return data;
+    return JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
   } catch (err) {
     console.error('Failed to read or parse db.json:', err);
     return DEFAULT_DB;
@@ -88,7 +87,8 @@ app.delete('/api/tasks', (req, res) => {
 app.get('/api/tasks', (req, res) => {
   try {
     if (req.headers['x-force-error'] === 'true') {
-      throw new Error('Forced error for testing');
+      console.warn('Forced error triggered by x-force-error header');
+      return res.status(500).json({ error: 'Internal server error (forced)' });
     }
     const data = readDatabase();
     res.json(data.tasks || []);

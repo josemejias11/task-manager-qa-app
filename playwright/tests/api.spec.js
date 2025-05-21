@@ -3,6 +3,19 @@ const { test, expect, request } = require('@playwright/test');
 test.describe('Task API', () => {
   let apiContext;
 
+  // Helper to create a task with a given title
+  async function createTask(title = 'Default Title') {
+    const response = await apiContext.post('/api/tasks', { data: { title } });
+    expect(response.status()).toBe(201);
+    return response.json();
+  }
+
+  async function updateTask(id, data) {
+    const response = await apiContext.patch(`/api/tasks/${id}`, { data });
+    expect(response.status()).toBe(200);
+    return response.json();
+  }
+
   test.beforeAll(async () => {
     apiContext = await request.newContext({
       baseURL: process.env.BASE_URL || 'http://localhost:3000',
@@ -80,18 +93,10 @@ test.describe('Task API', () => {
 
   test('update only the title of a task', async () => {
     // Create a task to update - keeping title under 20 chars
-    const createResponse = await apiContext.post('/api/tasks', {
-      data: { title: 'Title Update Task' },
-    });
-    expect(createResponse.status()).toBe(201);
-    const createdTask = await createResponse.json();
+    const createdTask = await createTask('Title Update Task');
 
     // Update only the title
-    const updateResponse = await apiContext.patch(`/api/tasks/${createdTask.id}`, {
-      data: { title: 'Updated Title Only' },
-    });
-    expect(updateResponse.status()).toBe(200);
-    const updatedTask = await updateResponse.json();
+    const updatedTask = await updateTask(createdTask.id, { title: 'Updated Title Only' });
 
     // Verify the update
     expect(updatedTask.title).toBe('Updated Title Only');
@@ -101,19 +106,11 @@ test.describe('Task API', () => {
 
   test('update only the completed status of a task', async () => {
     // Create a task to update (initially completed = false)
-    const createResponse = await apiContext.post('/api/tasks', {
-      data: { title: 'Status Update Task' },
-    });
-    expect(createResponse.status()).toBe(201);
-    const createdTask = await createResponse.json();
+    const createdTask = await createTask('Status Update Task');
     expect(createdTask.completed).toBe(false); // Default is false
 
     // Update only the completed status to true
-    const updateResponse = await apiContext.patch(`/api/tasks/${createdTask.id}`, {
-      data: { completed: true },
-    });
-    expect(updateResponse.status()).toBe(200);
-    const updatedTask = await updateResponse.json();
+    const updatedTask = await updateTask(createdTask.id, { completed: true });
 
     // Verify the update
     expect(updatedTask.completed).toBe(true); // Completed status should be updated
