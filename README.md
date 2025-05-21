@@ -176,6 +176,14 @@ This will:
 
 ```
 .
+├── public/
+│   ├── css/
+│   │   ├── bootstrap.min.css
+│   │   └── styles.css
+│   ├── js/
+│   │   ├── app.js
+│   │   └── bootstrap.bundle.min.js
+│   └── index.html
 ├── server/
 │   └── server.js
 ├── playwright/
@@ -186,7 +194,6 @@ This will:
 ├── .eslintrc.js
 ├── .prettierrc.js
 ├── .gitignore
-├── index.html
 ├── db.json     
 ├── Dockerfile
 ├── docker-compose-play.yaml
@@ -216,6 +223,10 @@ Runs on push/PR to `main` and `update-tests`.
 - Improved CORS support
 - Refactored duplicated code
 - Enhanced README documentation
+- Extracted JavaScript into separate file (js/app.js)
+- Created dedicated CSS file for custom styles (css/styles.css)
+- Added local Bootstrap files instead of using CDN
+- Improved project structure with proper separation of concerns
 
 ---
 
