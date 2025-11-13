@@ -217,16 +217,39 @@ Runs on push/PR to `main` and `update-tests`.
 
 ## Recent Improvements
 
-- Added ESLint + Prettier
+### Code Quality & Testing
+- ✅ **Comprehensive UI/E2E tests**: 16 new UI tests covering all user interactions
+- ✅ **Test isolation**: Added cleanup hooks and serial execution to prevent race conditions
+- ✅ **CI/CD optimized**: Fixed Playwright config for headless execution in pipelines
+- ✅ **Reduced excessive logging**: Removed 18+ console.log statements for cleaner production code
+- ✅ **Fixed performance issues**: Removed DOM rendering hack and cache-busting workarounds
+
+### Development Tools
+- Added ESLint + Prettier for consistent code style
 - Added nodemon for dev auto-reload
 - Refined error handling in API
 - Improved CORS support
-- Refactored duplicated code
-- Enhanced README documentation
+
+### Architecture & Structure
 - Extracted JavaScript into separate file (js/app.js)
 - Created dedicated CSS file for custom styles (css/styles.css)
 - Added local Bootstrap files instead of using CDN
 - Improved project structure with proper separation of concerns
+- Documented intentional validation duplication (defense-in-depth)
+
+### Security & Documentation
+- ✅ **Added SECURITY.md**: Comprehensive security documentation for learning purposes
+- ✅ **Cleaned up GitHub Actions**: Removed commented-out code
+- Enhanced README documentation
+
+---
+
+## Security
+
+This is a **learning/practice application** and is **not production-ready**. See [SECURITY.md](./SECURITY.md) for:
+- Known security limitations
+- Production recommendations
+- Learning resources
 
 ---
 

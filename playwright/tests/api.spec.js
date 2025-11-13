@@ -1,6 +1,7 @@
 const { test, expect, request } = require('@playwright/test');
 
-test.describe('Task API', () => {
+// Use serial mode to prevent race conditions with shared JSON database
+test.describe.serial('Task API', () => {
   let apiContext;
 
   // Helper to create a task with a given title

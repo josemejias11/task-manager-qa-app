@@ -42,6 +42,9 @@ const writeDatabase = data => {
 };
 
 // Task validation utilities
+// Note: These validation functions are intentionally similar to client-side validation
+// (see public/js/app.js) for defense-in-depth. Server-side validation is critical
+// as client-side validation can be bypassed. Never trust client input.
 const validateTaskTitle = title => {
   if (!title || typeof title !== 'string' || title.trim() === '') {
     return { valid: false, error: 'Title is required and must be a non-empty string' };
@@ -146,11 +149,6 @@ app.patch('/api/tasks/:id', (req, res) => {
     // Extract fields from request body
     const { title } = req.body;
     const completed = req.body.completed;
-
-    // For debug purposes - maintaining the same logging
-    console.log('PATCH request body:', req.body);
-    console.log('Extracted title:', title, 'type:', typeof title);
-    console.log('Extracted completed:', completed, 'type:', typeof completed);
 
     // Validate update fields
     const validation = validateTaskUpdate(title, completed);

@@ -19,6 +19,11 @@ const formWarning = document.getElementById('form-warning');
  * Validate a task title according to business rules
  * @param {string} title - The task title to validate
  * @returns {Object} - Validation result with isValid and errorMessage properties
+ *
+ * Note: This validation logic is intentionally duplicated in server/server.js
+ * for defense-in-depth. Client-side validation provides immediate UX feedback,
+ * while server-side validation ensures data integrity. In a TypeScript project,
+ * consider using a shared validation schema (e.g., Zod, Yup).
  */
 const validateTaskTitle = (title) => {
   if (!title || title.trim() === '') {
@@ -47,7 +52,6 @@ const showValidationError = (message, element = formWarning) => {
   if (element) {
     element.textContent = message;
     element.style.display = 'block';
-    console.log('Showing validation error:', message);
   } else {
     // Fallback to alert if the element is not available
     alert(message);
@@ -71,29 +75,26 @@ const hideValidationError = (element = formWarning) => {
  * @returns {Promise<any>} - The API response
  */
 const apiRequest = async (url, options = {}) => {
-  // Add cache-busting parameter to avoid browser caching
-  const cacheBuster = `_=${new Date().getTime()}`;
-  const separator = url.includes('?') ? '&' : '?';
-  const fullUrl = `${API_BASE}${url}${separator}${cacheBuster}`;
-  
-  // Set default headers
+  const fullUrl = `${API_BASE}${url}`;
+
+  // Set default headers with proper cache control
   const headers = {
     'Content-Type': 'application/json',
     'Cache-Control': 'no-cache',
     ...(options.headers || {})
   };
-  
+
   const response = await fetch(fullUrl, { ...options, headers });
-  
+
   if (!response.ok) {
     throw new Error(`API request failed: ${response.status} ${response.statusText}`);
   }
-  
+
   // For DELETE requests, don't try to parse JSON
   if (options.method === 'DELETE') {
     return null;
   }
-  
+
   return await response.json();
 };
 
@@ -124,22 +125,20 @@ const showNotification = (container) => {
  */
 const loadTasks = async () => {
   try {
-    console.log('Loading tasks...');
     const tasks = await apiRequest('/api/tasks');
-    console.log('Tasks received from server:', tasks);
-    
+
     // Create a document fragment for better performance
     const fragment = document.createDocumentFragment();
-    
+
     // Clear the list
     list.innerHTML = '';
-    
+
     // Render each task
     tasks.forEach(task => {
       const taskElement = createTaskElement(task);
       fragment.appendChild(taskElement);
     });
-    
+
     // Add all tasks to the DOM in one operation
     list.appendChild(fragment);
   } catch (err) {
@@ -153,8 +152,6 @@ const loadTasks = async () => {
  * @returns {HTMLElement} - The task list item element
  */
 const createTaskElement = ({ id, title, completed }) => {
-  console.log(`Creating task element: ID=${id}, Title="${title}", Completed=${completed}`);
-  
   // Create list item
   const li = document.createElement('li');
   li.className = 'list-group-item d-flex justify-content-between align-items-center';
@@ -247,7 +244,6 @@ const enterEditMode = (listItem, id, currentTitle) => {
   editForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const newTitle = editInput.value.trim();
-    console.log(`Edit form submitted for task ${id}. Original title: "${currentTitle}", New title: "${newTitle}"`);
     saveTaskEdit(id, newTitle, listItem, originalContent, btnContainer);
   });
   
@@ -298,58 +294,37 @@ const enterEditMode = (listItem, id, currentTitle) => {
  * @param {HTMLElement} btnContainer - The button container element
  */
 const saveTaskEdit = async (id, newTitle, listItem, originalContent, btnContainer) => {
-  console.log(`saveTaskEdit started for task ${id}`, {
-    newTitle,
-    listItemId: listItem.getAttribute('data-id')
-  });
-  
   const taskContent = listItem.querySelector('div:first-child');
-  
+
   // Validate the new title
   const validation = validateTaskTitle(newTitle);
   if (!validation.isValid) {
-    console.warn(`Validation failed: ${validation.errorMessage}`);
     alert(validation.errorMessage);
-    
+
     // Show the button container again on validation error
     btnContainer.style.display = 'flex';
     return;
   }
-  
+
   try {
     // Get the current completed status from the checkbox
-    const checkbox = taskContent.querySelector('input[type="checkbox"]') || 
+    const checkbox = taskContent.querySelector('input[type="checkbox"]') ||
                      listItem.querySelector('.form-check-input');
-    
+
     // Default to false if checkbox can't be found
     const isCompleted = checkbox ? checkbox.checked : false;
-    
-    console.log('Attempting to update task:', { 
-      id, 
-      newTitle, 
-      completed: isCompleted 
-    });
-    
+
     // Create request payload with both title and completed status
-    const payload = { 
+    const payload = {
       title: newTitle,
       completed: isCompleted
     };
-    
+
     // Send the update to the server
     const updatedTask = await apiRequest(`/api/tasks/${id}`, {
       method: 'PATCH',
       body: JSON.stringify(payload)
     });
-    
-    console.log('Server response - updated task:', updatedTask);
-    
-    // Verify the title was updated correctly
-    if (updatedTask.title !== newTitle) {
-      console.warn('Title mismatch! Server returned:', updatedTask.title, 'but we sent:', newTitle);
-    } else {
-      console.log('Title updated successfully! Server confirmed the new title');
-    }
     
     // Re-render the task with updated information
     const updatedElement = createTaskElement(updatedTask);
@@ -382,41 +357,29 @@ const addTask = async (title) => {
   const validation = validateTaskTitle(title);
   if (!validation.isValid) {
     showValidationError(validation.errorMessage);
-    console.log('Task validation failed:', validation.errorMessage, 'Title length:', title.length);
     return null;
   }
-  
+
   try {
     hideValidationError();
-    console.log('Adding new task with title:', title);
-    
+
     const newTask = await apiRequest('/api/tasks', {
       method: 'POST',
       body: JSON.stringify({ title: title.trim() })
     });
-    
-    console.log('Task created successfully:', newTask);
-    
+
     // Create and add the new task element
     const taskElement = createTaskElement(newTask);
-    
+
     // Ensure the element was created properly
     if (!taskElement) {
       console.error('Failed to create task element for:', newTask);
       return newTask;
     }
-    
+
     // Append the new task to the list
     list.appendChild(taskElement);
-    console.log(`Task "${newTask.title}" (ID: ${newTask.id}) added to UI`);
-    
-    // Force DOM update to ensure the task is visible
-    setTimeout(() => {
-      list.style.display = 'none';
-      list.offsetHeight; // Force reflow
-      list.style.display = '';
-    }, 0);
-    
+
     return newTask;
   } catch (err) {
     console.error('Failed to add task:', err);
@@ -434,22 +397,19 @@ const deleteTask = async (id) => {
     // Find the task element
     const taskElement = document.querySelector(`li[data-id="${id}"]`);
     if (!taskElement) {
-      console.warn(`Task element with ID ${id} not found.`);
       return;
     }
-    
+
     // Optimistically remove the task from the DOM
     taskElement.remove();
-    
+
     // Delete the task on the server
     await apiRequest(`/api/tasks/${id}`, {
       method: 'DELETE'
     });
-    
-    console.log(`Task ${id} deleted successfully`);
   } catch (err) {
     console.error('Failed to delete task:', err);
-    
+
     // If there was an error, reload all tasks to restore the correct state
     await loadTasks();
   }
@@ -464,19 +424,17 @@ const deleteAllTasks = async () => {
     if (!confirm('Are you sure you want to delete all tasks?')) {
       return;
     }
-    
+
     // Clear the list (optimistic update)
     list.innerHTML = '';
-    
+
     // Delete all tasks on the server
     await apiRequest('/api/tasks', {
       method: 'DELETE'
     });
-    
-    console.log('All tasks deleted successfully');
   } catch (err) {
     console.error('Failed to delete all tasks:', err);
-    
+
     // If there was an error, reload all tasks to restore the correct state
     await loadTasks();
   }
@@ -492,10 +450,9 @@ const toggleTaskCompletion = async (id, completed) => {
     // Find the task element
     const taskElement = document.querySelector(`li[data-id="${id}"]`);
     if (!taskElement) {
-      console.warn(`Task element with ID ${id} not found.`);
       return;
     }
-    
+
     // Optimistically update the UI
     const titleSpan = taskElement.querySelector('.task-title');
     if (completed) {
@@ -503,17 +460,15 @@ const toggleTaskCompletion = async (id, completed) => {
     } else {
       titleSpan.classList.remove('task-completed');
     }
-    
+
     // Update the task on the server
     await apiRequest(`/api/tasks/${id}`, {
       method: 'PATCH',
       body: JSON.stringify({ completed })
     });
-    
-    console.log(`Task ${id} completion status updated to ${completed}`);
   } catch (err) {
     console.error('Failed to update task completion status:', err);
-    
+
     // If there was an error, reload all tasks to restore the correct state
     await loadTasks();
   }
@@ -523,11 +478,9 @@ const toggleTaskCompletion = async (id, completed) => {
 
 // Initialize the application when the DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM loaded, initializing Task Manager app...');
-  
   // Load tasks from the server
   loadTasks();
-  
+
   // Clear validation error when input changes
   input.addEventListener('input', () => {
     hideValidationError();
@@ -538,14 +491,13 @@ document.addEventListener('DOMContentLoaded', () => {
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   const title = input.value.trim();
-  console.log('Form submitted with title:', title, 'Length:', title.length);
-  
+
   // Clear the input field immediately to enable adding multiple tasks in succession
   const originalValue = input.value;
   input.value = '';
-  
+
   const task = await addTask(title);
-  
+
   // Only restore the input value if task creation failed
   if (!task) {
     input.value = originalValue;

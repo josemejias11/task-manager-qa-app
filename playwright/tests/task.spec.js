@@ -1,6 +1,7 @@
 const { test, expect } = require('@playwright/test');
 
-test.describe('Task Manager UI', () => {
+// Use serial mode to prevent race conditions with shared JSON database
+test.describe.serial('Task Manager UI', () => {
   test.beforeEach(async ({ page, request }) => {
     // Clean up all tasks before each test
     await request.delete('http://localhost:3000/api/tasks');

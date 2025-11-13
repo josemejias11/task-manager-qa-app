@@ -36,8 +36,3 @@ jobs:
 
       - name: Generate Allure report
         run: npm run allure:generate
-
-      # - name: Run Playwright tests
-      #   run: npx playwright test
-      #   env:
-      #     BASE_URL: http://localhost:3000
