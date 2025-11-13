@@ -22,6 +22,17 @@ test.describe('Task API', () => {
     });
   });
 
+  test.beforeEach(async () => {
+    // Clean up all tasks before each test to ensure isolation
+    await apiContext.delete('/api/tasks');
+  });
+
+  test.afterAll(async () => {
+    // Clean up after all tests complete
+    await apiContext.delete('/api/tasks');
+    await apiContext.dispose();
+  });
+
   test('create a new task', async () => {
     const response = await apiContext.post('/api/tasks', {
       data: { title: 'New API Task' },

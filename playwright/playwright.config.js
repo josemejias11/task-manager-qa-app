@@ -3,17 +3,15 @@ const { defineConfig, devices } = require('@playwright/test');
 module.exports = defineConfig({
   testDir: './tests',
   reporter: [['html'], ['allure-playwright']],
+  timeout: 30000,
   use: {
     baseURL: 'http://localhost:3000',
-    trace: 'on',
-    screenshot: 'on',
-    video: 'on-first-retry',
-    headless: false,
-    actionTimeout: 60000,
-    navigationTimeout: 60000,
-    launchOptions: {
-      slowMo: 500,
-    },
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
+    headless: true,
+    actionTimeout: 10000,
+    navigationTimeout: 10000,
   },
   projects: [
     {

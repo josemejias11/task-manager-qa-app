@@ -6,4 +6,4 @@ RUN npm install
 RUN npx playwright install --with-deps
 RUN npm install -g allure-commandline --save-dev
 
-CMD ["npx", "playwright", "test", "--headed", "--reporter=allure-playwright"]
+CMD ["npx", "playwright", "test", "--reporter=allure-playwright"]
