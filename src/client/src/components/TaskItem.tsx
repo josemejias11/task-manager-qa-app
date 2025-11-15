@@ -48,7 +48,7 @@ export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) 
       // Show notification
       setShowNotification(true);
       setTimeout(() => setShowNotification(false), 3000);
-    } catch (error) {
+    } catch (_error) {
       alert('Failed to update task. Please try again.');
     }
   };

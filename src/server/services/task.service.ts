@@ -58,7 +58,7 @@ export class TaskService {
    */
   private static formatTaskResponse(task: ITask): TaskResponse {
     return {
-      id: (task._id as any).toString(),
+      id: String(task._id),
       title: task.title,
       completed: task.completed,
       createdAt: task.createdAt.toISOString(),

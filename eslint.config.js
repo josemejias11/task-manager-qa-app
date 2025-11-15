@@ -1,5 +1,6 @@
 const js = require('@eslint/js');
-const nodePlugin = require('eslint-plugin-n');
+const tsPlugin = require('@typescript-eslint/eslint-plugin');
+const tsParser = require('@typescript-eslint/parser');
 const prettierConfig = require('eslint-config-prettier');
 
 module.exports = [
@@ -7,13 +8,16 @@ module.exports = [
   {
     ignores: [
       'node_modules/',
+      'dist/',
       'allure-report/',
       'allure-results/',
       'playwright-report/',
       'test-results/',
-      'public/js/bootstrap.bundle.min.js',
+      'public/',
+      'server/',
       'eslint.config.js',
       '.prettierrc.js',
+      '**/*.d.ts',
     ],
   },
 
@@ -21,112 +25,92 @@ module.exports = [
   js.configs.recommended,
   prettierConfig,
 
-  // Node.js server-side files
+  // TypeScript files (server and client)
   {
-    files: ['server/**/*.js', 'playwright.config.js'],
-    ...nodePlugin.configs['flat/recommended'],
+    files: ['src/**/*.ts', 'src/**/*.tsx'],
     languageOptions: {
-      ecmaVersion: 2021,
-      sourceType: 'commonjs',
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 2021,
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
       globals: {
         console: 'readonly',
         process: 'readonly',
-        Buffer: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        module: 'readonly',
-        require: 'readonly',
-        exports: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
       },
     },
+    plugins: {
+      '@typescript-eslint': tsPlugin,
+    },
     rules: {
-      // Error prevention
-      'no-console': 'off',
-      'no-unused-vars': ['warn', { argsIgnorePattern: '^_', caughtErrors: 'none' }],
-      'no-undef': 'error',
+      // TypeScript-specific rules
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
+      '@typescript-eslint/no-explicit-any': 'warn',
+
+      // Disable base rules that are handled by TypeScript
+      'no-unused-vars': 'off',
+      'no-undef': 'off',
 
       // Stylistic preferences
       quotes: ['error', 'single', { avoidEscape: true }],
       semi: ['error', 'always'],
 
-      // Node.js specific
-      'n/exports-style': ['error', 'module.exports'],
-      'n/file-extension-in-import': ['error', 'never'],
-      'n/prefer-global/buffer': ['error', 'always'],
-      'n/prefer-global/console': ['error', 'always'],
-      'n/prefer-global/process': ['error', 'always'],
-      'n/no-unsupported-features/es-syntax': 'off',
-
       // Best practices
       eqeqeq: ['error', 'always', { null: 'ignore' }],
       'prefer-const': 'warn',
       'no-var': 'error',
+      'no-console': 'off',
     },
   },
 
-  // Browser-side files
+  // TypeScript server files - additional Node.js rules
   {
-    files: ['public/**/*.js'],
+    files: ['src/server/**/*.ts'],
     languageOptions: {
-      ecmaVersion: 2021,
-      sourceType: 'script',
       globals: {
-        // Browser globals
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        Buffer: 'readonly',
+      },
+    },
+  },
+
+  // TypeScript client files - additional browser rules
+  {
+    files: ['src/client/**/*.ts', 'src/client/**/*.tsx'],
+    languageOptions: {
+      globals: {
         window: 'readonly',
         document: 'readonly',
-        console: 'readonly',
         alert: 'readonly',
         confirm: 'readonly',
         fetch: 'readonly',
         localStorage: 'readonly',
         sessionStorage: 'readonly',
-        setTimeout: 'readonly',
-        clearTimeout: 'readonly',
-        setInterval: 'readonly',
-        clearInterval: 'readonly',
       },
-    },
-    rules: {
-      // Error prevention
-      'no-console': 'off',
-      'no-unused-vars': ['warn', { argsIgnorePattern: '^_', caughtErrors: 'none' }],
-      'no-undef': 'error',
-
-      // Stylistic preferences
-      quotes: ['error', 'single', { avoidEscape: true }],
-      semi: ['error', 'always'],
-
-      // Best practices
-      eqeqeq: ['error', 'always', { null: 'ignore' }],
-      'prefer-const': 'warn',
-      'no-var': 'error',
     },
   },
 
-  // Playwright test files
+  // Vite config file
   {
-    files: ['tests/**/*.js'],
-    ...nodePlugin.configs['flat/recommended'],
+    files: ['vite.config.ts'],
     languageOptions: {
-      ecmaVersion: 2021,
-      sourceType: 'commonjs',
+      parser: tsParser,
       globals: {
-        console: 'readonly',
-        process: 'readonly',
-        Buffer: 'readonly',
         __dirname: 'readonly',
-        __filename: 'readonly',
-        module: 'readonly',
-        require: 'readonly',
-        exports: 'readonly',
       },
-    },
-    rules: {
-      'n/no-unpublished-require': 'off',
-      'no-console': 'off',
-      'no-unused-vars': ['warn', { argsIgnorePattern: '^_', caughtErrors: 'none' }],
-      quotes: ['error', 'single', { avoidEscape: true }],
-      semi: ['error', 'always'],
     },
   },
 ];

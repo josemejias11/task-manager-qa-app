@@ -49,8 +49,9 @@ function App() {
       const newTask = await taskApi.createTask({ title });
       setTasks(prev => [newTask, ...prev]);
       showToast(`Task "${title}" added successfully!`, 'success');
-    } catch (err: any) {
-      const errorMessage = err.message || 'Failed to add task. Please try again.';
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error ? err.message : 'Failed to add task. Please try again.';
       setError(errorMessage);
       showToast(errorMessage, 'error');
       throw err;
@@ -74,8 +75,8 @@ function App() {
     try {
       const updatedTask = await taskApi.updateTask(id, { title });
       setTasks(prev => prev.map(task => (task.id === id ? updatedTask : task)));
-    } catch (err: any) {
-      const errorMessage = err.message || 'Failed to update task.';
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to update task.';
       showToast(errorMessage, 'error');
       throw err;
     }
