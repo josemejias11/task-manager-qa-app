@@ -367,7 +367,6 @@ const enterEditMode = (listItem, id, currentTitle) => {
   editInput.type = 'text';
   editInput.className = 'form-control edit-input';
   editInput.value = currentTitle;
-  editInput.maxLength = 20;
 
   // Add keyboard shortcut for Escape key
   editInput.addEventListener('keydown', e => {

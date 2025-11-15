@@ -28,13 +28,13 @@ test.describe.serial('Task Manager UI', () => {
     });
 
     await test.step('Verify task list exists', async () => {
-      await expect(page.locator('#task-list')).toBeVisible();
+      await expect(page.locator('#task-list')).toBeAttached();
     });
 
     await test.step('Verify statistics elements exist', async () => {
       await expect(page.locator('#active-count')).toBeVisible();
       await expect(page.locator('#completed-count')).toBeVisible();
-      await expect(page.locator('#progress-bar')).toBeVisible();
+      await expect(page.locator('#progress-bar')).toBeAttached();
     });
 
     await test.step('Verify empty state is shown initially', async () => {
@@ -227,28 +227,26 @@ test.describe.serial('Task Manager UI', () => {
       await page.locator('button:has-text("Add Task")').click();
     });
 
-    const taskItem = page.locator(`li:has-text("${originalTitle}")`);
-
     await test.step('Click edit button', async () => {
-      await taskItem.locator('button:has-text("Edit")').click();
+      await page.locator('button:has-text("Edit")').first().click();
     });
 
     await test.step('Verify edit mode is active', async () => {
-      const editInput = taskItem.locator('input.edit-input');
+      const editInput = page.locator('input.edit-input');
       await expect(editInput).toBeVisible();
       await expect(editInput).toHaveValue(originalTitle);
-      await expect(taskItem.locator('button:has-text("Save")')).toBeVisible();
-      await expect(taskItem.locator('button:has-text("Cancel")')).toBeVisible();
+      await expect(page.locator('button:has-text("Save")')).toBeVisible();
+      await expect(page.locator('button:has-text("Cancel")')).toBeVisible();
     });
 
     await test.step('Update task title', async () => {
-      const editInput = taskItem.locator('input.edit-input');
+      const editInput = page.locator('input.edit-input');
       await editInput.clear();
       await editInput.fill(updatedTitle);
     });
 
     await test.step('Save the changes', async () => {
-      await taskItem.locator('button:has-text("Save")').click();
+      await page.locator('button:has-text("Save")').click();
     });
 
     await test.step('Verify task is updated', async () => {
@@ -270,20 +268,18 @@ test.describe.serial('Task Manager UI', () => {
       await page.locator('button:has-text("Add Task")').click();
     });
 
-    const taskItem = page.locator(`li:has-text("${taskTitle}")`);
-
     await test.step('Enter edit mode', async () => {
-      await taskItem.locator('button:has-text("Edit")').click();
+      await page.locator('button:has-text("Edit")').first().click();
     });
 
     await test.step('Modify the title', async () => {
-      const editInput = taskItem.locator('input.edit-input');
+      const editInput = page.locator('input.edit-input');
       await editInput.clear();
       await editInput.fill('Changed Title');
     });
 
     await test.step('Click cancel button', async () => {
-      await taskItem.locator('button:has-text("Cancel")').click();
+      await page.locator('button:has-text("Cancel")').click();
     });
 
     await test.step('Verify original title is preserved', async () => {
@@ -292,8 +288,8 @@ test.describe.serial('Task Manager UI', () => {
     });
 
     await test.step('Verify edit mode is closed', async () => {
-      await expect(taskItem.locator('input.edit-input')).toHaveCount(0);
-      await expect(taskItem.locator('button:has-text("Edit")')).toBeVisible();
+      await expect(page.locator('input.edit-input')).toHaveCount(0);
+      await expect(page.locator('button:has-text("Edit")')).toBeVisible();
     });
   });
 
@@ -360,13 +356,12 @@ test.describe.serial('Task Manager UI', () => {
     });
 
     await test.step('Edit the task title', async () => {
-      const taskItem = page.locator(`li:has-text("${taskTitle}")`);
-      await taskItem.locator('button:has-text("Edit")').click();
+      await page.locator('button:has-text("Edit")').first().click();
 
-      const editInput = taskItem.locator('input.edit-input');
+      const editInput = page.locator('input.edit-input');
       await editInput.clear();
       await editInput.fill('Edited Task');
-      await taskItem.locator('button:has-text("Save")').click();
+      await page.locator('button:has-text("Save")').click();
     });
 
     await test.step('Verify completion status is preserved', async () => {

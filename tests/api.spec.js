@@ -132,21 +132,13 @@ test.describe.serial('Task API', () => {
 
   test('update both title and completed status together', async () => {
     // Create a task to update
-    const createResponse = await apiContext.post('/api/tasks', {
-      data: { title: 'Full Update Task' },
-    });
-    expect(createResponse.status()).toBe(201);
-    const createdTask = await createResponse.json();
+    const createdTask = await createTask('Full Update Task');
 
     // Update both title and completed status
-    const updateResponse = await apiContext.patch(`/api/tasks/${createdTask.id}`, {
-      data: {
-        title: 'Fully Updated Task',
-        completed: true,
-      },
+    const updatedTask = await updateTask(createdTask.id, {
+      title: 'Fully Updated Task',
+      completed: true,
     });
-    expect(updateResponse.status()).toBe(200);
-    const updatedTask = await updateResponse.json();
 
     // Verify both fields were updated
     expect(updatedTask.title).toBe('Fully Updated Task');

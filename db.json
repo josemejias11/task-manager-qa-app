@@ -1,3 +1,9 @@
 {
-  "tasks": []
+  "tasks": [
+    {
+      "id": "82435139-c0c9-431a-a93a-51b1ae457a7a",
+      "title": "Task to test",
+      "completed": true
+    }
+  ]
 }
