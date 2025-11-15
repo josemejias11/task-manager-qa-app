@@ -15,8 +15,7 @@
     "test:ci": "wait-on http://localhost:3000 && npx playwright test --config=playwright/playwright.config.js",
     "test:allure": "npx playwright test --config=playwright/playwright.config.js --reporter=allure-playwright",
     "allure:generate": "allure generate allure-results --clean",
-    "allure:open": "allure open",
-    "test:docker-allure": "docker compose -f docker-compose-play.yaml build --no-cache && docker compose -f docker-compose-play.yaml up -d && sleep 5 && npm run allure:generate && npm run allure:open"
+    "allure:open": "allure open"
   },
   "dependencies": {
     "bootstrap": "^5.3.6",

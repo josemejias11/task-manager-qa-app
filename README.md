@@ -17,8 +17,6 @@ A simple task manager application with both UI and REST API, built for QA automa
   - [Allure Reporting](#run-tests-with-allure-reporting)
   - [Run API Tests Only](#run-api-tests-only)
   - [Run UI Tests Only](#run-ui-tests-only)
-  - [Docker-based Testing](#run-tests-in-docker-with-allure)
-- [Docker Usage](#docker-usage)
 - [Project Structure](#project-structure)
 - [GitHub Actions CI](#github-actions-ci)
 - [Recent Improvements](#recent-improvements)
@@ -46,7 +44,6 @@ A simple task manager application with both UI and REST API, built for QA automa
 - Express.js backend with CORS and error handling
 - Allure reporting integration
 - ESLint, Prettier for code style
-- Dockerized environment
 - Playwright tests (UI + API)
 - GitHub Actions CI/CD
 
@@ -55,7 +52,6 @@ A simple task manager application with both UI and REST API, built for QA automa
 ## Requirements
 
 - [Node.js](https://nodejs.org/) v14 or higher
-- [Docker](https://www.docker.com/) *(optional)*
 - [Allure CLI](https://docs.qameta.io/allure/) *(optional, or use `npx`)*
 
 ---
@@ -102,7 +98,7 @@ Start with auto-reload:
 
 ## Testing
 
-> Make sure the app is running before running tests (unless using `test:ci` or Docker).
+> Make sure the app is running before running tests (unless using `test:ci`).
 
 ### Run All Tests
 
@@ -142,34 +138,6 @@ npm test
  npx playwright test playwright/tests/task.spec.js
 ```
 
-### Run Tests in Docker with Allure
-
-```bash
- npm run test:docker-allure
-```
-
-This will:
-- Build containers
-- Run tests
-- Generate and open Allure report
-
----
-
-## Docker Usage
-
-### Build and Run App
-
-```bash
- docker build -t task-manager-qa .
- docker run -p 3000:3000 task-manager-qa
-```
-
-### Run Only the App (Detached Mode)
-
-```bash
- docker compose -f docker-compose-play.yaml up -d app
-```
-
 ---
 
 ## Project Structure
@@ -191,12 +159,10 @@ This will:
 │   └── tests/
 │       ├── api.spec.js
 │       └── task.spec.js
-├── .eslintrc.js
+├── eslint.config.js
 ├── .prettierrc.js
 ├── .gitignore
-├── db.json     
-├── Dockerfile
-├── docker-compose-play.yaml
+├── db.json
 └── package.json
 ```
 
