@@ -82,7 +82,7 @@ app.delete('/api/tasks', (req, res) => {
   try {
     writeDatabase(DEFAULT_DB);
     res.status(204).end();
-  } catch (err) {
+  } catch (_err) {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
@@ -122,7 +122,7 @@ app.post('/api/tasks', (req, res) => {
     writeDatabase(data);
 
     res.status(201).json(newTask);
-  } catch (err) {
+  } catch (_err) {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
@@ -139,7 +139,7 @@ app.delete('/api/tasks/:id', (req, res) => {
 
     writeDatabase(data);
     res.status(204).end();
-  } catch (err) {
+  } catch (_err) {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
@@ -176,7 +176,7 @@ app.patch('/api/tasks/:id', (req, res) => {
     // Save changes
     writeDatabase(data);
     res.json(data.tasks[taskIndex]);
-  } catch (err) {
+  } catch (_err) {
     res.status(500).json({ error: 'Internal server error' });
   }
 });

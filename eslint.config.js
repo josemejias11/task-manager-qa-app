@@ -42,7 +42,7 @@ module.exports = [
     rules: {
       // Error prevention
       'no-console': 'off',
-      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      'no-unused-vars': ['warn', { argsIgnorePattern: '^_', caughtErrors: 'none' }],
       'no-undef': 'error',
 
       // Stylistic preferences
@@ -89,7 +89,7 @@ module.exports = [
     rules: {
       // Error prevention
       'no-console': 'off',
-      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      'no-unused-vars': ['warn', { argsIgnorePattern: '^_', caughtErrors: 'none' }],
       'no-undef': 'error',
 
       // Stylistic preferences
@@ -124,7 +124,7 @@ module.exports = [
     rules: {
       'n/no-unpublished-require': 'off',
       'no-console': 'off',
-      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      'no-unused-vars': ['warn', { argsIgnorePattern: '^_', caughtErrors: 'none' }],
       quotes: ['error', 'single', { avoidEscape: true }],
       semi: ['error', 'always'],
     },
