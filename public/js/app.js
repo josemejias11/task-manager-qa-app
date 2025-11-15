@@ -5,6 +5,8 @@
  * Uses the Fetch API to communicate with the backend.
  */
 
+/* global bootstrap */
+
 // Constants and DOM element references
 const API_BASE = window.location.origin;
 const form = document.getElementById('task-form');
@@ -630,12 +632,10 @@ const toggleTaskCompletion = async (id, completed) => {
 const clearCompletedTasks = async () => {
   try {
     // Get all completed tasks
-    const completedTasks = Array.from(list.querySelectorAll('li[data-id]')).filter(
-      task => {
-        const checkbox = task.querySelector('.form-check-input');
-        return checkbox && checkbox.checked;
-      }
-    );
+    const completedTasks = Array.from(list.querySelectorAll('li[data-id]')).filter(task => {
+      const checkbox = task.querySelector('.form-check-input');
+      return checkbox && checkbox.checked;
+    });
 
     if (completedTasks.length === 0) {
       showToast('No completed tasks to clear!', 'info');

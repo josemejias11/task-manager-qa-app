@@ -190,12 +190,12 @@ app.get('*', (req, res) => {
 app.use(errorHandler);
 
 // Start server with automatic port conflict resolution
-const startServer = (port) => {
+const startServer = port => {
   const server = app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
   });
 
-  server.on('error', (err) => {
+  server.on('error', err => {
     if (err.code === 'EADDRINUSE') {
       console.log(`Port ${port} is already in use, trying port ${port + 1}...`);
       startServer(port + 1);
