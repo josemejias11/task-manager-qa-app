@@ -11,9 +11,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"**/*.{js,json}\"",
-    "test": "npx playwright test",
-    "test:ci": "wait-on http://localhost:3000 && npx playwright test",
-    "test:allure": "npx playwright test --reporter=allure-playwright",
+    "test": "npx playwright test --config=playwright/playwright.config.js",
+    "test:ci": "wait-on http://localhost:3000 && npx playwright test --config=playwright/playwright.config.js",
+    "test:allure": "npx playwright test --config=playwright/playwright.config.js --reporter=allure-playwright",
     "allure:generate": "allure generate allure-results --clean",
     "allure:open": "allure open",
     "test:docker-allure": "docker compose -f docker-compose-play.yaml build --no-cache && docker compose -f docker-compose-play.yaml up -d && sleep 5 && npm run allure:generate && npm run allure:open"
@@ -28,11 +28,11 @@
     "@playwright/test": "^1.52.0",
     "allure-commandline": "^2.24.0",
     "allure-playwright": "^3.2.1",
-    "eslint": "^8.56.0",
+    "eslint": "^9.18.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-n": "^17.17.0",
     "nodemon": "^3.0.3",
-    "prettier": "^3.2.4",
+    "prettier": "^3.4.2",
     "wait-on": "^8.0.3"
   }
 }

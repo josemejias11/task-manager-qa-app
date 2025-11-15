@@ -263,7 +263,7 @@ test.describe.serial('Task Manager UI', () => {
 
     await test.step('Verify original title is preserved', async () => {
       await expect(page.locator(`li:has-text("${taskTitle}")`)).toBeVisible();
-      await expect(page.locator(`li:has-text("Changed Title")`)).toHaveCount(0);
+      await expect(page.locator('li:has-text("Changed Title")')).toHaveCount(0);
     });
 
     await test.step('Verify edit mode is closed', async () => {
@@ -345,10 +345,10 @@ test.describe.serial('Task Manager UI', () => {
     });
 
     await test.step('Verify completion status is preserved', async () => {
-      const updatedCheckbox = page.locator(`li:has-text("Edited Task") input[type="checkbox"]`);
+      const updatedCheckbox = page.locator('li:has-text("Edited Task") input[type="checkbox"]');
       await expect(updatedCheckbox).toBeChecked();
 
-      const titleSpan = page.locator(`li:has-text("Edited Task") .task-title`);
+      const titleSpan = page.locator('li:has-text("Edited Task") .task-title');
       await expect(titleSpan).toHaveClass(/task-completed/);
     });
   });
