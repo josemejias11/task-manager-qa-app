@@ -11,7 +11,14 @@ const form = document.getElementById('task-form');
 const input = document.getElementById('task-input');
 const list = document.getElementById('task-list');
 const removeAllBtn = document.getElementById('remove-all-btn');
+const clearCompletedBtn = document.getElementById('clear-completed-btn');
 const formWarning = document.getElementById('form-warning');
+const formWarningText = document.getElementById('form-warning-text');
+const emptyState = document.getElementById('empty-state');
+const activeCount = document.getElementById('active-count');
+const completedCount = document.getElementById('completed-count');
+const progressBar = document.getElementById('progress-bar');
+const toastContainer = document.getElementById('toast-container');
 
 // ----- Utility Functions -----
 
@@ -50,7 +57,11 @@ const validateTaskTitle = title => {
  */
 const showValidationError = (message, element = formWarning) => {
   if (element) {
-    element.textContent = message;
+    if (formWarningText) {
+      formWarningText.textContent = message;
+    } else {
+      element.textContent = message;
+    }
     element.style.display = 'block';
   } else {
     // Fallback to alert if the element is not available
@@ -65,6 +76,99 @@ const showValidationError = (message, element = formWarning) => {
 const hideValidationError = (element = formWarning) => {
   if (element) {
     element.style.display = 'none';
+  }
+};
+
+/**
+ * Show a toast notification
+ * @param {string} message - The message to display
+ * @param {string} type - The type of toast (success, error, info, warning)
+ */
+const showToast = (message, type = 'success') => {
+  // Safety check - don't show toast if container doesn't exist
+  if (!toastContainer) {
+    console.warn('Toast container not found');
+    return;
+  }
+
+  // Safety check for bootstrap
+  if (typeof bootstrap === 'undefined' || !bootstrap.Toast) {
+    console.warn('Bootstrap Toast not available');
+    return;
+  }
+
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type} align-items-center text-white bg-${type === 'success' ? 'success' : type === 'error' ? 'danger' : type === 'warning' ? 'warning' : 'info'} border-0`;
+  toast.setAttribute('role', 'alert');
+  toast.setAttribute('aria-live', 'assertive');
+  toast.setAttribute('aria-atomic', 'true');
+
+  const iconMap = {
+    success: '✓',
+    error: '✗',
+    warning: '⚠',
+    info: 'ℹ',
+  };
+
+  toast.innerHTML = `
+    <div class="d-flex">
+      <div class="toast-body">
+        <span class="icon-toast me-2">${iconMap[type]}</span>${message}
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  `;
+
+  toastContainer.appendChild(toast);
+
+  const bsToast = new bootstrap.Toast(toast, {
+    autohide: true,
+    delay: 3000,
+  });
+
+  bsToast.show();
+
+  // Remove toast from DOM after it's hidden
+  toast.addEventListener('hidden.bs.toast', () => {
+    toast.remove();
+  });
+};
+
+/**
+ * Update task statistics (active count, completed count, progress bar)
+ */
+const updateStats = () => {
+  const tasks = Array.from(list.querySelectorAll('li[data-id]'));
+  const total = tasks.length;
+  const completed = tasks.filter(task => {
+    const checkbox = task.querySelector('.form-check-input');
+    return checkbox && checkbox.checked;
+  }).length;
+  const active = total - completed;
+
+  // Update counters
+  if (activeCount) {
+    activeCount.textContent = `${active} active`;
+  }
+  if (completedCount) {
+    completedCount.textContent = `${completed} completed`;
+  }
+
+  // Update progress bar
+  if (progressBar) {
+    const percentage = total > 0 ? (completed / total) * 100 : 0;
+    progressBar.style.width = `${percentage}%`;
+    progressBar.setAttribute('aria-valuenow', percentage);
+  }
+
+  // Show/hide empty state
+  if (emptyState) {
+    emptyState.style.display = total === 0 ? 'block' : 'none';
+  }
+
+  // Show/hide clear completed button
+  if (clearCompletedBtn) {
+    clearCompletedBtn.disabled = completed === 0;
   }
 };
 
@@ -141,8 +245,12 @@ const loadTasks = async () => {
 
     // Add all tasks to the DOM in one operation
     list.appendChild(fragment);
+
+    // Update statistics
+    updateStats();
   } catch (err) {
     console.error('Failed to load tasks:', err);
+    showToast('Failed to load tasks. Please refresh the page.', 'error');
   }
 };
 
@@ -198,7 +306,7 @@ const createTaskElement = ({ id, title, completed }) => {
   editBtn.className = 'btn btn-sm btn-secondary';
   editBtn.setAttribute('data-id', id);
   editBtn.setAttribute('aria-label', `Edit task ${title}`);
-  editBtn.textContent = 'Edit';
+  editBtn.innerHTML = '<span class="icon-edit">✎</span> Edit';
   editBtn.addEventListener('click', () => enterEditMode(li, id, title));
 
   // Create delete button
@@ -206,7 +314,7 @@ const createTaskElement = ({ id, title, completed }) => {
   deleteBtn.className = 'btn btn-sm btn-danger';
   deleteBtn.setAttribute('data-id', id);
   deleteBtn.setAttribute('aria-label', `Delete task ${title}`);
-  deleteBtn.textContent = 'Delete';
+  deleteBtn.innerHTML = '<span class="icon-delete">✗</span> Delete';
   deleteBtn.addEventListener('click', async () => {
     try {
       await deleteTask(id);
@@ -238,6 +346,13 @@ const enterEditMode = (listItem, id, currentTitle) => {
   const btnContainer = listItem.querySelector('.btn-group-task');
   btnContainer.style.display = 'none';
 
+  // Function to cancel edit
+  const cancelEdit = () => {
+    taskContent.innerHTML = originalContent;
+    // Show the button container again
+    listItem.querySelector('.btn-group-task').style.display = 'flex';
+  };
+
   // Create edit form
   const editForm = document.createElement('form');
   editForm.className = 'd-flex align-items-center flex-grow-1';
@@ -254,22 +369,26 @@ const enterEditMode = (listItem, id, currentTitle) => {
   editInput.value = currentTitle;
   editInput.maxLength = 20;
 
+  // Add keyboard shortcut for Escape key
+  editInput.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      cancelEdit();
+    }
+  });
+
   // Create save button
   const saveBtn = document.createElement('button');
   saveBtn.type = 'submit';
   saveBtn.className = 'btn btn-sm btn-success me-1';
-  saveBtn.textContent = 'Save';
+  saveBtn.innerHTML = '<span class="icon-save">✓</span> Save';
 
   // Create cancel button
   const cancelBtn = document.createElement('button');
   cancelBtn.type = 'button';
   cancelBtn.className = 'btn btn-sm btn-secondary';
-  cancelBtn.textContent = 'Cancel';
-  cancelBtn.addEventListener('click', () => {
-    taskContent.innerHTML = originalContent;
-    // Show the button container again
-    listItem.querySelector('.btn-group-task').style.display = 'flex';
-  });
+  cancelBtn.innerHTML = '<span class="icon-cancel">✗</span> Cancel';
+  cancelBtn.addEventListener('click', cancelEdit);
 
   // Add buttons to form
   editForm.appendChild(editInput);
@@ -381,10 +500,17 @@ const addTask = async title => {
     // Append the new task to the list
     list.appendChild(taskElement);
 
+    // Update statistics
+    updateStats();
+
+    // Show success toast
+    showToast(`Task "${title}" added successfully!`, 'success');
+
     return newTask;
   } catch (err) {
     console.error('Failed to add task:', err);
     showValidationError('Failed to add task. Please try again.');
+    showToast('Failed to add task. Please try again.', 'error');
     return null;
   }
 };
@@ -401,15 +527,25 @@ const deleteTask = async id => {
       return;
     }
 
+    // Get task title for notification
+    const taskTitle = taskElement.querySelector('.task-title').textContent;
+
     // Optimistically remove the task from the DOM
     taskElement.remove();
+
+    // Update statistics
+    updateStats();
 
     // Delete the task on the server
     await apiRequest(`/api/tasks/${id}`, {
       method: 'DELETE',
     });
+
+    // Show success toast
+    showToast(`Task "${taskTitle}" deleted successfully!`, 'success');
   } catch (err) {
     console.error('Failed to delete task:', err);
+    showToast('Failed to delete task. Refreshing...', 'error');
 
     // If there was an error, reload all tasks to restore the correct state
     await loadTasks();
@@ -426,15 +562,25 @@ const deleteAllTasks = async () => {
       return;
     }
 
+    // Get count for notification
+    const taskCount = list.querySelectorAll('li[data-id]').length;
+
     // Clear the list (optimistic update)
     list.innerHTML = '';
+
+    // Update statistics
+    updateStats();
 
     // Delete all tasks on the server
     await apiRequest('/api/tasks', {
       method: 'DELETE',
     });
+
+    // Show success toast
+    showToast(`All ${taskCount} tasks deleted successfully!`, 'success');
   } catch (err) {
     console.error('Failed to delete all tasks:', err);
+    showToast('Failed to delete all tasks. Refreshing...', 'error');
 
     // If there was an error, reload all tasks to restore the correct state
     await loadTasks();
@@ -462,6 +608,9 @@ const toggleTaskCompletion = async (id, completed) => {
       titleSpan.classList.remove('task-completed');
     }
 
+    // Update statistics
+    updateStats();
+
     // Update the task on the server
     await apiRequest(`/api/tasks/${id}`, {
       method: 'PATCH',
@@ -469,6 +618,55 @@ const toggleTaskCompletion = async (id, completed) => {
     });
   } catch (err) {
     console.error('Failed to update task completion status:', err);
+    showToast('Failed to update task. Refreshing...', 'error');
+
+    // If there was an error, reload all tasks to restore the correct state
+    await loadTasks();
+  }
+};
+
+/**
+ * Clear all completed tasks
+ */
+const clearCompletedTasks = async () => {
+  try {
+    // Get all completed tasks
+    const completedTasks = Array.from(list.querySelectorAll('li[data-id]')).filter(
+      task => {
+        const checkbox = task.querySelector('.form-check-input');
+        return checkbox && checkbox.checked;
+      }
+    );
+
+    if (completedTasks.length === 0) {
+      showToast('No completed tasks to clear!', 'info');
+      return;
+    }
+
+    // Confirm before deleting
+    if (!confirm(`Are you sure you want to delete ${completedTasks.length} completed tasks?`)) {
+      return;
+    }
+
+    // Delete each completed task
+    const deletePromises = completedTasks.map(async task => {
+      const id = task.getAttribute('data-id');
+      task.remove();
+      await apiRequest(`/api/tasks/${id}`, {
+        method: 'DELETE',
+      });
+    });
+
+    await Promise.all(deletePromises);
+
+    // Update statistics
+    updateStats();
+
+    // Show success toast
+    showToast(`${completedTasks.length} completed tasks cleared!`, 'success');
+  } catch (err) {
+    console.error('Failed to clear completed tasks:', err);
+    showToast('Failed to clear completed tasks. Refreshing...', 'error');
 
     // If there was an error, reload all tasks to restore the correct state
     await loadTasks();
@@ -507,3 +705,6 @@ form.addEventListener('submit', async e => {
 
 // Handle Remove All button click
 removeAllBtn.addEventListener('click', deleteAllTasks);
+
+// Handle Clear Completed button click
+clearCompletedBtn.addEventListener('click', clearCompletedTasks);

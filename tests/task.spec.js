@@ -17,17 +17,28 @@ test.describe.serial('Task Manager UI', () => {
     });
 
     await test.step('Verify main heading', async () => {
-      await expect(page.locator('h1')).toHaveText('Task Manager');
+      await expect(page.locator('h1')).toContainText('Task Manager');
     });
 
     await test.step('Verify form elements exist', async () => {
       await expect(page.locator('#task-input')).toBeVisible();
       await expect(page.locator('button:has-text("Add Task")')).toBeVisible();
       await expect(page.locator('button:has-text("Remove All")')).toBeVisible();
+      await expect(page.locator('button:has-text("Clear Completed")')).toBeVisible();
     });
 
     await test.step('Verify task list exists', async () => {
       await expect(page.locator('#task-list')).toBeVisible();
+    });
+
+    await test.step('Verify statistics elements exist', async () => {
+      await expect(page.locator('#active-count')).toBeVisible();
+      await expect(page.locator('#completed-count')).toBeVisible();
+      await expect(page.locator('#progress-bar')).toBeVisible();
+    });
+
+    await test.step('Verify empty state is shown initially', async () => {
+      await expect(page.locator('#empty-state')).toBeVisible();
     });
   });
 
@@ -56,6 +67,20 @@ test.describe.serial('Task Manager UI', () => {
       await expect(taskItem.locator('input[type="checkbox"]')).toBeVisible();
       await expect(taskItem.locator('button:has-text("Edit")')).toBeVisible();
       await expect(taskItem.locator('button:has-text("Delete")')).toBeVisible();
+    });
+
+    await test.step('Verify empty state is hidden', async () => {
+      await expect(page.locator('#empty-state')).toBeHidden();
+    });
+
+    await test.step('Verify statistics are updated', async () => {
+      await expect(page.locator('#active-count')).toContainText('1 active');
+      await expect(page.locator('#completed-count')).toContainText('0 completed');
+    });
+
+    await test.step('Verify toast notification appears', async () => {
+      const toast = page.locator('.toast');
+      await expect(toast).toBeVisible();
     });
   });
 
@@ -407,6 +432,145 @@ test.describe.serial('Task Manager UI', () => {
 
       const taskItems = page.locator('#task-list li');
       await expect(taskItems).toHaveCount(5);
+    });
+  });
+
+  test('should clear completed tasks', async ({ page }) => {
+    const tasks = ['Task 1', 'Task 2', 'Task 3'];
+
+    await test.step('Create multiple tasks', async () => {
+      for (const task of tasks) {
+        await page.locator('#task-input').fill(task);
+        await page.locator('button:has-text("Add Task")').click();
+        await page.waitForTimeout(100);
+      }
+    });
+
+    await test.step('Mark some tasks as completed', async () => {
+      await page.locator('li:has-text("Task 1") input[type="checkbox"]').check();
+      await page.locator('li:has-text("Task 2") input[type="checkbox"]').check();
+    });
+
+    await test.step('Verify statistics show completed tasks', async () => {
+      await expect(page.locator('#active-count')).toContainText('1 active');
+      await expect(page.locator('#completed-count')).toContainText('2 completed');
+    });
+
+    await test.step('Click Clear Completed button and confirm', async () => {
+      page.on('dialog', dialog => dialog.accept());
+      await page.locator('button:has-text("Clear Completed")').click();
+    });
+
+    await test.step('Verify only active tasks remain', async () => {
+      await expect(page.locator('li:has-text("Task 1")')).toHaveCount(0);
+      await expect(page.locator('li:has-text("Task 2")')).toHaveCount(0);
+      await expect(page.locator('li:has-text("Task 3")')).toBeVisible();
+
+      const taskItems = page.locator('#task-list li');
+      await expect(taskItems).toHaveCount(1);
+    });
+
+    await test.step('Verify statistics are updated', async () => {
+      await expect(page.locator('#active-count')).toContainText('1 active');
+      await expect(page.locator('#completed-count')).toContainText('0 completed');
+    });
+  });
+
+  test('should update statistics when toggling task completion', async ({ page }) => {
+    const taskTitle = 'Task to toggle';
+
+    await test.step('Create a task', async () => {
+      await page.locator('#task-input').fill(taskTitle);
+      await page.locator('button:has-text("Add Task")').click();
+    });
+
+    await test.step('Verify initial statistics', async () => {
+      await expect(page.locator('#active-count')).toContainText('1 active');
+      await expect(page.locator('#completed-count')).toContainText('0 completed');
+    });
+
+    await test.step('Mark task as completed', async () => {
+      await page.locator(`li:has-text("${taskTitle}") input[type="checkbox"]`).check();
+    });
+
+    await test.step('Verify statistics updated after completion', async () => {
+      await expect(page.locator('#active-count')).toContainText('0 active');
+      await expect(page.locator('#completed-count')).toContainText('1 completed');
+    });
+
+    await test.step('Verify progress bar is at 100%', async () => {
+      const progressBar = page.locator('#progress-bar');
+      await expect(progressBar).toHaveAttribute('style', /width:\s*100%/);
+    });
+
+    await test.step('Uncheck task', async () => {
+      await page.locator(`li:has-text("${taskTitle}") input[type="checkbox"]`).uncheck();
+    });
+
+    await test.step('Verify statistics updated after unchecking', async () => {
+      await expect(page.locator('#active-count')).toContainText('1 active');
+      await expect(page.locator('#completed-count')).toContainText('0 completed');
+    });
+  });
+
+  test('should cancel edit with Escape key', async ({ page }) => {
+    const taskTitle = 'Escape test task';
+
+    await test.step('Create a task', async () => {
+      await page.locator('#task-input').fill(taskTitle);
+      await page.locator('button:has-text("Add Task")').click();
+    });
+
+    const taskItem = page.locator(`li:has-text("${taskTitle}")`);
+
+    await test.step('Enter edit mode', async () => {
+      await taskItem.locator('button:has-text("Edit")').click();
+    });
+
+    await test.step('Modify the title', async () => {
+      const editInput = taskItem.locator('input.edit-input');
+      await editInput.clear();
+      await editInput.fill('Changed Title');
+    });
+
+    await test.step('Press Escape key', async () => {
+      await taskItem.locator('input.edit-input').press('Escape');
+    });
+
+    await test.step('Verify original title is preserved', async () => {
+      await expect(page.locator(`li:has-text("${taskTitle}")`)).toBeVisible();
+      await expect(page.locator('li:has-text("Changed Title")')).toHaveCount(0);
+    });
+
+    await test.step('Verify edit mode is closed', async () => {
+      await expect(taskItem.locator('input.edit-input')).toHaveCount(0);
+      await expect(taskItem.locator('button:has-text("Edit")')).toBeVisible();
+    });
+  });
+
+  test('should show empty state when all tasks are deleted', async ({ page }) => {
+    const taskTitle = 'Temporary task';
+
+    await test.step('Create a task', async () => {
+      await page.locator('#task-input').fill(taskTitle);
+      await page.locator('button:has-text("Add Task")').click();
+    });
+
+    await test.step('Verify empty state is hidden', async () => {
+      await expect(page.locator('#empty-state')).toBeHidden();
+    });
+
+    await test.step('Delete the task', async () => {
+      await page.locator(`li:has-text("${taskTitle}") button:has-text("Delete")`).click();
+    });
+
+    await test.step('Verify empty state is shown again', async () => {
+      await expect(page.locator('#empty-state')).toBeVisible();
+    });
+
+    await test.step('Verify statistics show zero tasks', async () => {
+      await expect(page.locator('#active-count')).toContainText('0 active');
+      await expect(page.locator('#completed-count')).toContainText('0 completed');
     });
   });
 });
