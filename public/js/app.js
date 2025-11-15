@@ -1,6 +1,6 @@
 /**
  * Task Manager Application
- * 
+ *
  * A simple task management application with CRUD operations.
  * Uses the Fetch API to communicate with the backend.
  */
@@ -25,21 +25,21 @@ const formWarning = document.getElementById('form-warning');
  * while server-side validation ensures data integrity. In a TypeScript project,
  * consider using a shared validation schema (e.g., Zod, Yup).
  */
-const validateTaskTitle = (title) => {
+const validateTaskTitle = title => {
   if (!title || title.trim() === '') {
-    return { 
-      isValid: false, 
-      errorMessage: 'Task title cannot be empty.' 
+    return {
+      isValid: false,
+      errorMessage: 'Task title cannot be empty.',
     };
   }
-  
+
   if (title.trim().length > 20) {
-    return { 
-      isValid: false, 
-      errorMessage: 'Task title must be 20 characters or less.' 
+    return {
+      isValid: false,
+      errorMessage: 'Task title must be 20 characters or less.',
     };
   }
-  
+
   return { isValid: true };
 };
 
@@ -81,7 +81,7 @@ const apiRequest = async (url, options = {}) => {
   const headers = {
     'Content-Type': 'application/json',
     'Cache-Control': 'no-cache',
-    ...(options.headers || {})
+    ...(options.headers || {}),
   };
 
   const response = await fetch(fullUrl, { ...options, headers });
@@ -102,13 +102,13 @@ const apiRequest = async (url, options = {}) => {
  * Show a notification that fades out after a few seconds
  * @param {HTMLElement} container - The element containing the notification
  */
-const showNotification = (container) => {
+const showNotification = container => {
   const notification = container.querySelector('.update-notification');
   if (!notification) return;
-  
+
   notification.style.display = 'inline';
   notification.classList.add('show');
-  
+
   // Hide the notification after 3 seconds
   setTimeout(() => {
     notification.classList.remove('show');
@@ -156,11 +156,11 @@ const createTaskElement = ({ id, title, completed }) => {
   const li = document.createElement('li');
   li.className = 'list-group-item d-flex justify-content-between align-items-center';
   li.setAttribute('data-id', id);
-  
+
   // Create container for task content (checkbox and title)
   const taskContent = document.createElement('div');
   taskContent.className = 'd-flex align-items-center flex-grow-1';
-  
+
   // Create checkbox for task completion
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
@@ -168,7 +168,7 @@ const createTaskElement = ({ id, title, completed }) => {
   checkbox.checked = completed || false;
   checkbox.setAttribute('data-id', id);
   checkbox.addEventListener('change', () => toggleTaskCompletion(id, checkbox.checked));
-  
+
   // Create title span
   const span = document.createElement('span');
   span.textContent = title;
@@ -176,23 +176,23 @@ const createTaskElement = ({ id, title, completed }) => {
   if (completed) {
     span.classList.add('task-completed');
   }
-  
+
   // Create notification element (hidden by default)
   const notification = document.createElement('span');
   notification.className = 'update-notification';
   notification.textContent = 'Updated!';
   notification.style.display = 'none';
-  
+
   // Assemble task content
   taskContent.appendChild(checkbox);
   taskContent.appendChild(span);
   taskContent.appendChild(notification);
   li.appendChild(taskContent);
-  
+
   // Create button container
   const btnContainer = document.createElement('div');
   btnContainer.className = 'btn-group-task';
-  
+
   // Create edit button
   const editBtn = document.createElement('button');
   editBtn.className = 'btn btn-sm btn-secondary';
@@ -200,7 +200,7 @@ const createTaskElement = ({ id, title, completed }) => {
   editBtn.setAttribute('aria-label', `Edit task ${title}`);
   editBtn.textContent = 'Edit';
   editBtn.addEventListener('click', () => enterEditMode(li, id, title));
-  
+
   // Create delete button
   const deleteBtn = document.createElement('button');
   deleteBtn.className = 'btn btn-sm btn-danger';
@@ -214,12 +214,12 @@ const createTaskElement = ({ id, title, completed }) => {
       console.warn('Failed to delete task', err);
     }
   });
-  
+
   // Assemble button container
   btnContainer.appendChild(editBtn);
   btnContainer.appendChild(deleteBtn);
   li.appendChild(btnContainer);
-  
+
   return li;
 };
 
@@ -233,33 +233,33 @@ const enterEditMode = (listItem, id, currentTitle) => {
   // Store the current state
   const taskContent = listItem.querySelector('div:first-child');
   const originalContent = taskContent.innerHTML;
-  
+
   // Hide the button container (Edit and Delete buttons)
   const btnContainer = listItem.querySelector('.btn-group-task');
   btnContainer.style.display = 'none';
-  
+
   // Create edit form
   const editForm = document.createElement('form');
   editForm.className = 'd-flex align-items-center flex-grow-1';
-  editForm.addEventListener('submit', (e) => {
+  editForm.addEventListener('submit', e => {
     e.preventDefault();
     const newTitle = editInput.value.trim();
     saveTaskEdit(id, newTitle, listItem, originalContent, btnContainer);
   });
-  
+
   // Create edit input
   const editInput = document.createElement('input');
   editInput.type = 'text';
   editInput.className = 'form-control edit-input';
   editInput.value = currentTitle;
   editInput.maxLength = 20;
-  
+
   // Create save button
   const saveBtn = document.createElement('button');
   saveBtn.type = 'submit';
   saveBtn.className = 'btn btn-sm btn-success me-1';
   saveBtn.textContent = 'Save';
-  
+
   // Create cancel button
   const cancelBtn = document.createElement('button');
   cancelBtn.type = 'button';
@@ -270,16 +270,16 @@ const enterEditMode = (listItem, id, currentTitle) => {
     // Show the button container again
     listItem.querySelector('.btn-group-task').style.display = 'flex';
   });
-  
+
   // Add buttons to form
   editForm.appendChild(editInput);
   editForm.appendChild(saveBtn);
   editForm.appendChild(cancelBtn);
-  
+
   // Replace task content with edit form
   taskContent.innerHTML = '';
   taskContent.appendChild(editForm);
-  
+
   // Focus the input
   editInput.focus();
   editInput.select();
@@ -308,8 +308,9 @@ const saveTaskEdit = async (id, newTitle, listItem, originalContent, btnContaine
 
   try {
     // Get the current completed status from the checkbox
-    const checkbox = taskContent.querySelector('input[type="checkbox"]') ||
-                     listItem.querySelector('.form-check-input');
+    const checkbox =
+      taskContent.querySelector('input[type="checkbox"]') ||
+      listItem.querySelector('.form-check-input');
 
     // Default to false if checkbox can't be found
     const isCompleted = checkbox ? checkbox.checked : false;
@@ -317,19 +318,19 @@ const saveTaskEdit = async (id, newTitle, listItem, originalContent, btnContaine
     // Create request payload with both title and completed status
     const payload = {
       title: newTitle,
-      completed: isCompleted
+      completed: isCompleted,
     };
 
     // Send the update to the server
     const updatedTask = await apiRequest(`/api/tasks/${id}`, {
       method: 'PATCH',
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
     });
-    
+
     // Re-render the task with updated information
     const updatedElement = createTaskElement(updatedTask);
     listItem.replaceWith(updatedElement);
-    
+
     // Show the "Updated!" notification
     const notification = updatedElement.querySelector('.update-notification');
     if (notification) {
@@ -338,7 +339,7 @@ const saveTaskEdit = async (id, newTitle, listItem, originalContent, btnContaine
   } catch (err) {
     console.error('Failed to save task edit:', err);
     alert('Failed to update task. Please try again.');
-    
+
     // Restore original content on error
     taskContent.innerHTML = originalContent;
   } finally {
@@ -352,7 +353,7 @@ const saveTaskEdit = async (id, newTitle, listItem, originalContent, btnContaine
  * @param {string} title - The task title
  * @returns {Promise<Object>} - The created task
  */
-const addTask = async (title) => {
+const addTask = async title => {
   // Validate the title
   const validation = validateTaskTitle(title);
   if (!validation.isValid) {
@@ -365,7 +366,7 @@ const addTask = async (title) => {
 
     const newTask = await apiRequest('/api/tasks', {
       method: 'POST',
-      body: JSON.stringify({ title: title.trim() })
+      body: JSON.stringify({ title: title.trim() }),
     });
 
     // Create and add the new task element
@@ -392,7 +393,7 @@ const addTask = async (title) => {
  * Delete a task
  * @param {string} id - The task ID
  */
-const deleteTask = async (id) => {
+const deleteTask = async id => {
   try {
     // Find the task element
     const taskElement = document.querySelector(`li[data-id="${id}"]`);
@@ -405,7 +406,7 @@ const deleteTask = async (id) => {
 
     // Delete the task on the server
     await apiRequest(`/api/tasks/${id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
     });
   } catch (err) {
     console.error('Failed to delete task:', err);
@@ -430,7 +431,7 @@ const deleteAllTasks = async () => {
 
     // Delete all tasks on the server
     await apiRequest('/api/tasks', {
-      method: 'DELETE'
+      method: 'DELETE',
     });
   } catch (err) {
     console.error('Failed to delete all tasks:', err);
@@ -464,7 +465,7 @@ const toggleTaskCompletion = async (id, completed) => {
     // Update the task on the server
     await apiRequest(`/api/tasks/${id}`, {
       method: 'PATCH',
-      body: JSON.stringify({ completed })
+      body: JSON.stringify({ completed }),
     });
   } catch (err) {
     console.error('Failed to update task completion status:', err);
@@ -488,7 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Handle form submission (adding a new task)
-form.addEventListener('submit', async (e) => {
+form.addEventListener('submit', async e => {
   e.preventDefault();
   const title = input.value.trim();
 
@@ -506,4 +507,3 @@ form.addEventListener('submit', async (e) => {
 
 // Handle Remove All button click
 removeAllBtn.addEventListener('click', deleteAllTasks);
-
