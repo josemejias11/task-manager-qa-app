@@ -81,3 +81,10 @@ yarn-error.log*
 # Optional eslint cache
 .eslintcache
 
+# TypeScript
+*.tsbuildinfo
+
+# Vite
+.vite
+vite.config.ts.timestamp-*
+

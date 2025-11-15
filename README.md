@@ -1,24 +1,21 @@
 # Task Manager QA App
 
-A simple task manager application with both UI and REST API, built for QA automation testing and development practice.
+A modern, production-ready task manager application built with React, TypeScript, Node.js, Express, and MongoDB. Features a clean architecture with proper separation of concerns, type safety, and comprehensive development tooling.
 
 ---
 
 ## Table of Contents
 
 - [Features](#features)
+- [Technology Stack](#technology-stack)
 - [Requirements](#requirements)
 - [Installation](#installation)
-- [Usage](#usage)
+- [Configuration](#configuration)
 - [Development](#development)
-- [Testing](#testing)
-  - [Run All Tests](#run-all-tests)
-  - [CI Testing](#run-tests-with-continuous-integration)
-  - [Allure Reporting](#run-tests-with-allure-reporting)
-  - [Run API Tests Only](#run-api-tests-only)
-  - [Run UI Tests Only](#run-ui-tests-only)
+- [Production](#production)
 - [Project Structure](#project-structure)
-- [GitHub Actions CI](#github-actions-ci)
+- [API Documentation](#api-documentation)
+- [Code Quality](#code-quality)
 - [Recent Improvements](#recent-improvements)
 
 ---
@@ -27,195 +24,482 @@ A simple task manager application with both UI and REST API, built for QA automa
 
 ### Application Features
 
-- Add, edit, and delete tasks through a web UI
-- Mark tasks as completed
-- Tasks are stored in a local JSON database
-- Input validation (empty title, title length)
-- Responsive and clean UI
+- ✅ Create, read, update, and delete tasks
+- ✅ Mark tasks as completed
+- ✅ Real-time task statistics (active/completed counts, progress bar)
+- ✅ Inline editing with keyboard shortcuts
+- ✅ Bulk operations (clear completed, remove all)
+- ✅ Toast notifications for user feedback
+- ✅ Responsive and modern UI with Bootstrap 5
+- ✅ Client-side and server-side validation
 
 ### Technical Features
 
-- REST API:
-  - `GET /api/tasks` — Get all tasks
-  - `POST /api/tasks` — Create a new task
-  - `PATCH /api/tasks/:id` — Update task
-  - `DELETE /api/tasks/:id` — Delete task
-  - `DELETE /api/tasks` — Delete all tasks
-- Express.js backend with CORS and error handling
-- Allure reporting integration
-- ESLint, Prettier for code style
-- Playwright tests (UI + API)
-- GitHub Actions CI/CD
+- ✅ **TypeScript** - Full type safety across frontend and backend
+- ✅ **React 19** - Modern component-based UI
+- ✅ **Vite** - Lightning-fast build tool with HMR
+- ✅ **MongoDB** - NoSQL database with Mongoose ODM
+- ✅ **Express.js** - RESTful API with middleware architecture
+- ✅ **Zod** - Runtime validation with TypeScript inference
+- ✅ **Security** - Helmet, CORS, rate limiting
+- ✅ **Code Quality** - ESLint, Prettier, Husky, lint-staged
+- ✅ **Performance** - Compression, optimistic updates
+
+---
+
+## Technology Stack
+
+### Frontend
+
+- **React 19** with TypeScript
+- **Vite** for build tooling
+- **Bootstrap 5** for styling
+- Component-based architecture
+- Custom hooks and services
+
+### Backend
+
+- **Node.js** with TypeScript
+- **Express.js** web framework
+- **MongoDB** with Mongoose
+- **Zod** for validation
+- Layered architecture (routes, controllers, services, models)
+
+### Development Tools
+
+- **TypeScript** for type safety
+- **ESLint** for code linting
+- **Prettier** for code formatting
+- **Husky** for Git hooks
+- **lint-staged** for pre-commit checks
+- **Concurrently** for parallel dev servers
+
+### Security & Performance
+
+- **Helmet** - Security headers
+- **CORS** - Cross-origin resource sharing
+- **express-rate-limit** - Rate limiting
+- **compression** - Response compression
 
 ---
 
 ## Requirements
 
 - [Node.js](https://nodejs.org/) v14 or higher
-- [Allure CLI](https://docs.qameta.io/allure/) *(optional, or use `npx`)*
+- [MongoDB](https://www.mongodb.com/try/download/community) v4.4 or higher
+- npm or yarn package manager
 
 ---
 
 ## Installation
 
+1. **Clone the repository:**
+
 ```bash
- git clone https://github.com/yourusername/task-manager-qa-app.git
- cd task-manager-qa-app
- npm install
+git clone https://github.com/yourusername/task-manager-qa-app.git
+cd task-manager-qa-app
+```
+
+2. **Install dependencies:**
+
+```bash
+npm install
+```
+
+3. **Set up environment variables:**
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` file with your configuration (see [Configuration](#configuration) section).
+
+4. **Start MongoDB:**
+
+```bash
+# On macOS with Homebrew
+brew services start mongodb-community
+
+# On Linux
+sudo systemctl start mongod
+
+# Or use MongoDB Atlas (cloud)
+# Update MONGODB_URI in .env with your Atlas connection string
 ```
 
 ---
 
-## Usage
+## Configuration
 
-Start the application:
+Create a `.env` file in the root directory (use `.env.example` as template):
 
-```bash
- npm start
+```env
+# Server Configuration
+PORT=3001
+NODE_ENV=development
+
+# Database Configuration
+MONGODB_URI=mongodb://localhost:27017/task-manager
+
+# CORS Configuration
+CORS_ORIGIN=http://localhost:3000
 ```
 
-Visit the app at [http://localhost:3000](http://localhost:3000)
+### Environment Variables
+
+| Variable      | Description                          | Default                                |
+| ------------- | ------------------------------------ | -------------------------------------- |
+| `PORT`        | Backend server port                  | 3001                                   |
+| `NODE_ENV`    | Environment (development/production) | development                            |
+| `MONGODB_URI` | MongoDB connection string            | mongodb://localhost:27017/task-manager |
+| `CORS_ORIGIN` | Allowed frontend origin for CORS     | http://localhost:3000                  |
 
 ---
 
 ## Development
 
-Start with auto-reload:
+### Start Development Servers
+
+Run both frontend and backend in development mode:
 
 ```bash
- npm run dev
+npm run dev
 ```
 
-### Code Quality Tools
+This will start:
+
+- Backend server on `http://localhost:3001` (with auto-reload via tsx)
+- Frontend dev server on `http://localhost:3000` (with Vite HMR)
+
+### Run Servers Separately
+
+**Backend only:**
 
 ```bash
- npm run lint
- npm run lint:fix
- npm run format
+npm run dev:server
+```
+
+**Frontend only:**
+
+```bash
+npm run dev:client
+```
+
+### Type Checking
+
+Check TypeScript types without building:
+
+```bash
+npm run type-check
+```
+
+### Code Quality
+
+**Lint code:**
+
+```bash
+npm run lint
+```
+
+**Auto-fix lint issues:**
+
+```bash
+npm run lint:fix
+```
+
+**Format code:**
+
+```bash
+npm run format
 ```
 
 ---
 
-## Testing
+## Production
 
-> Make sure the app is running before running tests (unless using `test:ci`).
+### Build
 
-### Run All Tests
-
-Option 1: Manual
+Build both frontend and backend:
 
 ```bash
- # Terminal 1
+npm run build
+```
+
+This creates:
+
+- `dist/` - Compiled TypeScript backend
+- `dist/client/` - Production-optimized frontend
+
+### Start Production Server
+
+```bash
 npm start
-
- # Terminal 2
-npm test
 ```
 
-### Run Tests with Continuous Integration
+The production server:
 
-```bash
- npm run test:ci
-```
-
-### Run Tests with Allure Reporting
-
-```bash
- npm run test:allure
- npm run allure:generate
- npm run allure:open
-```
-
-### Run API Tests Only
-
-```bash
- npx playwright test tests/api.spec.js
-```
-
-### Run UI Tests Only
-
-```bash
- npx playwright test tests/task.spec.js
-```
+- Serves the API on the configured PORT
+- Serves the built React app for all non-API routes
+- Uses MongoDB for data persistence
 
 ---
 
 ## Project Structure
 
 ```
-.
-├── public/
-│   ├── css/
-│   │   ├── bootstrap.min.css
-│   │   └── styles.css
-│   ├── js/
-│   │   ├── app.js
-│   │   └── bootstrap.bundle.min.js
-│   └── index.html
-├── server/
-│   └── server.js
-├── tests/
-│   ├── api.spec.js
-│   └── task.spec.js
-├── eslint.config.js
-├── playwright.config.js
-├── .prettierrc.js
-├── .gitignore
-├── db.json
-└── package.json
+task-manager-qa-app/
+├── src/
+│   ├── server/                 # Backend (TypeScript)
+│   │   ├── config/            # Configuration files
+│   │   │   └── database.ts    # MongoDB connection
+│   │   ├── controllers/       # Request handlers
+│   │   │   └── task.controller.ts
+│   │   ├── middleware/        # Express middleware
+│   │   │   ├── error.middleware.ts
+│   │   │   └── validation.middleware.ts
+│   │   ├── models/            # Mongoose models
+│   │   │   └── task.model.ts
+│   │   ├── routes/            # API routes
+│   │   │   └── task.routes.ts
+│   │   ├── services/          # Business logic
+│   │   │   └── task.service.ts
+│   │   ├── types/             # TypeScript types
+│   │   │   └── task.types.ts
+│   │   └── server.ts          # Application entry point
+│   │
+│   └── client/                # Frontend (React + TypeScript)
+│       ├── src/
+│       │   ├── components/    # React components
+│       │   │   ├── ActionButtons.tsx
+│       │   │   ├── TaskForm.tsx
+│       │   │   ├── TaskItem.tsx
+│       │   │   ├── TaskList.tsx
+│       │   │   ├── TaskStats.tsx
+│       │   │   ├── Toast.tsx
+│       │   │   └── ToastContainer.tsx
+│       │   ├── services/      # API client
+│       │   │   └── api.ts
+│       │   ├── styles/        # CSS files
+│       │   │   └── index.css
+│       │   ├── types/         # TypeScript types
+│       │   │   └── task.ts
+│       │   ├── App.tsx        # Main app component
+│       │   └── main.tsx       # React entry point
+│       ├── index.html         # HTML template
+│       ├── tsconfig.json      # TypeScript config
+│       └── tsconfig.node.json # Vite TypeScript config
+│
+├── dist/                      # Build output (gitignored)
+├── .husky/                    # Git hooks
+├── .env.example              # Environment variables template
+├── .gitignore                # Git ignore rules
+├── eslint.config.js          # ESLint configuration
+├── package.json              # Dependencies and scripts
+├── prettier.config.js        # Prettier configuration
+├── tsconfig.json             # Backend TypeScript config
+├── vite.config.ts            # Vite configuration
+└── README.md                 # This file
 ```
 
 ---
 
-## GitHub Actions CI
+## API Documentation
 
-Located at: `.github/workflows/playwright-ci.yml`
+### Base URL
 
-- Installs dependencies
-- Installs Playwright
-- Runs tests
-- Generates Allure report
+```
+http://localhost:3001/api
+```
 
-Runs on push/PR to `main` and `update-tests`.
+### Endpoints
+
+#### Get All Tasks
+
+```http
+GET /tasks
+```
+
+**Response:**
+
+```json
+[
+  {
+    "id": "507f1f77bcf86cd799439011",
+    "title": "Sample task",
+    "completed": false,
+    "createdAt": "2024-11-15T10:00:00.000Z",
+    "updatedAt": "2024-11-15T10:00:00.000Z"
+  }
+]
+```
+
+#### Create Task
+
+```http
+POST /tasks
+Content-Type: application/json
+
+{
+  "title": "New task"
+}
+```
+
+**Validation:**
+
+- `title`: Required, 1-20 characters, trimmed
+
+**Response:** `201 Created`
+
+#### Update Task
+
+```http
+PATCH /tasks/:id
+Content-Type: application/json
+
+{
+  "title": "Updated title",
+  "completed": true
+}
+```
+
+**Validation:**
+
+- `title`: Optional, 1-20 characters, trimmed
+- `completed`: Optional, boolean
+- At least one field required
+
+**Response:** `200 OK`
+
+#### Delete Task
+
+```http
+DELETE /tasks/:id
+```
+
+**Response:** `204 No Content`
+
+#### Delete All Tasks
+
+```http
+DELETE /tasks
+```
+
+**Response:** `204 No Content`
+
+### Error Responses
+
+All errors return JSON with an `error` field:
+
+```json
+{
+  "error": "Error message here"
+}
+```
+
+**Status Codes:**
+
+- `400` - Bad Request (validation error)
+- `404` - Not Found
+- `429` - Too Many Requests (rate limited)
+- `500` - Internal Server Error
+
+---
+
+## Code Quality
+
+### Pre-commit Hooks
+
+Husky runs lint-staged on every commit to ensure code quality:
+
+- **TypeScript files** - Linted with ESLint, formatted with Prettier
+- **JSON/Markdown files** - Formatted with Prettier
+
+### Linting Rules
+
+- TypeScript strict mode enabled
+- ESLint with recommended rules
+- Prettier for consistent formatting
+- No unused variables/imports
+- Consistent naming conventions
+
+### Type Safety
+
+- Full TypeScript coverage
+- Strict null checks
+- No implicit any
+- Shared types between frontend/backend via Zod schemas
 
 ---
 
 ## Recent Improvements
 
-### Code Quality & Testing
-- ✅ **Comprehensive UI/E2E tests**: 16 new UI tests covering all user interactions
-- ✅ **Test isolation**: Added cleanup hooks and serial execution to prevent race conditions
-- ✅ **CI/CD optimized**: Fixed Playwright config for headless execution in pipelines
-- ✅ **Reduced excessive logging**: Removed 18+ console.log statements for cleaner production code
-- ✅ **Fixed performance issues**: Removed DOM rendering hack and cache-busting workarounds
+### Architecture Overhaul
 
-### Development Tools
-- Added ESLint + Prettier for consistent code style
-- Added nodemon for dev auto-reload
-- Refined error handling in API
-- Improved CORS support
+- ✅ **Migrated to TypeScript** - Full type safety across the stack
+- ✅ **Modern Frontend** - React 19 with Vite replacing vanilla JS
+- ✅ **MongoDB** - Professional database replacing JSON file storage
+- ✅ **Layered Architecture** - Proper separation: routes → controllers → services → models
+- ✅ **Shared Validation** - Zod schemas used on both client and server
 
-### Architecture & Structure
-- Extracted JavaScript into separate file (js/app.js)
-- Created dedicated CSS file for custom styles (css/styles.css)
-- Added local Bootstrap files instead of using CDN
-- Improved project structure with proper separation of concerns
-- Documented intentional validation duplication (defense-in-depth)
+### Developer Experience
 
-### Security & Documentation
-- ✅ **Added SECURITY.md**: Comprehensive security documentation for learning purposes
-- ✅ **Cleaned up GitHub Actions**: Removed commented-out code
-- Enhanced README documentation
+- ✅ **Vite** - Lightning-fast HMR and build times
+- ✅ **TypeScript** - Catch errors before runtime
+- ✅ **Husky + lint-staged** - Automated code quality checks
+- ✅ **Concurrently** - Run frontend and backend together
+- ✅ **Better Scripts** - Separate dev/build commands for client/server
+
+### Security & Performance
+
+- ✅ **Helmet** - Security headers for production
+- ✅ **Rate Limiting** - Protect against API abuse
+- ✅ **Compression** - Reduce response sizes
+- ✅ **Proper CORS** - Configurable origins
+- ✅ **Input Validation** - Zod validation on all inputs
+
+### Code Organization
+
+- ✅ **Component-based UI** - Reusable React components
+- ✅ **Service Layer** - Business logic separated from controllers
+- ✅ **Middleware** - Reusable validation and error handling
+- ✅ **Type Definitions** - Centralized TypeScript types
 
 ---
 
 ## Security
 
-This is a **learning/practice application** and is **not production-ready**. See [SECURITY.md](./SECURITY.md) for:
-- Known security limitations
-- Production recommendations
-- Learning resources
+This application includes several security best practices:
+
+- **Helmet** - Sets security-related HTTP headers
+- **CORS** - Configured for specific origins
+- **Rate Limiting** - Prevents API abuse
+- **Input Validation** - Server-side validation with Zod
+- **MongoDB Injection Protection** - Mongoose sanitization
+
+For production deployment, ensure:
+
+- Update `CORS_ORIGIN` to your production domain
+- Use strong MongoDB credentials
+- Enable HTTPS
+- Set `NODE_ENV=production`
+- Review and update rate limit settings
 
 ---
 
-Built for QA practice and modern development workflows.
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
+
+## License
+
+This project is for educational purposes.
+
+---
+
+Built for modern development workflows with TypeScript, React, and MongoDB.
