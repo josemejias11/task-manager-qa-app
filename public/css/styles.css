@@ -1,8 +1,13 @@
 /* General Styles */
 body {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   min-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 1rem;
 }
 
 /* Icon Styles */
@@ -25,20 +30,22 @@ body {
 
 .container {
   max-width: 800px;
+  width: 100%;
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   min-height: 600px;
+  margin: auto;
 }
 
 /* Header Section */
 .header-section {
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 1px solid #e8eaed;
   padding-bottom: 1rem;
 }
 
 .app-title {
-  color: #667eea;
+  color: #2c3e50;
   font-weight: 700;
   font-size: 2rem;
 }
@@ -57,7 +64,7 @@ body {
 
 /* Input Form */
 .input-group-text {
-  background-color: #667eea;
+  background-color: #3498db;
   color: white;
   border: none;
 }
@@ -68,8 +75,8 @@ body {
 }
 
 #task-input:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+  border-color: #3498db;
+  box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
 }
 
 /* Action Buttons */
@@ -141,7 +148,7 @@ body {
   width: 1.5rem;
   height: 1.5rem;
   cursor: pointer;
-  border: 2px solid #667eea;
+  border: 2px solid #3498db;
 }
 
 .form-check-input:checked {
@@ -153,7 +160,7 @@ body {
 .edit-input {
   flex-grow: 1;
   margin-right: 5px;
-  border: 2px solid #667eea;
+  border: 2px solid #3498db;
 }
 
 .btn-group-task {
