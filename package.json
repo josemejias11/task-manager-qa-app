@@ -11,9 +11,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"**/*.{js,json}\"",
-    "test": "npx playwright test --config=playwright/playwright.config.js",
-    "test:ci": "wait-on http://localhost:3000 && npx playwright test --config=playwright/playwright.config.js",
-    "test:allure": "npx playwright test --config=playwright/playwright.config.js --reporter=allure-playwright",
+    "test": "npx playwright test",
+    "test:ci": "wait-on http://localhost:3000 && npx playwright test",
+    "test:allure": "npx playwright test --reporter=allure-playwright",
     "allure:generate": "allure generate allure-results --clean",
     "allure:open": "allure open"
   },

@@ -105,7 +105,7 @@ module.exports = [
 
   // Playwright test files
   {
-    files: ['playwright/**/*.js'],
+    files: ['tests/**/*.js'],
     ...nodePlugin.configs['flat/recommended'],
     languageOptions: {
       ecmaVersion: 2021,

@@ -129,13 +129,13 @@ npm test
 ### Run API Tests Only
 
 ```bash
- npx playwright test playwright/tests/api.spec.js
+ npx playwright test tests/api.spec.js
 ```
 
 ### Run UI Tests Only
 
 ```bash
- npx playwright test playwright/tests/task.spec.js
+ npx playwright test tests/task.spec.js
 ```
 
 ---
@@ -154,12 +154,11 @@ npm test
 │   └── index.html
 ├── server/
 │   └── server.js
-├── playwright/
-│   ├── playwright.config.js
-│   └── tests/
-│       ├── api.spec.js
-│       └── task.spec.js
+├── tests/
+│   ├── api.spec.js
+│   └── task.spec.js
 ├── eslint.config.js
+├── playwright.config.js
 ├── .prettierrc.js
 ├── .gitignore
 ├── db.json
