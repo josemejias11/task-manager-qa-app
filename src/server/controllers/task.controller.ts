@@ -14,7 +14,7 @@ export class TaskController {
       return;
     }
 
-    const tasks = await TaskService.getAllTasks();
+    const tasks = TaskService.getAllTasks();
     res.json(tasks);
   });
 
@@ -28,7 +28,7 @@ export class TaskController {
       return;
     }
 
-    const task = await TaskService.createTask(req.body);
+    const task = TaskService.createTask(req.body);
     res.status(201).json(task);
   });
 
@@ -37,7 +37,7 @@ export class TaskController {
    */
   static updateTask = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
-    const task = await TaskService.updateTask(id, req.body);
+    const task = TaskService.updateTask(id, req.body);
 
     if (!task) {
       res.status(404).json({ error: 'Task not found' });
@@ -52,7 +52,7 @@ export class TaskController {
    */
   static deleteTask = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
-    const deleted = await TaskService.deleteTask(id);
+    const deleted = TaskService.deleteTask(id);
 
     if (!deleted) {
       res.status(404).json({ error: 'Task not found' });
@@ -66,7 +66,7 @@ export class TaskController {
    * DELETE /api/tasks - Delete all tasks
    */
   static deleteAllTasks = asyncHandler(async (_req: Request, res: Response): Promise<void> => {
-    await TaskService.deleteAllTasks();
+    TaskService.deleteAllTasks();
     res.status(204).end();
   });
 }

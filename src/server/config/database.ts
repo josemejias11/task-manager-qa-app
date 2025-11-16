@@ -1,29 +1,45 @@
-import mongoose from 'mongoose';
+import Database from 'better-sqlite3';
+import path from 'path';
+import fs from 'fs';
 
-export const connectDatabase = async (): Promise<void> => {
-  try {
-    const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/task-manager';
+const DB_PATH = process.env.DB_PATH || path.join(__dirname, '../../data/tasks.db');
 
-    await mongoose.connect(mongoUri);
+// Ensure data directory exists
+const dataDir = path.dirname(DB_PATH);
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir, { recursive: true });
+}
 
-    console.log('✓ MongoDB connected successfully');
+// Initialize SQLite database
+export const db: Database.Database = new Database(DB_PATH, { verbose: console.log });
 
-    mongoose.connection.on('error', err => {
-      console.error('MongoDB connection error:', err);
-    });
+// Enable foreign keys
+db.pragma('foreign_keys = ON');
 
-    mongoose.connection.on('disconnected', () => {
-      console.warn('MongoDB disconnected');
-    });
+// Create tasks table
+const createTasksTable = `
+  CREATE TABLE IF NOT EXISTS tasks (
+    id TEXT PRIMARY KEY,
+    title TEXT NOT NULL CHECK(length(title) <= 20 AND length(title) > 0),
+    completed INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+  )
+`;
 
-    // Graceful shutdown
-    process.on('SIGINT', async () => {
-      await mongoose.connection.close();
-      console.log('MongoDB connection closed through app termination');
-      process.exit(0);
-    });
-  } catch (error) {
-    console.error('Failed to connect to MongoDB:', error);
-    process.exit(1);
-  }
-};
+db.exec(createTasksTable);
+
+// Create indexes for faster queries
+db.exec('CREATE INDEX IF NOT EXISTS idx_tasks_completed ON tasks(completed)');
+db.exec('CREATE INDEX IF NOT EXISTS idx_tasks_created_at ON tasks(created_at)');
+
+console.log('✓ SQLite database initialized at:', DB_PATH);
+
+// Graceful shutdown
+process.on('SIGINT', () => {
+  db.close();
+  console.log('SQLite database connection closed');
+  process.exit(0);
+});
+
+export default db;

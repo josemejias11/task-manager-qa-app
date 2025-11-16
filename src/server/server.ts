@@ -5,7 +5,7 @@ import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import path from 'path';
 import dotenv from 'dotenv';
-import { connectDatabase } from './config/database';
+import './config/database'; // Initialize SQLite database
 import taskRoutes from './routes/task.routes';
 import { errorHandler } from './middleware/error.middleware';
 
@@ -67,30 +67,22 @@ if (NODE_ENV === 'production') {
 app.use(errorHandler);
 
 // Start server function
-const startServer = async (port: number): Promise<void> => {
-  try {
-    // Connect to database
-    await connectDatabase();
+const startServer = (port: number): void => {
+  const server = app.listen(port, () => {
+    console.log(`✓ Server running on http://localhost:${port}`);
+    console.log(`✓ Environment: ${NODE_ENV}`);
+    console.log(`✓ CORS Origin: ${corsOptions.origin}`);
+  });
 
-    const server = app.listen(port, () => {
-      console.log(`✓ Server running on http://localhost:${port}`);
-      console.log(`✓ Environment: ${NODE_ENV}`);
-      console.log(`✓ CORS Origin: ${corsOptions.origin}`);
-    });
-
-    server.on('error', (err: NodeJS.ErrnoException) => {
-      if (err.code === 'EADDRINUSE') {
-        console.log(`Port ${port} is already in use, trying port ${port + 1}...`);
-        startServer(port + 1);
-      } else {
-        console.error('Server error:', err);
-        process.exit(1);
-      }
-    });
-  } catch (error) {
-    console.error('Failed to start server:', error);
-    process.exit(1);
-  }
+  server.on('error', (err: NodeJS.ErrnoException) => {
+    if (err.code === 'EADDRINUSE') {
+      console.log(`Port ${port} is already in use, trying port ${port + 1}...`);
+      startServer(port + 1);
+    } else {
+      console.error('Server error:', err);
+      process.exit(1);
+    }
+  });
 };
 
 // Start the server

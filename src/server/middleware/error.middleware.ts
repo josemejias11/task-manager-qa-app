@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import { Error as MongooseError } from 'mongoose';
 
 export const errorHandler = (
   err: Error,
@@ -9,26 +8,17 @@ export const errorHandler = (
 ): void => {
   console.error('Server error:', err);
 
-  // Mongoose validation error
-  if (err instanceof MongooseError.ValidationError) {
-    const firstError = Object.values(err.errors)[0];
+  // SQLite constraint error
+  if (err.message.includes('SQLITE_CONSTRAINT')) {
     res.status(400).json({
-      error: firstError.message,
-    });
-    return;
-  }
-
-  // Mongoose cast error (invalid ID format)
-  if (err instanceof MongooseError.CastError) {
-    res.status(400).json({
-      error: 'Invalid ID format',
+      error: 'Database constraint violation',
     });
     return;
   }
 
   // Default error
   res.status(500).json({
-    error: 'Internal server error',
+    error: err.message || 'Internal server error',
   });
 };
 

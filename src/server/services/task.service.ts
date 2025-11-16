@@ -1,68 +1,106 @@
-import { Task, ITask } from '../models/task.model';
-import { CreateTaskInput, UpdateTaskInput, TaskResponse } from '../types/task.types';
+import { db } from '../config/database';
+import { v4 as uuidv4 } from 'uuid';
+import { CreateTaskInput, UpdateTaskInput, TaskResponse, TaskRow } from '../types/task.types';
 
 export class TaskService {
   /**
    * Get all tasks
    */
-  static async getAllTasks(): Promise<TaskResponse[]> {
-    const tasks = await Task.find().sort({ createdAt: -1 });
+  static getAllTasks(): TaskResponse[] {
+    const stmt = db.prepare('SELECT * FROM tasks ORDER BY created_at DESC');
+    const tasks = stmt.all() as TaskRow[];
     return tasks.map(this.formatTaskResponse);
   }
 
   /**
    * Create a new task
    */
-  static async createTask(data: CreateTaskInput): Promise<TaskResponse> {
-    const task = await Task.create({
-      title: data.title,
-      completed: false,
-    });
+  static createTask(data: CreateTaskInput): TaskResponse {
+    const id = uuidv4();
+    const now = new Date().toISOString();
+
+    const stmt = db.prepare(`
+      INSERT INTO tasks (id, title, completed, created_at, updated_at)
+      VALUES (?, ?, 0, ?, ?)
+    `);
+
+    stmt.run(id, data.title, now, now);
+
+    const task = db.prepare('SELECT * FROM tasks WHERE id = ?').get(id) as TaskRow;
     return this.formatTaskResponse(task);
   }
 
   /**
    * Update a task
    */
-  static async updateTask(id: string, data: UpdateTaskInput): Promise<TaskResponse | null> {
-    const task = await Task.findByIdAndUpdate(
-      id,
-      { $set: data },
-      { new: true, runValidators: true }
-    );
+  static updateTask(id: string, data: UpdateTaskInput): TaskResponse | null {
+    // First check if task exists
+    const existingTask = db.prepare('SELECT * FROM tasks WHERE id = ?').get(id) as
+      | TaskRow
+      | undefined;
 
-    if (!task) {
+    if (!existingTask) {
       return null;
     }
 
-    return this.formatTaskResponse(task);
+    const now = new Date().toISOString();
+    const updates: string[] = [];
+    const values: (string | number)[] = [];
+
+    if (data.title !== undefined) {
+      updates.push('title = ?');
+      values.push(data.title);
+    }
+
+    if (data.completed !== undefined) {
+      updates.push('completed = ?');
+      values.push(data.completed ? 1 : 0);
+    }
+
+    updates.push('updated_at = ?');
+    values.push(now);
+
+    values.push(id);
+
+    const stmt = db.prepare(`
+      UPDATE tasks
+      SET ${updates.join(', ')}
+      WHERE id = ?
+    `);
+
+    stmt.run(...values);
+
+    const updatedTask = db.prepare('SELECT * FROM tasks WHERE id = ?').get(id) as TaskRow;
+    return this.formatTaskResponse(updatedTask);
   }
 
   /**
    * Delete a task
    */
-  static async deleteTask(id: string): Promise<boolean> {
-    const result = await Task.findByIdAndDelete(id);
-    return result !== null;
+  static deleteTask(id: string): boolean {
+    const stmt = db.prepare('DELETE FROM tasks WHERE id = ?');
+    const result = stmt.run(id);
+    return result.changes > 0;
   }
 
   /**
    * Delete all tasks
    */
-  static async deleteAllTasks(): Promise<void> {
-    await Task.deleteMany({});
+  static deleteAllTasks(): void {
+    const stmt = db.prepare('DELETE FROM tasks');
+    stmt.run();
   }
 
   /**
    * Format task for API response
    */
-  private static formatTaskResponse(task: ITask): TaskResponse {
+  private static formatTaskResponse(task: TaskRow): TaskResponse {
     return {
-      id: String(task._id),
+      id: task.id,
       title: task.title,
-      completed: task.completed,
-      createdAt: task.createdAt.toISOString(),
-      updatedAt: task.updatedAt.toISOString(),
+      completed: task.completed === 1,
+      createdAt: task.created_at,
+      updatedAt: task.updated_at,
     };
   }
 }
