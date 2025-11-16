@@ -1,7 +1,7 @@
 {
   "name": "task-manager-qa-app",
   "version": "1.0.0",
-  "main": "server/server.js",
+  "main": "dist/server.js",
   "engines": {
     "node": ">=14.0.0"
   },
