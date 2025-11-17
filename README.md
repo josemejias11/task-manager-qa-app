@@ -1,137 +1,180 @@
-# Task Manager QA App
+# Task Manager Pro 🚀
 
-A modern, production-ready task manager application built with **React**, **TypeScript**, **Node.js**, **Express**, and **SQLite**. Features a clean architecture with proper separation of concerns, type safety, zero-configuration database, and comprehensive development tooling.
+A **professional, production-ready** task manager application with a stunning modern UI, built with **React 19**, **TypeScript**, **TailwindCSS**, **Node.js**, **Express**, and **SQLite**. Features advanced task management, real-time search, dark mode, comprehensive automation scripts, and CI/CD pipeline.
 
----
+<div align="center">
 
-## Table of Contents
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white)
 
-- [Features](#features)
-- [Technology Stack](#technology-stack)
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Development](#development)
-- [Production](#production)
-- [Project Structure](#project-structure)
-- [API Documentation](#api-documentation)
-- [Code Quality](#code-quality)
-- [Recent Improvements](#recent-improvements)
-- [Technology Roadmap](#technology-roadmap)
+</div>
 
 ---
 
-## Features
+## ✨ Features
 
-### Application Features
+### 🎯 Advanced Task Management
 
-- ✅ Create, read, update, and delete tasks
-- ✅ Mark tasks as completed
-- ✅ Real-time task statistics (active/completed counts, progress bar)
-- ✅ Inline editing with keyboard shortcuts
-- ✅ Bulk operations (clear completed, remove all)
-- ✅ Toast notifications for user feedback
-- ✅ Responsive and modern UI with Bootstrap 5
-- ✅ Client-side and server-side validation
-- ✅ **Zero-configuration database** - SQLite (no server required!)
+- ✅ **Create, edit, and delete tasks** with comprehensive details
+- ✅ **Priority levels** - Low, Medium, High, Urgent with color coding
+- ✅ **Categories** - Work, Personal, Shopping, Health, Other
+- ✅ **Due dates** with overdue warnings and visual indicators
+- ✅ **Task descriptions** - Add detailed notes up to 500 characters
+- ✅ **Tag system** - Organize with custom tags
+- ✅ **Title support** - Up to 100 characters (previously 20)
+- ✅ **Inline editing** with keyboard shortcuts (Enter/Escape)
+- ✅ **Bulk operations** - Clear completed, delete all
 
-### Technical Features
+### 🔍 Search & Filtering
+
+- ✅ **Real-time search** - Instant search across titles, descriptions, and tags
+- ✅ **Advanced filtering** - Filter by status, priority, and category
+- ✅ **Flexible sorting** - Sort by date, priority, title, or due date
+- ✅ **Multi-criteria filtering** - Combine multiple filters simultaneously
+
+### 📊 Dashboard & Analytics
+
+- ✅ **Live statistics** - Total, active, completed, and overdue tasks
+- ✅ **Progress tracking** - Visual progress bar with completion percentage
+- ✅ **Urgent task alerts** - Highlighted warnings for urgent items
+- ✅ **Task completion insights** - Track productivity over time
+
+### 🎨 Modern UI/UX
+
+- ✅ **Beautiful glassmorphism** design with card-based layout
+- ✅ **Dark mode support** with theme toggle
+- ✅ **Fully responsive** - Mobile-first design for all screen sizes
+- ✅ **Smooth animations** and micro-interactions
+- ✅ **Color-coded badges** for priorities and categories
+- ✅ **Toast notifications** for all user actions
+- ✅ **Loading states** with elegant spinners
+- ✅ **Empty state messaging** for better UX
+
+### 🔧 Technical Excellence
 
 - ✅ **TypeScript** - Full type safety across frontend and backend
-- ✅ **React 19** - Modern component-based UI
-- ✅ **Vite** - Lightning-fast build tool with HMR
-- ✅ **SQLite** - Zero-config embedded database (no installation needed!)
-- ✅ **Express.js** - RESTful API with middleware architecture
+- ✅ **React 19** - Modern component-based architecture
+- ✅ **TailwindCSS** - Utility-first styling with custom design system
+- ✅ **Vite 7** - Lightning-fast HMR and optimized builds
+- ✅ **SQLite** - Zero-config embedded database with migrations
+- ✅ **Express.js** - RESTful API with layered architecture
 - ✅ **Zod** - Runtime validation with TypeScript inference
-- ✅ **Security** - Helmet, CORS, rate limiting
-- ✅ **Code Quality** - ESLint, Prettier, Husky, lint-staged
-- ✅ **Performance** - Compression, optimistic updates
+- ✅ **Security** - Helmet, CORS, rate limiting, SQL injection protection
+- ✅ **Code Quality** - ESLint, Prettier, Husky pre-commit hooks
+
+### 🤖 Automation & DevOps
+
+- ✅ **GitHub Actions CI/CD** - Automated testing and builds
+- ✅ **Development setup script** - One-command environment setup
+- ✅ **Database backup utility** - Automated SQLite backups
+- ✅ **Comprehensive test suite** - Type checking, linting, builds
+- ✅ **Production build optimization** - Automated clean builds
 
 ---
 
-## Technology Stack
+## 🛠️ Technology Stack
 
 ### Frontend
 
-- **React 19** with TypeScript
-- **Vite 7** for build tooling
-- **Bootstrap 5** for styling
-- Component-based architecture
-- Custom API service layer
-- Optimistic UI updates
+- **React 19** with TypeScript and hooks
+- **TailwindCSS v3** for modern utility-first styling
+- **shadcn/ui-inspired** components (Button, Card, Input, Badge, Checkbox, Select)
+- **Lucide React** for beautiful icons
+- **date-fns** for date formatting
+- **Vite 7** for blazing-fast development and builds
+- Optimistic UI updates for better UX
+- Component-based architecture with 12+ reusable components
 
 ### Backend
 
 - **Node.js** with TypeScript
 - **Express.js** web framework
-- **SQLite** with better-sqlite3
-- **Zod** for validation
-- Layered architecture (routes → controllers → services → database)
+- **SQLite** with better-sqlite3 (synchronous, zero-config)
+- **Zod** for schema validation
+- Layered architecture: Routes → Controllers → Services → Database
+- Prepared statements for SQL injection protection
+- Database migration system for schema updates
 
 ### Development Tools
 
-- **TypeScript** for type safety
-- **ESLint** for code linting
-- **Prettier** for code formatting
-- **Husky** for Git hooks
-- **lint-staged** for pre-commit checks
-- **Concurrently** for parallel dev servers
+- **TypeScript 5.9** - Strict mode enabled
+- **ESLint 9** - Flat config with TypeScript support
+- **Prettier 3.4** - Code formatting
+- **Husky 9** - Git hooks automation
+- **lint-staged** - Pre-commit code quality checks
+- **Concurrently** - Run multiple dev servers
+- **tsx** - Fast TypeScript execution
 
 ### Security & Performance
 
 - **Helmet** - Security headers
-- **CORS** - Cross-origin resource sharing
-- **express-rate-limit** - Rate limiting
+- **CORS** - Configurable cross-origin resource sharing
+- **express-rate-limit** - API rate limiting (100 req/15min)
 - **compression** - Response compression
+- **Optimistic updates** - Instant UI feedback
 
 ---
 
-## Requirements
+## 📋 Requirements
 
-- [Node.js](https://nodejs.org/) v14 or higher
+- [Node.js](https://nodejs.org/) v18 or higher
 - npm or yarn package manager
 
 **That's it!** No database installation required - SQLite is embedded.
 
 ---
 
-## Installation
+## 🚀 Quick Start
 
-1. **Clone the repository:**
+### Automated Setup (Recommended)
 
 ```bash
+# Clone repository
 git clone https://github.com/yourusername/task-manager-qa-app.git
 cd task-manager-qa-app
+
+# Run automated setup script
+./scripts/dev-setup.sh
 ```
 
-2. **Install dependencies:**
+This script will:
+
+- Check Node.js version
+- Install dependencies
+- Create `.env` file
+- Set up git hooks
+- Run type checking and linting
+- Build the project
+
+### Manual Setup
 
 ```bash
+# Install dependencies
 npm install
-```
 
-3. **Set up environment variables:**
-
-```bash
+# Copy environment file
 cp .env.example .env
-```
 
-**Note:** The database file is automatically created on first run. No additional setup required!
+# Start development servers
+npm run dev
+```
 
 ---
 
-## Configuration
+## ⚙️ Configuration
 
-Create a `.env` file in the root directory (use `.env.example` as template):
+Create a `.env` file in the root directory:
 
 ```env
 # Server Configuration
 PORT=3001
 NODE_ENV=development
 
-# Database Configuration
-# SQLite database file path (automatically created if it doesn't exist)
-# Default: dist/data/tasks.db
+# Database Configuration (optional)
+# SQLite database file path - automatically created if doesn't exist
 # DB_PATH=./data/tasks.db
 
 # CORS Configuration
@@ -140,89 +183,79 @@ CORS_ORIGIN=http://localhost:3000
 
 ### Environment Variables
 
-| Variable      | Description                          | Default               |
-| ------------- | ------------------------------------ | --------------------- |
-| `PORT`        | Backend server port                  | 3001                  |
-| `NODE_ENV`    | Environment (development/production) | development           |
-| `DB_PATH`     | SQLite database file path (optional) | dist/data/tasks.db    |
-| `CORS_ORIGIN` | Allowed frontend origin for CORS     | http://localhost:3000 |
+| Variable      | Description                      | Default               |
+| ------------- | -------------------------------- | --------------------- |
+| `PORT`        | Backend server port              | 3001                  |
+| `NODE_ENV`    | Environment mode                 | development           |
+| `DB_PATH`     | SQLite database file (optional)  | ./data/tasks.db       |
+| `CORS_ORIGIN` | Allowed frontend origin for CORS | http://localhost:3000 |
 
 ---
 
-## Development
+## 💻 Development
 
 ### Start Development Servers
-
-Run both frontend and backend in development mode:
 
 ```bash
 npm run dev
 ```
 
-This will start:
+This starts:
 
-- Backend server on `http://localhost:3001` (with auto-reload via tsx)
-- Frontend dev server on `http://localhost:3000` (with Vite HMR)
-- SQLite database automatically initialized
+- Backend API on `http://localhost:3001` (with hot reload)
+- Frontend on `http://localhost:3000` (with Vite HMR)
+- SQLite database auto-initialized
 
-### Run Servers Separately
-
-**Backend only:**
+### Individual Commands
 
 ```bash
+# Backend only
 npm run dev:server
-```
 
-**Frontend only:**
-
-```bash
+# Frontend only
 npm run dev:client
-```
 
-### Type Checking
-
-Check TypeScript types without building:
-
-```bash
+# Type checking
 npm run type-check
-```
 
-### Code Quality
-
-**Lint code:**
-
-```bash
+# Linting
 npm run lint
-```
-
-**Auto-fix lint issues:**
-
-```bash
 npm run lint:fix
+
+# Code formatting
+npm run format
 ```
 
-**Format code:**
+### Automation Scripts
 
 ```bash
-npm run format
+# Development environment setup
+./scripts/dev-setup.sh
+
+# Run all tests (type-check, lint, build)
+./scripts/test-all.sh
+
+# Backup database
+./scripts/db-backup.sh
+
+# Production build
+./scripts/build-prod.sh
 ```
 
 ---
 
-## Production
+## 🏭 Production
 
-### Build
-
-Build both frontend and backend:
+### Build for Production
 
 ```bash
 npm run build
 ```
 
-This creates:
+Creates:
 
-- `dist/` - Compiled TypeScript backend
-- `dist/client/` - Production-optimized frontend
+- `dist/server/` - Compiled TypeScript backend
+- `dist/client/` - Optimized frontend bundle
 - `dist/data/tasks.db` - SQLite database (created on first run)
 
 ### Start Production Server
@@ -233,73 +266,90 @@ npm start
 
 The production server:
 
-- Serves the API on the configured PORT
-- Serves the built React app for all non-API routes
-- Uses SQLite for data persistence (single file database)
+- Serves API on configured PORT
+- Serves built React app for all non-API routes
+- Uses SQLite for persistence (single file database)
+- Includes security headers, compression, and rate limiting
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 task-manager-qa-app/
 ├── src/
-│   ├── server/                 # Backend (TypeScript + Express + SQLite)
-│   │   ├── config/            # Configuration files
-│   │   │   └── database.ts    # SQLite setup & table creation
-│   │   ├── controllers/       # Request handlers
-│   │   │   └── task.controller.ts
-│   │   ├── middleware/        # Express middleware
+│   ├── server/                    # Backend (TypeScript + Express + SQLite)
+│   │   ├── config/
+│   │   │   └── database.ts       # SQLite setup, migrations, indexes
+│   │   ├── controllers/
+│   │   │   └── task.controller.ts # Request handlers
+│   │   ├── middleware/
 │   │   │   ├── error.middleware.ts
 │   │   │   └── validation.middleware.ts
-│   │   ├── routes/            # API routes
-│   │   │   └── task.routes.ts
-│   │   ├── services/          # Business logic
-│   │   │   └── task.service.ts
-│   │   ├── types/             # TypeScript types
-│   │   │   └── task.types.ts
-│   │   └── server.ts          # Application entry point
+│   │   ├── routes/
+│   │   │   └── task.routes.ts    # API endpoints
+│   │   ├── services/
+│   │   │   └── task.service.ts   # Business logic
+│   │   ├── types/
+│   │   │   └── task.types.ts     # Zod schemas, TypeScript types
+│   │   └── server.ts             # Application entry
 │   │
-│   └── client/                # Frontend (React + TypeScript)
+│   └── client/                    # Frontend (React + TypeScript + TailwindCSS)
 │       ├── src/
-│       │   ├── components/    # React components
-│       │   │   ├── ActionButtons.tsx
-│       │   │   ├── TaskForm.tsx
-│       │   │   ├── TaskItem.tsx
-│       │   │   ├── TaskList.tsx
-│       │   │   ├── TaskStats.tsx
-│       │   │   ├── Toast.tsx
-│       │   │   └── ToastContainer.tsx
-│       │   ├── services/      # API client
-│       │   │   └── api.ts
-│       │   ├── styles/        # CSS files
-│       │   │   └── index.css
-│       │   ├── types/         # TypeScript types
-│       │   │   └── task.ts
-│       │   ├── App.tsx        # Main app component
-│       │   └── main.tsx       # React entry point
-│       ├── index.html         # HTML template
-│       ├── tsconfig.json      # TypeScript config
-│       └── tsconfig.node.json # Vite TypeScript config
+│       │   ├── components/
+│       │   │   ├── ui/           # shadcn-style UI components
+│       │   │   │   ├── button.tsx
+│       │   │   │   ├── card.tsx
+│       │   │   │   ├── input.tsx
+│       │   │   │   ├── badge.tsx
+│       │   │   │   ├── checkbox.tsx
+│       │   │   │   └── select.tsx
+│       │   │   ├── theme-provider.tsx   # Dark mode context
+│       │   │   ├── theme-toggle.tsx     # Theme switcher
+│       │   │   ├── TaskFormEnhanced.tsx # Multi-field task form
+│       │   │   ├── TaskItemEnhanced.tsx # Task card with badges
+│       │   │   ├── TaskStatsDashboard.tsx # Analytics dashboard
+│       │   │   ├── SearchAndFilter.tsx  # Search and filter UI
+│       │   │   ├── Toast.tsx            # Toast notification
+│       │   │   └── ToastContainer.tsx   # Toast manager
+│       │   ├── services/
+│       │   │   └── api.ts        # API client
+│       │   ├── styles/
+│       │   │   └── index.css     # TailwindCSS + custom styles
+│       │   ├── types/
+│       │   │   └── task.ts       # Frontend TypeScript types
+│       │   ├── lib/
+│       │   │   └── utils.ts      # Utility functions (cn)
+│       │   ├── AppModern.tsx     # Main application
+│       │   └── main.tsx          # React entry point
+│       ├── index.html
+│       └── tsconfig.json
 │
-├── dist/                      # Build output (gitignored)
-│   ├── data/                  # SQLite database location
-│   │   └── tasks.db          # SQLite database file
-│   └── client/               # Built frontend
-├── .husky/                    # Git hooks
-├── .env.example              # Environment variables template
-├── .gitignore                # Git ignore rules
-├── eslint.config.js          # ESLint configuration
-├── package.json              # Dependencies and scripts
-├── .prettierrc.json          # Prettier configuration
-├── tsconfig.json             # Backend TypeScript config
-├── vite.config.ts            # Vite configuration
-└── README.md                 # This file
+├── scripts/                       # Automation scripts
+│   ├── dev-setup.sh              # Development environment setup
+│   ├── test-all.sh               # Comprehensive test suite
+│   ├── db-backup.sh              # SQLite backup utility
+│   └── build-prod.sh             # Production build script
+│
+├── .github/
+│   └── workflows/
+│       └── ci.yml                # GitHub Actions CI/CD pipeline
+│
+├── dist/                         # Build output (gitignored)
+├── .husky/                       # Git hooks
+├── .env.example                  # Environment template
+├── eslint.config.js              # ESLint flat config
+├── tailwind.config.js            # TailwindCSS configuration
+├── postcss.config.js             # PostCSS configuration
+├── vite.config.ts                # Vite configuration
+├── tsconfig.json                 # Backend TypeScript config
+├── package.json                  # Dependencies and scripts
+└── README.md                     # This file
 ```
 
 ---
 
-## API Documentation
+## 📡 API Documentation
 
 ### Base URL
 
@@ -321,8 +371,13 @@ GET /tasks
 [
   {
     "id": "550e8400-e29b-41d4-a716-446655440000",
-    "title": "Sample task",
+    "title": "Complete project documentation",
+    "description": "Write comprehensive README with examples",
     "completed": false,
+    "priority": "high",
+    "category": "work",
+    "dueDate": "2024-12-01T00:00:00.000Z",
+    "tags": ["documentation", "priority"],
     "createdAt": "2024-11-15T10:00:00.000Z",
     "updatedAt": "2024-11-15T10:00:00.000Z"
   }
@@ -336,13 +391,23 @@ POST /tasks
 Content-Type: application/json
 
 {
-  "title": "New task"
+  "title": "New task",
+  "description": "Optional description",
+  "priority": "medium",
+  "category": "personal",
+  "dueDate": "2024-12-01T00:00:00.000Z",
+  "tags": ["tag1", "tag2"]
 }
 ```
 
 **Validation:**
 
-- `title`: Required, 1-20 characters, trimmed
+- `title`: Required, 1-100 characters, trimmed
+- `description`: Optional, max 500 characters
+- `priority`: Optional, one of: `low`, `medium`, `high`, `urgent` (default: `medium`)
+- `category`: Optional, one of: `work`, `personal`, `shopping`, `health`, `other` (default: `personal`)
+- `dueDate`: Optional, ISO 8601 datetime string
+- `tags`: Optional, array of strings
 
 **Response:** `201 Created`
 
@@ -354,15 +419,20 @@ Content-Type: application/json
 
 {
   "title": "Updated title",
-  "completed": true
+  "description": "Updated description",
+  "completed": true,
+  "priority": "urgent",
+  "category": "work",
+  "dueDate": "2024-12-01T00:00:00.000Z",
+  "tags": ["urgent", "work"]
 }
 ```
 
 **Validation:**
 
-- `title`: Optional, 1-20 characters, trimmed
-- `completed`: Optional, boolean
+- All fields optional
 - At least one field required
+- Same validation rules as create
 
 **Response:** `200 OK`
 
@@ -384,8 +454,6 @@ DELETE /tasks
 
 ### Error Responses
 
-All errors return JSON with an `error` field:
-
 ```json
 {
   "error": "Error message here"
@@ -401,288 +469,219 @@ All errors return JSON with an `error` field:
 
 ---
 
-## Code Quality
+## 🧪 Testing & Quality
 
 ### Pre-commit Hooks
 
-Husky runs lint-staged on every commit to ensure code quality:
+Husky runs lint-staged on every commit:
 
-- **TypeScript files** - Linted with ESLint, formatted with Prettier
-- **JSON/Markdown files** - Formatted with Prettier
+- **TypeScript files** - ESLint + Prettier
+- **JSON/Markdown files** - Prettier formatting
 
-### Linting Rules
+### Code Quality Tools
 
-- TypeScript strict mode enabled
-- ESLint with recommended rules
-- Prettier for consistent formatting
-- No unused variables/imports
-- Consistent naming conventions
+```bash
+# Type checking
+npm run type-check
 
-### Type Safety
+# Linting
+npm run lint
+npm run lint:fix
 
-- Full TypeScript coverage
-- Strict null checks
-- No implicit any
-- Shared types between frontend/backend via Zod schemas
+# Code formatting
+npm run format
+
+# Run all tests
+./scripts/test-all.sh
+```
+
+### CI/CD Pipeline
+
+GitHub Actions automatically:
+
+- Runs on push/PR to `main` and `develop` branches
+- Tests on Node.js 18.x and 20.x
+- Executes type checking, linting, and builds
+- Performs security audits with `npm audit`
+- Uploads build artifacts
 
 ---
 
-## Recent Improvements
+## 🔐 Security
 
-### Architecture Overhaul
-
-- ✅ **Migrated to TypeScript** - Full type safety across the stack
-- ✅ **Modern Frontend** - React 19 with Vite replacing vanilla JS
-- ✅ **SQLite Database** - Zero-config embedded database replacing MongoDB
-- ✅ **Layered Architecture** - Proper separation: routes → controllers → services
-- ✅ **Shared Validation** - Zod schemas used on both client and server
-
-### Developer Experience
-
-- ✅ **Vite** - Lightning-fast HMR and build times
-- ✅ **TypeScript** - Catch errors before runtime
-- ✅ **Husky + lint-staged** - Automated code quality checks
-- ✅ **Concurrently** - Run frontend and backend together
-- ✅ **Better Scripts** - Separate dev/build commands for client/server
-
-### Security & Performance
-
-- ✅ **Helmet** - Security headers for production
-- ✅ **Rate Limiting** - Protect against API abuse
-- ✅ **Compression** - Reduce response sizes
-- ✅ **Proper CORS** - Configurable origins
-- ✅ **Input Validation** - Zod validation on all inputs
-
-### Database Simplification
-
-- ✅ **Zero Configuration** - No database server installation required
-- ✅ **Single File** - Easy backup and portability (tasks.db)
-- ✅ **ACID Compliant** - Proper transaction support
-- ✅ **Synchronous** - Simpler code, no async overhead
-
----
-
-## Technology Roadmap
-
-### Current Stack Assessment
-
-Our current stack is modern and production-ready, but here are cutting-edge alternatives to consider:
-
-### 🚀 Recommended Next-Gen Upgrades
-
-#### 1. **Backend Framework**
-
-**Current:** Express.js
-**Consider:**
-
-- **Fastify** - 2x faster than Express, better TypeScript support
-- **Hono** - Ultra-fast, edge-compatible, modern API design
-- **tRPC** - End-to-end type safety (no API layer needed!)
-
-```typescript
-// tRPC example - Type-safe API calls with no runtime overhead
-const task = await trpc.tasks.create.mutate({ title: 'New task' });
-// ↑ Fully typed, autocomplete works!
-```
-
-#### 2. **Frontend Styling**
-
-**Current:** Bootstrap 5
-**Consider:**
-
-- **TailwindCSS** - Utility-first, smaller bundle, more flexible
-- **shadcn/ui** - Beautifully designed components (Tailwind + Radix UI)
-- **Panda CSS** - Zero-runtime CSS-in-JS with type safety
-
-```tsx
-// Tailwind example
-<button className="px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded">Add Task</button>
-```
-
-#### 3. **State Management**
-
-**Current:** useState hooks
-**Consider:**
-
-- **Zustand** - Simple, fast, minimal boilerplate
-- **Jotai** - Atomic state management, great TypeScript support
-- **TanStack Query** - Server state management (caching, refetching)
-
-```typescript
-// TanStack Query example - automatic caching & revalidation
-const { data: tasks } = useQuery({
-  queryKey: ['tasks'],
-  queryFn: () => taskApi.getAllTasks(),
-});
-```
-
-#### 4. **Form Handling**
-
-**Current:** Manual forms
-**Consider:**
-
-- **React Hook Form** - Performant, flexible, great DX
-- **Conform** - Progressive enhancement, server-side validation
-- **Zod + React Hook Form** - Type-safe forms with validation
-
-```typescript
-// React Hook Form + Zod
-const { register, handleSubmit } = useForm({
-  resolver: zodResolver(createTaskSchema),
-});
-```
-
-#### 5. **Database ORM**
-
-**Current:** Raw SQLite queries
-**Consider:**
-
-- **Drizzle ORM** - TypeScript-first, lightweight, SQL-like syntax
-- **Prisma** - Type-safe queries, migrations, great DX
-- **Kysely** - Type-safe SQL query builder
-
-```typescript
-// Drizzle example
-const tasks = await db.select().from(tasksTable).orderBy(desc(tasksTable.createdAt));
-```
-
-#### 6. **API Layer**
-
-**Current:** REST with Express
-**Consider:**
-
-- **tRPC** - No API layer, end-to-end type safety
-- **GraphQL** - Flexible queries, single endpoint
-- **Hono RPC** - Type-safe RPC with edge support
-
-#### 7. **Testing**
-
-**Current:** None (recommended addition!)
-**Consider:**
-
-- **Vitest** - Fast, Vite-native, Jest-compatible
-- **Playwright** - End-to-end testing
-- **Testing Library** - Component testing
-
-```typescript
-// Vitest example
-import { describe, it, expect } from 'vitest';
-
-describe('TaskService', () => {
-  it('should create a task', () => {
-    const task = TaskService.createTask({ title: 'Test' });
-    expect(task.title).toBe('Test');
-  });
-});
-```
-
-#### 8. **Deployment**
-
-**Consider:**
-
-- **Vercel** - Zero-config deployment for Next.js
-- **Railway** - Simple deployment with databases
-- **Fly.io** - Global deployment with SQLite support
-- **Docker** - Containerization for any platform
-
-#### 9. **Monorepo Tools**
-
-**Consider:**
-
-- **Turborepo** - High-performance build system
-- **pnpm workspaces** - Faster, more efficient than npm
-- **Nx** - Smart, extensible build framework
-
-#### 10. **Full-Stack Frameworks**
-
-**Consider replacing React + Express with:**
-
-- **Next.js 15** - React Server Components, App Router
-- **Remix** - Web fundamentals, nested routing
-- **Astro** - Content-focused, partial hydration
-- **SvelteKit** - Svelte + full-stack framework
-
----
-
-### 📋 Priority Upgrade Path
-
-#### Phase 1: Low-Hanging Fruit (1-2 days)
-
-1. Add **TailwindCSS** - Better styling, smaller bundle
-2. Add **TanStack Query** - Better data fetching
-3. Add **Drizzle ORM** - Type-safe database queries
-4. Add **Vitest** - Unit testing
-
-#### Phase 2: Developer Experience (3-5 days)
-
-5. Add **React Hook Form** - Better forms
-6. Add **Zustand** - Global state management
-7. Add **Playwright** - E2E testing
-8. Add **Turborepo** - Monorepo optimization
-
-#### Phase 3: Architecture (1-2 weeks)
-
-9. Migrate to **tRPC** - End-to-end type safety
-10. Consider **Next.js** - Full-stack framework
-
----
-
-### 💡 Recommended Modern Stack (If Starting Fresh)
-
-```
-Frontend: Next.js 15 + TypeScript + TailwindCSS + shadcn/ui
-Backend: Next.js API Routes + tRPC + Drizzle ORM
-Database: SQLite (Turso for production) or PostgreSQL
-State: TanStack Query + Zustand
-Forms: React Hook Form + Zod
-Testing: Vitest + Playwright
-Deployment: Vercel or Railway
-```
-
-**Benefits:**
-
-- End-to-end type safety (no API layer needed)
-- Server Components for better performance
-- Single framework for full-stack development
-- Modern DX with minimal boilerplate
-
----
-
-## Security
-
-This application includes several security best practices:
+### Built-in Security Features
 
 - **Helmet** - Sets security-related HTTP headers
 - **CORS** - Configured for specific origins
-- **Rate Limiting** - Prevents API abuse
+- **Rate Limiting** - 100 requests per 15 minutes per IP
 - **Input Validation** - Server-side validation with Zod
 - **SQL Injection Protection** - Prepared statements
+- **XSS Protection** - Input sanitization
 
-For production deployment, ensure:
+### Production Security Checklist
 
-- Update `CORS_ORIGIN` to your production domain
-- Set `NODE_ENV=production`
-- Review and update rate limit settings
-- Enable HTTPS
-- Regular security audits: `npm audit`
+- [ ] Update `CORS_ORIGIN` to production domain
+- [ ] Set `NODE_ENV=production`
+- [ ] Review rate limit settings
+- [ ] Enable HTTPS
+- [ ] Regular security audits: `npm audit`
+- [ ] Keep dependencies updated
+- [ ] Backup database regularly
 
 ---
 
-## Contributing
+## 🎨 UI Components
+
+### shadcn/ui-Inspired Components
+
+- **Button** - Multiple variants (default, destructive, outline, ghost, link)
+- **Card** - Container with header, content, footer sections
+- **Input** - Form input with focus states
+- **Badge** - Color-coded labels for priorities/categories
+- **Checkbox** - Custom styled checkbox with check icon
+- **Select** - Dropdown with chevron icon
+
+### Theme Support
+
+- **Light Mode** - Clean, professional appearance
+- **Dark Mode** - Easy on the eyes for night work
+- **System Default** - Respects OS preference
+- **Theme Toggle** - Quick switch with animated icon
+
+---
+
+## 🚀 Deployment
+
+### Recommended Platforms
+
+1. **Vercel** - Zero-config Next.js deployment
+2. **Railway** - Simple deployment with databases
+3. **Fly.io** - Global deployment with SQLite support
+4. **Docker** - Containerize for any platform
+
+### Docker Example
+
+```dockerfile
+FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+RUN npm run build
+EXPOSE 3001
+CMD ["npm", "start"]
+```
+
+---
+
+## 📦 Database Management
+
+### Backup Database
+
+```bash
+# Automated backup with timestamp
+./scripts/db-backup.sh
+
+# Keeps last 10 backups, auto-cleanup
+# Backups stored in ./backups/
+```
+
+### Restore Backup
+
+```bash
+cp ./backups/tasks_backup_TIMESTAMP.db ./data/tasks.db
+```
+
+### Database Schema
+
+```sql
+CREATE TABLE tasks (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL CHECK(length(title) <= 100 AND length(title) > 0),
+  description TEXT,
+  completed INTEGER NOT NULL DEFAULT 0,
+  priority TEXT NOT NULL DEFAULT 'medium'
+    CHECK(priority IN ('low', 'medium', 'high', 'urgent')),
+  category TEXT NOT NULL DEFAULT 'personal'
+    CHECK(category IN ('work', 'personal', 'shopping', 'health', 'other')),
+  due_date TEXT,
+  tags TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+```
+
+**Indexes:**
+
+- `idx_tasks_completed` - Fast completed/active filtering
+- `idx_tasks_created_at` - Date sorting
+- `idx_tasks_priority` - Priority filtering
+- `idx_tasks_category` - Category filtering
+- `idx_tasks_due_date` - Due date sorting
+
+---
+
+## 🎯 Roadmap
+
+### Completed ✅
+
+- [x] Modern UI with TailwindCSS
+- [x] Dark mode support
+- [x] Advanced task features (priority, category, due date, tags)
+- [x] Search and filtering
+- [x] Automation scripts
+- [x] CI/CD pipeline
+- [x] Database migrations
+
+### Future Enhancements 🔮
+
+- [ ] **Vitest** - Unit testing framework
+- [ ] **Playwright** - E2E testing
+- [ ] **TanStack Query** - Advanced data fetching and caching
+- [ ] **React Hook Form** - Better form handling
+- [ ] **Drizzle ORM** - Type-safe database queries
+- [ ] **tRPC** - End-to-end type safety
+- [ ] **Next.js 15** - Full-stack framework migration
+- [ ] **Subtasks** - Nested checklist support
+- [ ] **Recurring tasks** - Scheduled task creation
+- [ ] **Task templates** - Quick task creation
+- [ ] **Export/Import** - JSON, CSV, Markdown formats
+- [ ] **Collaborative features** - Multi-user support
+- [ ] **Mobile app** - React Native version
+
+---
+
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+3. Make your changes
+4. Run tests (`./scripts/test-all.sh`)
+5. Commit your changes (`git commit -m 'Add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
 
 ---
 
-## License
+## 📄 License
 
-This project is for educational purposes.
+This project is for educational and demonstration purposes.
 
 ---
 
-**Built for modern development workflows with TypeScript, React, and SQLite.**
-**Ready for next-gen upgrades with tRPC, Next.js, and TailwindCSS.**
+## 🙏 Acknowledgments
+
+- **shadcn/ui** for component design inspiration
+- **TailwindCSS** for the utility-first CSS framework
+- **Lucide** for beautiful icons
+- **Better-sqlite3** for the excellent SQLite library
+
+---
+
+<div align="center">
+
+**Built with ❤️ using modern web technologies**
+
+[Report Bug](https://github.com/yourusername/task-manager-qa-app/issues) · [Request Feature](https://github.com/yourusername/task-manager-qa-app/issues)
+
+</div>
