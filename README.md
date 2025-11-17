@@ -1,6 +1,6 @@
-# Task Manager Pro 🚀
+# Task Manager Pro
 
-A **professional, production-ready** task manager application with a stunning modern UI, built with **React 19**, **TypeScript**, **TailwindCSS**, **Node.js**, **Express**, and **SQLite**. Features advanced task management, real-time search, dark mode, comprehensive automation scripts, and CI/CD pipeline.
+A **production-ready** task manager application with a modern minimalist UI, built with **React 19**, **TypeScript**, **TailwindCSS**, **Node.js**, **Express**, and **SQLite**. Features advanced task management, real-time search, dark mode, comprehensive automation scripts, and CI/CD pipeline.
 
 <div align="center">
 
@@ -14,145 +14,157 @@ A **professional, production-ready** task manager application with a stunning mo
 
 ---
 
-## ✨ Features
+## Features
 
-### 🎯 Advanced Task Management
+### Task Management
 
-- ✅ **Create, edit, and delete tasks** with comprehensive details
-- ✅ **Priority levels** - Low, Medium, High, Urgent with color coding
-- ✅ **Categories** - Work, Personal, Shopping, Health, Other
-- ✅ **Due dates** with overdue warnings and visual indicators
-- ✅ **Task descriptions** - Add detailed notes up to 500 characters
-- ✅ **Tag system** - Organize with custom tags
-- ✅ **Title support** - Up to 100 characters (previously 20)
-- ✅ **Inline editing** with keyboard shortcuts (Enter/Escape)
-- ✅ **Bulk operations** - Clear completed, delete all
+- **Create, edit, and delete tasks** with comprehensive details
+- **Priority levels** - Low, Medium, High, Urgent with color coding
+- **Categories** - Work, Personal, Shopping, Health, Other
+- **Due dates** with overdue warnings and visual indicators
+- **Task descriptions** - Add detailed notes up to 500 characters
+- **Tag system** - Organize with custom tags
+- **Inline editing** with keyboard shortcuts (Enter/Escape)
+- **Bulk operations** - Clear completed, delete all tasks
 
-### 🔍 Search & Filtering
+### Search & Filtering
 
-- ✅ **Real-time search** - Instant search across titles, descriptions, and tags
-- ✅ **Advanced filtering** - Filter by status, priority, and category
-- ✅ **Flexible sorting** - Sort by date, priority, title, or due date
-- ✅ **Multi-criteria filtering** - Combine multiple filters simultaneously
+- **Real-time search** - Instant search across titles, descriptions, and tags
+- **Advanced filtering** - Filter by status, priority, and category
+- **Flexible sorting** - Sort by date, priority, title, or due date
+- **Multi-criteria filtering** - Combine multiple filters simultaneously
 
-### 📊 Dashboard & Analytics
+### Dashboard & Analytics
 
-- ✅ **Live statistics** - Total, active, completed, and overdue tasks
-- ✅ **Progress tracking** - Visual progress bar with completion percentage
-- ✅ **Urgent task alerts** - Highlighted warnings for urgent items
-- ✅ **Task completion insights** - Track productivity over time
+- **Live statistics** - Total, active, completed, and overdue tasks
+- **Progress tracking** - Visual progress bar with completion percentage
+- **Urgent task alerts** - Highlighted warnings for urgent items
+- **Color-coded metrics** - Visual task completion insights
 
-### 🎨 Modern UI/UX
+### Modern UI/UX
 
-- ✅ **Beautiful glassmorphism** design with card-based layout
-- ✅ **Dark mode support** with theme toggle
-- ✅ **Fully responsive** - Mobile-first design for all screen sizes
-- ✅ **Smooth animations** and micro-interactions
-- ✅ **Color-coded badges** for priorities and categories
-- ✅ **Toast notifications** for all user actions
-- ✅ **Loading states** with elegant spinners
-- ✅ **Empty state messaging** for better UX
+- **Green minimalist design** - Clean, professional appearance with soft color palette
+- **Dark mode support** - System-aware theme with manual toggle
+- **Fully responsive** - Mobile-first design for all screen sizes
+- **Smooth animations** - Toast notifications and micro-interactions
+- **Color-coded badges** - Priorities and categories clearly identified
+- **Loading states** - Elegant feedback for all operations
+- **Empty state messaging** - User-friendly guidance
 
-### 🔧 Technical Excellence
+### Technical Features
 
-- ✅ **TypeScript** - Full type safety across frontend and backend
-- ✅ **React 19** - Modern component-based architecture
-- ✅ **TailwindCSS** - Utility-first styling with custom design system
-- ✅ **Vite 7** - Lightning-fast HMR and optimized builds
-- ✅ **SQLite** - Zero-config embedded database with migrations
-- ✅ **Express.js** - RESTful API with layered architecture
-- ✅ **Zod** - Runtime validation with TypeScript inference
-- ✅ **Security** - Helmet, CORS, rate limiting, SQL injection protection
-- ✅ **Code Quality** - ESLint, Prettier for consistent formatting
+- **TypeScript** - Full type safety across frontend and backend
+- **React 19** - Modern component-based architecture
+- **TailwindCSS** - Utility-first styling with custom design system
+- **Vite 7** - Lightning-fast HMR and optimized builds
+- **SQLite** - Zero-config embedded database with auto-migrations
+- **Express.js** - RESTful API with layered architecture
+- **Zod** - Runtime validation with TypeScript inference
+- **Security** - Helmet, CORS, rate limiting, SQL injection protection
+- **Code Quality** - ESLint 9, Prettier for consistent formatting
 
-### 🤖 Automation & DevOps
+### Automation & DevOps
 
-- ✅ **GitHub Actions CI/CD** - Automated testing and builds
-- ✅ **Development setup script** - One-command environment setup
-- ✅ **Database backup utility** - Automated SQLite backups
-- ✅ **Comprehensive test suite** - Type checking, linting, builds
-- ✅ **Production build optimization** - Automated clean builds
+- **GitHub Actions CI/CD** - Automated testing and builds
+- **Development setup script** - One-command environment setup
+- **Database backup utility** - Automated SQLite backups
+- **Test automation** - Type checking, linting, builds
+- **Production build optimization** - Automated clean builds
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 ### Frontend
 
-- **React 19** with TypeScript and hooks
-- **TailwindCSS v3** for modern utility-first styling
-- **shadcn/ui-inspired** components (Button, Card, Input, Badge, Checkbox, Select)
-- **Lucide React** for beautiful icons
-- **date-fns** for date formatting
-- **Vite 7** for blazing-fast development and builds
-- Optimistic UI updates for better UX
-- Component-based architecture with 12+ reusable components
+- **React 19** - Latest React with TypeScript and hooks
+- **TailwindCSS 3.4** - Modern utility-first styling
+- **Vite 7** - Fast development server and build tool
+- **Lucide React 0.553** - Icon library
+- **date-fns 4.1** - Date formatting utilities
+- **class-variance-authority 0.7** - Component variant management
+- **clsx 2.1** & **tailwind-merge 3.4** - Utility class composition
+
+**Component Architecture:**
+- shadcn/ui-inspired design patterns
+- 15+ reusable components (Button, Card, Input, Badge, Checkbox, Select, Toast, etc.)
+- Optimistic UI updates for responsive user experience
 
 ### Backend
 
-- **Node.js** with TypeScript
-- **Express.js** web framework
-- **SQLite** with better-sqlite3 (synchronous, zero-config)
-- **Zod** for schema validation
-- Layered architecture: Routes → Controllers → Services → Database
+- **Node.js** - JavaScript runtime
+- **Express 4.18** - Web application framework
+- **TypeScript 5.9** - Type-safe backend development
+- **better-sqlite3 12.4** - Synchronous SQLite3 bindings
+- **Zod 4.1** - Schema validation and type inference
+- **uuid 11.1** - Unique identifier generation
+
+**Architecture:**
+- Layered pattern: Routes → Controllers → Services → Database
 - Prepared statements for SQL injection protection
-- Database migration system for schema updates
+- Auto-migration system for schema updates
+- Database indexing for performance
+
+### Security
+
+- **Helmet 8.1** - Security HTTP headers
+- **CORS 2.8** - Cross-origin resource sharing
+- **express-rate-limit 8.2** - API rate limiting (100 req/15min)
+- **compression 1.8** - Response compression
+- Input validation with Zod schemas
 
 ### Development Tools
 
 - **TypeScript 5.9** - Strict mode enabled
 - **ESLint 9** - Flat config with TypeScript support
-- **Prettier 3.4** - Code formatting
-- **Concurrently** - Run multiple dev servers
-- **tsx** - Fast TypeScript execution
-
-### Security & Performance
-
-- **Helmet** - Security headers
-- **CORS** - Configurable cross-origin resource sharing
-- **express-rate-limit** - API rate limiting (100 req/15min)
-- **compression** - Response compression
-- **Optimistic updates** - Instant UI feedback
+- **Prettier 3.4** - Consistent code formatting
+- **Concurrently 9.2** - Run multiple dev servers
+- **tsx 4.20** - Fast TypeScript execution
+- **Autoprefixer 10.4** - CSS vendor prefixing
+- **PostCSS 8.5** - CSS transformation
 
 ---
 
-## 📋 Requirements
+## Requirements
 
-- [Node.js](https://nodejs.org/) v18 or higher
-- npm or yarn package manager
+- **Node.js** v18.0.0 or higher
+- **npm** (comes with Node.js)
 
-**That's it!** No database installation required - SQLite is embedded.
+**No additional database installation required** - SQLite is embedded and auto-configured.
 
 ---
 
-## 🚀 Quick Start
+## Installation
 
-### Automated Setup (Recommended)
+### Quick Start (Automated)
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/task-manager-qa-app.git
+git clone https://github.com/josemejias11/task-manager-qa-app.git
 cd task-manager-qa-app
 
 # Run automated setup script
 ./scripts/dev-setup.sh
 ```
 
-This script will:
-
-- Check Node.js version
-- Install dependencies
-- Create `.env` file
+The setup script will:
+- Verify Node.js version (≥18)
+- Install all dependencies
+- Create `.env` configuration file
 - Run type checking and linting
 - Build the project
 
-### Manual Setup
+### Manual Installation
 
 ```bash
+# Clone repository
+git clone https://github.com/josemejias11/task-manager-qa-app.git
+cd task-manager-qa-app
+
 # Install dependencies
 npm install
 
-# Copy environment file
+# Create environment file
 cp .env.example .env
 
 # Start development servers
@@ -161,100 +173,114 @@ npm run dev
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 ### Environment Variables
 
-Create a `.env` file in the root directory (copy from `.env.example`):
+Create a `.env` file in the project root:
 
 ```bash
 cp .env.example .env
 ```
 
-#### Configuration Options
+#### Available Configuration Options
 
 ```env
 # Server Configuration
 PORT=3001                           # Backend API server port
 NODE_ENV=development                # Environment: development, production, or test
 
-# Database Configuration
-# DB_PATH=./data/tasks.db           # Custom SQLite database path (optional)
+# Database Configuration (optional)
+# DB_PATH=./data/tasks.db           # Custom SQLite database path
 
 # CORS Configuration
-CORS_ORIGIN=http://localhost:3000  # Allowed frontend origin for CORS
+CORS_ORIGIN=http://localhost:3000  # Allowed frontend origin
 ```
 
 #### Environment Variables Reference
 
-| Variable      | Description                                          | Default                      | Required |
-| ------------- | ---------------------------------------------------- | ---------------------------- | -------- |
-| `PORT`        | Backend server port                                  | `3001`                       | No       |
-| `NODE_ENV`    | Node environment (development/production/test)       | `development`                | No       |
-| `DB_PATH`     | SQLite database file path (auto-created if missing)  | `dist/data/tasks.db`         | No       |
-| `CORS_ORIGIN` | Allowed frontend origin for CORS                     | `http://localhost:3000`      | No       |
+| Variable      | Description                          | Default                 | Required |
+| ------------- | ------------------------------------ | ----------------------- | -------- |
+| `PORT`        | Backend server port                  | `3001`                  | No       |
+| `NODE_ENV`    | Node environment mode                | `development`           | No       |
+| `DB_PATH`     | SQLite database file path            | `dist/data/tasks.db`    | No       |
+| `CORS_ORIGIN` | Allowed frontend origin              | `http://localhost:3000` | No       |
 
-#### Development vs Production
+### Development vs Production
 
-**Development:**
+**Development Mode:**
 - Backend API: `http://localhost:3001`
 - Frontend Dev Server: `http://localhost:3000` (Vite HMR)
 - Hot reload enabled for both frontend and backend
 - Detailed logging and error messages
+- Source maps enabled
 
-**Production:**
+**Production Mode:**
 - Single server serves both API and static frontend
-- Configured via `NODE_ENV=production`
+- Set `NODE_ENV=production`
 - Optimized builds with compression and minification
 - Security headers enabled (Helmet)
 - Rate limiting: 100 requests per 15 minutes per IP
+- Error messages sanitized
 
-#### Database Configuration
+### Database Configuration
 
-The SQLite database is automatically created on first run. Features include:
+SQLite database is automatically created on first run with the following features:
 
-- **Schema**: Comprehensive task table with priority, category, tags, due dates
-- **Indexes**: Optimized for fast queries on completed, created_at, priority, category, due_date
-- **Auto-migration**: Existing databases are automatically migrated to new schema
-- **Backup**: Use `./scripts/db-backup.sh` to create backups (saved to `data/backups/`)
+- **Auto-creation** - Database file and directory created automatically
+- **Schema** - Tasks table with priority, category, tags, due dates
+- **Indexes** - Optimized for queries on completed, created_at, priority, category, due_date
+- **Auto-migration** - Existing databases automatically migrated to latest schema
+- **Backup** - Use `./scripts/db-backup.sh` for backups (saved to `data/backups/`)
 
-#### Security Features
+### Security Configuration
 
-Built-in security configured automatically:
+Built-in security features are enabled by default:
 
-- **Helmet**: Security headers for XSS, clickjacking, and other attacks
-- **CORS**: Configurable cross-origin resource sharing
-- **Rate Limiting**: 100 requests per IP per 15 minutes on `/api/*` endpoints
-- **SQL Injection Protection**: Prepared statements with better-sqlite3
-- **Input Validation**: Zod schemas for runtime type checking
-- **Content Security Policy**: Configurable in `server.ts`
+- **Helmet** - Sets security HTTP headers for XSS and clickjacking protection
+- **CORS** - Configurable cross-origin resource sharing
+- **Rate Limiting** - 100 requests per IP per 15 minutes on `/api/*` endpoints
+- **SQL Injection Protection** - All queries use prepared statements
+- **Input Validation** - Zod schemas validate all incoming data
+- **Password-less** - No authentication required (single-user application)
+
+### Configuration Files
+
+- **tsconfig.json** - Backend TypeScript configuration (strict mode)
+- **src/client/tsconfig.json** - Frontend TypeScript configuration
+- **vite.config.ts** - Vite bundler settings and dev server proxy
+- **tailwind.config.js** - TailwindCSS theme and color scheme
+- **eslint.config.js** - ESLint flat config with TypeScript rules
+- **.prettierrc.json** - Code formatting rules
+- **postcss.config.js** - PostCSS with Autoprefixer and TailwindCSS
 
 ---
 
-## 💻 Development
+## Running the Application
 
-### Start Development Servers
+### Development Mode
+
+Start both frontend and backend servers:
 
 ```bash
 npm run dev
 ```
 
 This starts:
-
-- Backend API on `http://localhost:3001` (with hot reload)
-- Frontend on `http://localhost:3000` (with Vite HMR)
+- Backend API on `http://localhost:3001` (hot reload with tsx)
+- Frontend on `http://localhost:3000` (Vite HMR)
 - SQLite database auto-initialized
 
 ### Individual Commands
 
 ```bash
-# Backend only
+# Backend only (API server)
 npm run dev:server
 
-# Frontend only
+# Frontend only (Vite dev server)
 npm run dev:client
 
-# Type checking
+# Type checking (both frontend and backend)
 npm run type-check
 
 # Linting
@@ -265,134 +291,123 @@ npm run lint:fix
 npm run format
 ```
 
+### Production Build
+
+```bash
+# Build for production
+npm run build
+
+# Start production server
+npm start
+```
+
+Build output:
+- `dist/server/` - Compiled TypeScript backend
+- `dist/client/` - Optimized frontend bundle (minified, tree-shaken)
+- `dist/data/tasks.db` - SQLite database (created on first run)
+
 ### Automation Scripts
 
 ```bash
-# Development environment setup
+# Complete development setup
 ./scripts/dev-setup.sh
 
-# Run all tests (type-check, lint, build)
+# Run all quality checks (type-check, lint, build)
 ./scripts/test-all.sh
 
-# Backup database
+# Backup database with timestamp
 ./scripts/db-backup.sh
 
-# Production build
+# Production build (clean + quality checks + build)
 ./scripts/build-prod.sh
 ```
 
 ---
 
-## 🏭 Production
-
-### Build for Production
-
-```bash
-npm run build
-```
-
-Creates:
-
-- `dist/server/` - Compiled TypeScript backend
-- `dist/client/` - Optimized frontend bundle
-- `dist/data/tasks.db` - SQLite database (created on first run)
-
-### Start Production Server
-
-```bash
-npm start
-```
-
-The production server:
-
-- Serves API on configured PORT
-- Serves built React app for all non-API routes
-- Uses SQLite for persistence (single file database)
-- Includes security headers, compression, and rate limiting
-
----
-
-## 📁 Project Structure
+## Project Structure
 
 ```
 task-manager-qa-app/
 ├── src/
-│   ├── server/                    # Backend (TypeScript + Express + SQLite)
+│   ├── server/                       # Backend (Node.js + Express + SQLite)
 │   │   ├── config/
-│   │   │   └── database.ts       # SQLite setup, migrations, indexes
+│   │   │   └── database.ts          # SQLite setup, migrations, indexes
 │   │   ├── controllers/
-│   │   │   └── task.controller.ts # Request handlers
+│   │   │   └── task.controller.ts   # HTTP request handlers
 │   │   ├── middleware/
-│   │   │   ├── error.middleware.ts
-│   │   │   └── validation.middleware.ts
+│   │   │   ├── error.middleware.ts  # Error handling
+│   │   │   └── validation.middleware.ts # Zod validation
 │   │   ├── routes/
-│   │   │   └── task.routes.ts    # API endpoints
+│   │   │   └── task.routes.ts       # API route definitions
 │   │   ├── services/
-│   │   │   └── task.service.ts   # Business logic
+│   │   │   └── task.service.ts      # Business logic + DB queries
 │   │   ├── types/
-│   │   │   └── task.types.ts     # Zod schemas, TypeScript types
-│   │   └── server.ts             # Application entry
+│   │   │   └── task.types.ts        # Zod schemas + TypeScript types
+│   │   └── server.ts                # Express app entry point
 │   │
-│   └── client/                    # Frontend (React + TypeScript + TailwindCSS)
+│   └── client/                       # Frontend (React + TypeScript + TailwindCSS)
 │       ├── src/
 │       │   ├── components/
-│       │   │   ├── ui/           # shadcn-style UI components
-│       │   │   │   ├── button.tsx
-│       │   │   │   ├── card.tsx
-│       │   │   │   ├── input.tsx
-│       │   │   │   ├── badge.tsx
-│       │   │   │   ├── checkbox.tsx
-│       │   │   │   └── select.tsx
-│       │   │   ├── theme-provider.tsx   # Dark mode context
-│       │   │   ├── theme-toggle.tsx     # Theme switcher
-│       │   │   ├── TaskForm.tsx         # Multi-field task form
-│       │   │   ├── TaskItem.tsx         # Task card with badges
-│       │   │   ├── TaskStats.tsx        # Analytics dashboard
-│       │   │   ├── SearchAndFilter.tsx  # Search and filter UI
-│       │   │   ├── Toast.tsx            # Toast notification
-│       │   │   └── ToastContainer.tsx   # Toast manager
+│       │   │   ├── ui/              # Reusable UI primitives
+│       │   │   │   ├── button.tsx   # Button with variants
+│       │   │   │   ├── card.tsx     # Card container components
+│       │   │   │   ├── input.tsx    # Form input
+│       │   │   │   ├── badge.tsx    # Priority/category labels
+│       │   │   │   ├── checkbox.tsx # Custom checkbox
+│       │   │   │   └── select.tsx   # Dropdown select
+│       │   │   ├── theme-provider.tsx # Dark mode context
+│       │   │   ├── theme-toggle.tsx   # Theme switcher button
+│       │   │   ├── TaskForm.tsx       # Task creation form
+│       │   │   ├── TaskItem.tsx       # Individual task card
+│       │   │   ├── TaskStats.tsx      # Analytics dashboard
+│       │   │   ├── SearchAndFilter.tsx # Search + filter UI
+│       │   │   ├── Toast.tsx          # Toast notification
+│       │   │   └── ToastContainer.tsx # Toast manager
 │       │   ├── services/
-│       │   │   └── api.ts        # API client
+│       │   │   └── api.ts           # API client for backend
 │       │   ├── styles/
-│       │   │   └── index.css     # TailwindCSS + custom styles
+│       │   │   └── index.css        # TailwindCSS + custom styles
 │       │   ├── types/
-│       │   │   └── task.ts       # Frontend TypeScript types
+│       │   │   └── task.ts          # Frontend TypeScript types
 │       │   ├── lib/
-│       │   │   └── utils.ts      # Utility functions (cn)
-│       │   ├── App.tsx           # Main application
-│       │   └── main.tsx          # React entry point
+│       │   │   └── utils.ts         # Utility functions (cn)
+│       │   ├── App.tsx              # Main application component
+│       │   └── main.tsx             # React entry point
 │       ├── index.html
 │       └── tsconfig.json
 │
-├── scripts/                       # Automation scripts
-│   ├── dev-setup.sh              # Development environment setup
-│   ├── test-all.sh               # Comprehensive test suite
-│   ├── db-backup.sh              # SQLite backup utility
-│   └── build-prod.sh             # Production build script
+├── scripts/                          # Automation scripts
+│   ├── dev-setup.sh                 # Development setup automation
+│   ├── test-all.sh                  # Quality checks (type-check, lint, build)
+│   ├── db-backup.sh                 # Database backup utility
+│   └── build-prod.sh                # Production build script
 │
 ├── .github/
 │   └── workflows/
-│       └── ci.yml                # GitHub Actions CI/CD pipeline
+│       └── ci.yml                   # GitHub Actions CI/CD pipeline
 │
-├── dist/                         # Build output (gitignored)
-├── .env.example                  # Environment template
-├── eslint.config.js              # ESLint flat config
-├── tailwind.config.js            # TailwindCSS configuration
-├── postcss.config.js             # PostCSS configuration
-├── vite.config.ts                # Vite configuration
-├── tsconfig.json                 # Backend TypeScript config
-├── package.json                  # Dependencies and scripts
-└── README.md                     # This file
+├── dist/                            # Build output (gitignored)
+├── .env.example                     # Environment template
+├── .env                             # Local environment (gitignored)
+├── eslint.config.js                 # ESLint flat configuration
+├── tailwind.config.js               # TailwindCSS theme config
+├── postcss.config.js                # PostCSS configuration
+├── vite.config.ts                   # Vite bundler config
+├── tsconfig.json                    # Backend TypeScript config
+├── package.json                     # Dependencies and scripts
+├── CLAUDE.md                        # AI assistant development guide
+└── README.md                        # This file
 ```
 
 ---
 
-## 📡 API Documentation
+## API Documentation
 
 ### Base URL
 
 ```
-http://localhost:3001/api
+Development: http://localhost:3001/api
+Production:  <your-domain>/api
 ```
 
 ### Endpoints
@@ -400,10 +415,10 @@ http://localhost:3001/api
 #### Get All Tasks
 
 ```http
-GET /tasks
+GET /api/tasks
 ```
 
-**Response:**
+**Response:** `200 OK`
 
 ```json
 [
@@ -425,9 +440,13 @@ GET /tasks
 #### Create Task
 
 ```http
-POST /tasks
+POST /api/tasks
 Content-Type: application/json
+```
 
+**Request Body:**
+
+```json
 {
   "title": "New task",
   "description": "Optional description",
@@ -438,9 +457,9 @@ Content-Type: application/json
 }
 ```
 
-**Validation:**
+**Validation Rules:**
 
-- `title`: Required, 1-100 characters, trimmed
+- `title`: Required, 1-100 characters (trimmed)
 - `description`: Optional, max 500 characters
 - `priority`: Optional, one of: `low`, `medium`, `high`, `urgent` (default: `medium`)
 - `category`: Optional, one of: `work`, `personal`, `shopping`, `health`, `other` (default: `personal`)
@@ -449,12 +468,31 @@ Content-Type: application/json
 
 **Response:** `201 Created`
 
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "title": "New task",
+  "description": "Optional description",
+  "completed": false,
+  "priority": "medium",
+  "category": "personal",
+  "dueDate": "2024-12-01T00:00:00.000Z",
+  "tags": ["tag1", "tag2"],
+  "createdAt": "2024-11-15T10:00:00.000Z",
+  "updatedAt": "2024-11-15T10:00:00.000Z"
+}
+```
+
 #### Update Task
 
 ```http
-PATCH /tasks/:id
+PATCH /api/tasks/:id
 Content-Type: application/json
+```
 
+**Request Body:** (all fields optional, at least one required)
+
+```json
 {
   "title": "Updated title",
   "description": "Updated description",
@@ -466,18 +504,12 @@ Content-Type: application/json
 }
 ```
 
-**Validation:**
-
-- All fields optional
-- At least one field required
-- Same validation rules as create
-
 **Response:** `200 OK`
 
 #### Delete Task
 
 ```http
-DELETE /tasks/:id
+DELETE /api/tasks/:id
 ```
 
 **Response:** `204 No Content`
@@ -485,145 +517,128 @@ DELETE /tasks/:id
 #### Delete All Tasks
 
 ```http
-DELETE /tasks
+DELETE /api/tasks
 ```
 
 **Response:** `204 No Content`
 
 ### Error Responses
 
+All errors return JSON with an error message:
+
 ```json
 {
-  "error": "Error message here"
+  "error": "Error message description"
 }
 ```
 
-**Status Codes:**
+**HTTP Status Codes:**
 
+- `200` - OK (successful GET/PATCH)
+- `201` - Created (successful POST)
+- `204` - No Content (successful DELETE)
 - `400` - Bad Request (validation error)
-- `404` - Not Found
-- `429` - Too Many Requests (rate limited)
+- `404` - Not Found (task ID doesn't exist)
+- `429` - Too Many Requests (rate limit exceeded)
 - `500` - Internal Server Error
 
 ---
 
-## 🧪 Testing & Quality
+## Code Quality & Testing
 
-### Code Quality Tools
+### Quality Assurance Tools
 
 ```bash
-# Type checking
-npm run type-check
-
-# Linting
-npm run lint
-npm run lint:fix
-
-# Code formatting
-npm run format
-
-# Run all tests
+# Run all quality checks
 ./scripts/test-all.sh
+
+# Individual checks
+npm run type-check    # TypeScript compilation (no emit)
+npm run lint          # ESLint
+npm run lint:fix      # ESLint with auto-fix
+npm run format        # Prettier formatting
+npm run build         # Production build
 ```
 
 ### CI/CD Pipeline
 
-GitHub Actions automatically:
+GitHub Actions workflow (`.github/workflows/ci.yml`) automatically:
 
-- Runs on push/PR to `main` and `develop` branches
+- Triggers on push/PR to `main` and `develop` branches
 - Tests on Node.js 18.x and 20.x
-- Executes type checking, linting, and builds
-- Performs security audits with `npm audit`
-- Uploads build artifacts
+- Runs type checking for both frontend and backend
+- Runs ESLint with configured rules
+- Builds production bundle
+- Performs security audit with `npm audit`
+- Uploads build artifacts (Node.js 20.x only)
+
+### Code Standards
+
+- **TypeScript Strict Mode** - Enabled on both frontend and backend
+- **ESLint 9** - Flat config with TypeScript plugin
+- **Prettier** - Consistent formatting (single quotes, 100 print width, trailing commas)
+- **Zero `any` Types** - Full type coverage throughout codebase
+- **Prepared Statements** - All database queries use parameterized queries
 
 ---
 
-## 🔐 Security
+## Design System
 
-### Built-in Security Features
+### Color Palette
 
-- **Helmet** - Sets security-related HTTP headers
-- **CORS** - Configured for specific origins
-- **Rate Limiting** - 100 requests per 15 minutes per IP
-- **Input Validation** - Server-side validation with Zod
-- **SQL Injection Protection** - Prepared statements
-- **XSS Protection** - Input sanitization
+The application uses a **green minimalist color scheme** with the following palette:
 
-### Production Security Checklist
+**Primary Colors:**
+- Light Green: `#A8E6CF` - Primary actions and success states
+- Soft Green: `#DCEDC8` - Backgrounds and subtle highlights
+- Mint Green: `#C8E6C9` - Hover states
 
-- [ ] Update `CORS_ORIGIN` to production domain
-- [ ] Set `NODE_ENV=production`
-- [ ] Review rate limit settings
-- [ ] Enable HTTPS
-- [ ] Regular security audits: `npm audit`
-- [ ] Keep dependencies updated
-- [ ] Backup database regularly
+**Neutrals:**
+- Light Gray: `#F5F5F5` - Main background
+- Medium Gray: `#9E9E9E` - Secondary text and borders
+- Dark Gray: `#424242` - Primary text and headings
+- Off-White: `#FAFAFA` - Card backgrounds
 
----
+**Accents:**
+- Soft Purple: `#B39DDB` - Highlights and call-to-action elements
+- Deep Purple: `#7E57C2` - Active states and important elements
 
-## 🎨 UI Components
+### Design Principles
 
-### shadcn/ui-Inspired Components
-
-- **Button** - Multiple variants (default, destructive, outline, ghost, link)
-- **Card** - Container with header, content, footer sections
-- **Input** - Form input with focus states
-- **Badge** - Color-coded labels for priorities/categories
-- **Checkbox** - Custom styled checkbox with check icon
-- **Select** - Dropdown with chevron icon
+- **8px Grid System** - Consistent spacing using multiples of 8px
+- **Modern Typography** - Clean sans-serif fonts with clear hierarchy
+- **Subtle Shadows** - Depth without distraction
+- **Rounded Corners** - 4-8px border-radius for modern feel
+- **Smooth Transitions** - 200-300ms for state changes
+- **Ample Whitespace** - Clean, breathing layouts
+- **Color-Coded UI** - Visual distinction for priorities and categories
 
 ### Theme Support
 
-- **Light Mode** - Clean, professional appearance
-- **Dark Mode** - Easy on the eyes for night work
-- **System Default** - Respects OS preference
-- **Theme Toggle** - Quick switch with animated icon
+- **Light Mode** - Clean, professional appearance with soft greens
+- **Dark Mode** - Adjusted colors for comfortable night viewing
+- **System Default** - Automatically respects OS theme preference
+- **Theme Toggle** - Quick switching with persistent localStorage
+
+### UI Components
+
+All components follow shadcn/ui design patterns:
+
+- **Button** - 6 variants (default, destructive, outline, secondary, ghost, link), 4 sizes
+- **Card** - Container with header, title, description, content, footer
+- **Input** - Styled form input with focus states
+- **Badge** - 7 variants (default, secondary, destructive, outline, success, warning, info)
+- **Checkbox** - Custom styled with check icon
+- **Select** - Dropdown with chevron icon
+- **Toast** - Modern notification cards with icons and close button
 
 ---
 
-## 🚀 Deployment
-
-### Recommended Platforms
-
-1. **Vercel** - Zero-config Next.js deployment
-2. **Railway** - Simple deployment with databases
-3. **Fly.io** - Global deployment with SQLite support
-4. **Docker** - Containerize for any platform
-
-### Docker Example
-
-```dockerfile
-FROM node:20-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
-COPY . .
-RUN npm run build
-EXPOSE 3001
-CMD ["npm", "start"]
-```
-
----
-
-## 📦 Database Management
-
-### Backup Database
-
-```bash
-# Automated backup with timestamp
-./scripts/db-backup.sh
-
-# Keeps last 10 backups, auto-cleanup
-# Backups stored in ./backups/
-```
-
-### Restore Backup
-
-```bash
-cp ./backups/tasks_backup_TIMESTAMP.db ./data/tasks.db
-```
+## Database Management
 
 ### Database Schema
+
+SQLite database with the following structure:
 
 ```sql
 CREATE TABLE tasks (
@@ -636,83 +651,194 @@ CREATE TABLE tasks (
   category TEXT NOT NULL DEFAULT 'personal'
     CHECK(category IN ('work', 'personal', 'shopping', 'health', 'other')),
   due_date TEXT,
-  tags TEXT,
+  tags TEXT,  -- JSON string array
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 ```
 
-**Indexes:**
+### Performance Indexes
 
-- `idx_tasks_completed` - Fast completed/active filtering
-- `idx_tasks_created_at` - Date sorting
-- `idx_tasks_priority` - Priority filtering
-- `idx_tasks_category` - Category filtering
-- `idx_tasks_due_date` - Due date sorting
+```sql
+CREATE INDEX idx_tasks_completed ON tasks(completed);
+CREATE INDEX idx_tasks_created_at ON tasks(created_at);
+CREATE INDEX idx_tasks_priority ON tasks(priority);
+CREATE INDEX idx_tasks_category ON tasks(category);
+CREATE INDEX idx_tasks_due_date ON tasks(due_date);
+```
 
----
+### Backup and Restore
 
-## 🎯 Roadmap
+**Create Backup:**
 
-### Completed ✅
+```bash
+# Automated backup with timestamp
+./scripts/db-backup.sh
 
-- [x] Modern UI with TailwindCSS
-- [x] Dark mode support
-- [x] Advanced task features (priority, category, due date, tags)
-- [x] Search and filtering
-- [x] Automation scripts
-- [x] CI/CD pipeline
-- [x] Database migrations
+# Manual backup
+cp dist/data/tasks.db data/backups/tasks_backup_$(date +%Y%m%d_%H%M%S).db
+```
 
-### Future Enhancements 🔮
+Backups are stored in `data/backups/` directory. The automated script keeps the last 10 backups and auto-cleans older files.
 
-- [ ] **Vitest** - Unit testing framework
-- [ ] **Playwright** - E2E testing
-- [ ] **TanStack Query** - Advanced data fetching and caching
-- [ ] **React Hook Form** - Better form handling
-- [ ] **Drizzle ORM** - Type-safe database queries
-- [ ] **tRPC** - End-to-end type safety
-- [ ] **Next.js 15** - Full-stack framework migration
-- [ ] **Subtasks** - Nested checklist support
-- [ ] **Recurring tasks** - Scheduled task creation
-- [ ] **Task templates** - Quick task creation
-- [ ] **Export/Import** - JSON, CSV, Markdown formats
-- [ ] **Collaborative features** - Multi-user support
-- [ ] **Mobile app** - React Native version
+**Restore Backup:**
+
+```bash
+# Replace current database with backup
+cp data/backups/tasks_backup_TIMESTAMP.db dist/data/tasks.db
+
+# Restart the server
+npm run dev
+```
 
 ---
 
-## 🤝 Contributing
+## Security
+
+### Built-in Security Features
+
+- **Helmet** - Sets security-related HTTP headers
+  - XSS protection
+  - Clickjacking prevention
+  - MIME type sniffing protection
+  - Referrer policy
+
+- **CORS** - Configurable cross-origin resource sharing
+  - Restricted to configured origins
+  - Credentials support
+
+- **Rate Limiting** - Prevents abuse
+  - 100 requests per 15 minutes per IP
+  - Applied to all `/api/*` endpoints
+
+- **Input Validation** - Server-side validation
+  - Zod schema validation
+  - Type checking at runtime
+  - String trimming and sanitization
+
+- **SQL Injection Protection**
+  - All queries use prepared statements
+  - Parameterized queries only
+  - No string concatenation
+
+- **Error Handling**
+  - Generic error messages in production
+  - Detailed errors only in development
+  - No stack traces exposed to clients
+
+### Production Security Checklist
+
+Before deploying to production:
+
+- [ ] Update `CORS_ORIGIN` to production domain in `.env`
+- [ ] Set `NODE_ENV=production`
+- [ ] Review and adjust rate limit settings if needed
+- [ ] Enable HTTPS (required for production)
+- [ ] Run security audit: `npm audit`
+- [ ] Keep dependencies updated regularly
+- [ ] Set up automated database backups
+- [ ] Configure firewall rules for port access
+- [ ] Review Helmet CSP settings in `server.ts`
+
+---
+
+## Deployment
+
+### Production Build
+
+```bash
+# Clean build with quality checks
+./scripts/build-prod.sh
+
+# Or manually
+npm run build
+npm start
+```
+
+### Recommended Platforms
+
+- **Railway** - Simple deployment with automatic HTTPS
+- **Fly.io** - Global deployment with SQLite support
+- **Render** - Free tier available, automatic deployments
+- **DigitalOcean App Platform** - Managed container platform
+- **Docker** - Containerize for any platform
+
+### Docker Deployment
+
+Example `Dockerfile`:
+
+```dockerfile
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci --only=production
+
+# Copy source files
+COPY . .
+
+# Build application
+RUN npm run build
+
+# Expose port
+EXPOSE 3001
+
+# Start production server
+CMD ["npm", "start"]
+```
+
+Build and run:
+
+```bash
+docker build -t task-manager-pro .
+docker run -p 3001:3001 -v $(pwd)/data:/app/dist/data task-manager-pro
+```
+
+---
+
+## Contributing
+
+Contributions are welcome! Please follow these steps:
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
-4. Run tests (`./scripts/test-all.sh`)
+4. Run quality checks (`./scripts/test-all.sh`)
 5. Commit your changes (`git commit -m 'Add amazing feature'`)
 6. Push to the branch (`git push origin feature/amazing-feature`)
 7. Open a Pull Request
 
+**Code Standards:**
+- Maintain TypeScript strict mode
+- Follow existing code style (enforced by Prettier and ESLint)
+- Add type definitions for all new code
+- Use prepared statements for database queries
+- Write clear commit messages
+
 ---
 
-## 📄 License
+## License
 
 This project is for educational and demonstration purposes.
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
-- **shadcn/ui** for component design inspiration
-- **TailwindCSS** for the utility-first CSS framework
-- **Lucide** for beautiful icons
-- **Better-sqlite3** for the excellent SQLite library
+- **shadcn/ui** - Component design inspiration
+- **TailwindCSS** - Utility-first CSS framework
+- **Lucide** - Beautiful icon library
+- **better-sqlite3** - Excellent synchronous SQLite library
+- **Zod** - Type-safe schema validation
 
 ---
 
 <div align="center">
 
-**Built with ❤️ using modern web technologies**
-
-[Report Bug](https://github.com/yourusername/task-manager-qa-app/issues) · [Request Feature](https://github.com/yourusername/task-manager-qa-app/issues)
+**Built with modern web technologies**
 
 </div>
