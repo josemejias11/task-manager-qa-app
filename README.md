@@ -163,29 +163,71 @@ npm run dev
 
 ## ⚙️ Configuration
 
-Create a `.env` file in the root directory:
+### Environment Variables
+
+Create a `.env` file in the root directory (copy from `.env.example`):
+
+```bash
+cp .env.example .env
+```
+
+#### Configuration Options
 
 ```env
 # Server Configuration
-PORT=3001
-NODE_ENV=development
+PORT=3001                           # Backend API server port
+NODE_ENV=development                # Environment: development, production, or test
 
-# Database Configuration (optional)
-# SQLite database file path - automatically created if doesn't exist
-# DB_PATH=./data/tasks.db
+# Database Configuration
+# DB_PATH=./data/tasks.db           # Custom SQLite database path (optional)
 
 # CORS Configuration
-CORS_ORIGIN=http://localhost:3000
+CORS_ORIGIN=http://localhost:3000  # Allowed frontend origin for CORS
 ```
 
-### Environment Variables
+#### Environment Variables Reference
 
-| Variable      | Description                      | Default               |
-| ------------- | -------------------------------- | --------------------- |
-| `PORT`        | Backend server port              | 3001                  |
-| `NODE_ENV`    | Environment mode                 | development           |
-| `DB_PATH`     | SQLite database file (optional)  | ./data/tasks.db       |
-| `CORS_ORIGIN` | Allowed frontend origin for CORS | http://localhost:3000 |
+| Variable      | Description                                          | Default                      | Required |
+| ------------- | ---------------------------------------------------- | ---------------------------- | -------- |
+| `PORT`        | Backend server port                                  | `3001`                       | No       |
+| `NODE_ENV`    | Node environment (development/production/test)       | `development`                | No       |
+| `DB_PATH`     | SQLite database file path (auto-created if missing)  | `dist/data/tasks.db`         | No       |
+| `CORS_ORIGIN` | Allowed frontend origin for CORS                     | `http://localhost:3000`      | No       |
+
+#### Development vs Production
+
+**Development:**
+- Backend API: `http://localhost:3001`
+- Frontend Dev Server: `http://localhost:3000` (Vite HMR)
+- Hot reload enabled for both frontend and backend
+- Detailed logging and error messages
+
+**Production:**
+- Single server serves both API and static frontend
+- Configured via `NODE_ENV=production`
+- Optimized builds with compression and minification
+- Security headers enabled (Helmet)
+- Rate limiting: 100 requests per 15 minutes per IP
+
+#### Database Configuration
+
+The SQLite database is automatically created on first run. Features include:
+
+- **Schema**: Comprehensive task table with priority, category, tags, due dates
+- **Indexes**: Optimized for fast queries on completed, created_at, priority, category, due_date
+- **Auto-migration**: Existing databases are automatically migrated to new schema
+- **Backup**: Use `./scripts/db-backup.sh` to create backups (saved to `data/backups/`)
+
+#### Security Features
+
+Built-in security configured automatically:
+
+- **Helmet**: Security headers for XSS, clickjacking, and other attacks
+- **CORS**: Configurable cross-origin resource sharing
+- **Rate Limiting**: 100 requests per IP per 15 minutes on `/api/*` endpoints
+- **SQL Injection Protection**: Prepared statements with better-sqlite3
+- **Input Validation**: Zod schemas for runtime type checking
+- **Content Security Policy**: Configurable in `server.ts`
 
 ---
 
