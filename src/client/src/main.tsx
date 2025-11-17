@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import AppModern from './AppModern';
 import { ThemeProvider } from './components/theme-provider';
 import './styles/index.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider defaultTheme="light" storageKey="task-manager-theme">
-      <App />
+      <AppModern />
     </ThemeProvider>
   </React.StrictMode>
 );
