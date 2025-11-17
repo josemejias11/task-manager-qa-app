@@ -37,16 +37,6 @@ echo "📁 Creating data directory..."
 mkdir -p data
 echo "✅ Data directory created"
 
-# Setup git hooks
-echo ""
-echo "🪝 Setting up git hooks..."
-if [ -d .git ]; then
-  npx husky
-  echo "✅ Git hooks configured"
-else
-  echo "⚠️  Not a git repository. Skipping git hooks."
-fi
-
 # Run type checking
 echo ""
 echo "🔍 Running type check..."

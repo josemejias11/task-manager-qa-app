@@ -63,7 +63,7 @@ A **professional, production-ready** task manager application with a stunning mo
 - ✅ **Express.js** - RESTful API with layered architecture
 - ✅ **Zod** - Runtime validation with TypeScript inference
 - ✅ **Security** - Helmet, CORS, rate limiting, SQL injection protection
-- ✅ **Code Quality** - ESLint, Prettier, Husky pre-commit hooks
+- ✅ **Code Quality** - ESLint, Prettier for consistent formatting
 
 ### 🤖 Automation & DevOps
 
@@ -103,8 +103,6 @@ A **professional, production-ready** task manager application with a stunning mo
 - **TypeScript 5.9** - Strict mode enabled
 - **ESLint 9** - Flat config with TypeScript support
 - **Prettier 3.4** - Code formatting
-- **Husky 9** - Git hooks automation
-- **lint-staged** - Pre-commit code quality checks
 - **Concurrently** - Run multiple dev servers
 - **tsx** - Fast TypeScript execution
 
@@ -145,7 +143,6 @@ This script will:
 - Check Node.js version
 - Install dependencies
 - Create `.env` file
-- Set up git hooks
 - Run type checking and linting
 - Build the project
 
@@ -336,7 +333,6 @@ task-manager-qa-app/
 │       └── ci.yml                # GitHub Actions CI/CD pipeline
 │
 ├── dist/                         # Build output (gitignored)
-├── .husky/                       # Git hooks
 ├── .env.example                  # Environment template
 ├── eslint.config.js              # ESLint flat config
 ├── tailwind.config.js            # TailwindCSS configuration
@@ -470,13 +466,6 @@ DELETE /tasks
 ---
 
 ## 🧪 Testing & Quality
-
-### Pre-commit Hooks
-
-Husky runs lint-staged on every commit:
-
-- **TypeScript files** - ESLint + Prettier
-- **JSON/Markdown files** - Prettier formatting
 
 ### Code Quality Tools
 
