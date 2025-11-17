@@ -14,6 +14,8 @@ module.exports = [
       'playwright-report/',
       'test-results/',
       'eslint.config.js',
+      'tailwind.config.js',
+      'postcss.config.js',
       '**/*.d.ts',
     ],
   },

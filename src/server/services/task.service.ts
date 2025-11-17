@@ -18,13 +18,24 @@ export class TaskService {
   static createTask(data: CreateTaskInput): TaskResponse {
     const id = uuidv4();
     const now = new Date().toISOString();
+    const tagsJson = JSON.stringify(data.tags || []);
 
     const stmt = db.prepare(`
-      INSERT INTO tasks (id, title, completed, created_at, updated_at)
-      VALUES (?, ?, 0, ?, ?)
+      INSERT INTO tasks (id, title, description, completed, priority, category, due_date, tags, created_at, updated_at)
+      VALUES (?, ?, ?, 0, ?, ?, ?, ?, ?, ?)
     `);
 
-    stmt.run(id, data.title, now, now);
+    stmt.run(
+      id,
+      data.title,
+      data.description || null,
+      data.priority || 'medium',
+      data.category || 'personal',
+      data.dueDate || null,
+      tagsJson,
+      now,
+      now
+    );
 
     const task = db.prepare('SELECT * FROM tasks WHERE id = ?').get(id) as TaskRow;
     return this.formatTaskResponse(task);
@@ -45,16 +56,41 @@ export class TaskService {
 
     const now = new Date().toISOString();
     const updates: string[] = [];
-    const values: (string | number)[] = [];
+    const values: (string | number | null)[] = [];
 
     if (data.title !== undefined) {
       updates.push('title = ?');
       values.push(data.title);
     }
 
+    if (data.description !== undefined) {
+      updates.push('description = ?');
+      values.push(data.description);
+    }
+
     if (data.completed !== undefined) {
       updates.push('completed = ?');
       values.push(data.completed ? 1 : 0);
+    }
+
+    if (data.priority !== undefined) {
+      updates.push('priority = ?');
+      values.push(data.priority);
+    }
+
+    if (data.category !== undefined) {
+      updates.push('category = ?');
+      values.push(data.category);
+    }
+
+    if (data.dueDate !== undefined) {
+      updates.push('due_date = ?');
+      values.push(data.dueDate);
+    }
+
+    if (data.tags !== undefined) {
+      updates.push('tags = ?');
+      values.push(JSON.stringify(data.tags));
     }
 
     updates.push('updated_at = ?');
@@ -98,7 +134,12 @@ export class TaskService {
     return {
       id: task.id,
       title: task.title,
+      description: task.description,
       completed: task.completed === 1,
+      priority: task.priority,
+      category: task.category,
+      dueDate: task.due_date,
+      tags: task.tags ? JSON.parse(task.tags) : [],
       createdAt: task.created_at,
       updatedAt: task.updated_at,
     };
