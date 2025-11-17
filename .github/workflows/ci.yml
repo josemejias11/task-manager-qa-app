@@ -1,38 +1,64 @@
-name: Playwright Tests
+name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main, update-tests]
+    branches: [main, develop]
   pull_request:
-    branches: [main, update-tests]
+    branches: [main, develop]
 
 jobs:
-  e2e-tests:
+  test:
+    name: Test and Build
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: ${{ matrix.node-version }}
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright
-        run: npx playwright install --with-deps
+      - name: Run type checking
+        run: npm run type-check
 
-      - name: Start the app
-        run: |
-          npm run start &
-          npx wait-on http://localhost:3000
+      - name: Run linting
+        run: npm run lint
 
-      - name: Run tests with Allure reporter
-        run: npm run test:allure
-        env:
-          BASE_URL: http://localhost:3000
+      - name: Run build
+        run: npm run build
 
-      - name: Generate Allure report
-        run: npm run allure:generate
+      - name: Upload build artifacts
+        if: matrix.node-version == '20.x'
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: dist/
+
+  security:
+    name: Security Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate
+
+      - name: Check for outdated dependencies
+        run: npm outdated || true
