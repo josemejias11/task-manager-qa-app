@@ -23,8 +23,8 @@ export function TaskStats({ tasks }: TaskStatsProps) {
       label: 'Total Tasks',
       value: totalTasks,
       icon: TrendingUp,
-      color: 'text-blue-500',
-      bgColor: 'bg-blue-500/10',
+      color: 'text-purple-500',
+      bgColor: 'bg-purple-500/10',
     },
     {
       label: 'Active',

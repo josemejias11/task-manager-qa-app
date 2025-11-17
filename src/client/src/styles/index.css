@@ -4,48 +4,74 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.5rem;
+    /* Neutrals - Light Theme */
+    --background: 0 0% 96%;          /* Light Gray #F5F5F5 */
+    --foreground: 0 0% 26%;          /* Dark Gray #424242 */
+    --card: 0 0% 98%;                /* Off-White #FAFAFA */
+    --card-foreground: 0 0% 26%;     /* Dark Gray #424242 */
+    --popover: 0 0% 98%;             /* Off-White #FAFAFA */
+    --popover-foreground: 0 0% 26%;  /* Dark Gray #424242 */
+
+    /* Primary - Light Green */
+    --primary: 150 60% 78%;          /* Light Green #A8E6CF */
+    --primary-foreground: 0 0% 26%;  /* Dark Gray for contrast */
+
+    /* Secondary - Soft Green */
+    --secondary: 88 50% 85%;         /* Soft Green #DCEDC8 */
+    --secondary-foreground: 0 0% 26%;
+
+    /* Muted - Medium Gray */
+    --muted: 0 0% 96%;               /* Light Gray #F5F5F5 */
+    --muted-foreground: 0 0% 62%;    /* Medium Gray #9E9E9E */
+
+    /* Accent - Soft Purple */
+    --accent: 260 50% 74%;           /* Soft Purple #B39DDB */
+    --accent-foreground: 0 0% 26%;
+
+    /* Destructive */
+    --destructive: 0 84.2% 60.2%;    /* Red for errors */
+    --destructive-foreground: 0 0% 98%;
+
+    /* Borders & Inputs */
+    --border: 0 0% 90%;              /* Light border */
+    --input: 0 0% 98%;               /* Off-white input background */
+    --ring: 150 60% 78%;             /* Light Green focus ring */
+    --radius: 0.5rem;                /* 8px border radius */
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
+    /* Neutrals - Dark Theme */
+    --background: 0 0% 26%;          /* Dark Gray #424242 */
+    --foreground: 0 0% 96%;          /* Light Gray #F5F5F5 */
+    --card: 0 0% 20%;                /* Slightly lighter than bg */
+    --card-foreground: 0 0% 96%;
+    --popover: 0 0% 20%;
+    --popover-foreground: 0 0% 96%;
+
+    /* Primary - Mint Green (brighter for dark mode) */
+    --primary: 123 41% 70%;          /* Mint Green adjusted for dark */
+    --primary-foreground: 0 0% 26%;
+
+    /* Secondary - Soft Green (adjusted) */
+    --secondary: 88 50% 70%;
+    --secondary-foreground: 0 0% 26%;
+
+    /* Muted */
+    --muted: 0 0% 30%;
+    --muted-foreground: 0 0% 62%;    /* Medium Gray #9E9E9E */
+
+    /* Accent - Deep Purple */
+    --accent: 260 51% 55%;           /* Deep Purple #7E57C2 */
+    --accent-foreground: 0 0% 96%;
+
+    /* Destructive */
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Borders & Inputs */
+    --border: 0 0% 30%;
+    --input: 0 0% 30%;
+    --ring: 123 41% 70%;             /* Mint Green focus ring */
   }
 }
 
@@ -54,7 +80,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-foreground;
+    @apply bg-gradient-to-br from-green-400 via-teal-400 to-purple-400 text-foreground;
     font-feature-settings: 'rlig' 1, 'calt' 1;
   }
 }
@@ -94,7 +120,7 @@
 
   /* Gradient text */
   .gradient-text {
-    @apply bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-green-500 via-teal-500 to-purple-500 bg-clip-text text-transparent;
   }
 }
 
