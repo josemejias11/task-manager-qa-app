@@ -303,9 +303,9 @@ task-manager-qa-app/
 │       │   │   │   └── select.tsx
 │       │   │   ├── theme-provider.tsx   # Dark mode context
 │       │   │   ├── theme-toggle.tsx     # Theme switcher
-│       │   │   ├── TaskFormEnhanced.tsx # Multi-field task form
-│       │   │   ├── TaskItemEnhanced.tsx # Task card with badges
-│       │   │   ├── TaskStatsDashboard.tsx # Analytics dashboard
+│       │   │   ├── TaskForm.tsx         # Multi-field task form
+│       │   │   ├── TaskItem.tsx         # Task card with badges
+│       │   │   ├── TaskStats.tsx        # Analytics dashboard
 │       │   │   ├── SearchAndFilter.tsx  # Search and filter UI
 │       │   │   ├── Toast.tsx            # Toast notification
 │       │   │   └── ToastContainer.tsx   # Toast manager
@@ -317,7 +317,7 @@ task-manager-qa-app/
 │       │   │   └── task.ts       # Frontend TypeScript types
 │       │   ├── lib/
 │       │   │   └── utils.ts      # Utility functions (cn)
-│       │   ├── AppModern.tsx     # Main application
+│       │   ├── App.tsx           # Main application
 │       │   └── main.tsx          # React entry point
 │       ├── index.html
 │       └── tsconfig.json

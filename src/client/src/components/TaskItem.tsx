@@ -7,7 +7,7 @@ import { Checkbox } from './ui/checkbox';
 import { Badge } from './ui/badge';
 import { format } from 'date-fns';
 
-interface TaskItemEnhancedProps {
+interface TaskItemProps {
   task: Task;
   onToggle: (id: string, completed: boolean) => void;
   onUpdate: (id: string, title: string) => Promise<void>;
@@ -32,7 +32,7 @@ const categoryColors: Record<
   other: 'secondary',
 };
 
-export function TaskItemEnhanced({ task, onToggle, onUpdate, onDelete }: TaskItemEnhancedProps) {
+export function TaskItem({ task, onToggle, onUpdate, onDelete }: TaskItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(task.title);
 

@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { taskApi } from './services/api';
 import { Task, CreateTaskInput } from './types/task';
-import { TaskFormEnhanced } from './components/TaskFormEnhanced';
-import { TaskStatsDashboard } from './components/TaskStatsDashboard';
-import { TaskItemEnhanced } from './components/TaskItemEnhanced';
+import { TaskForm } from './components/TaskForm';
+import { TaskStats } from './components/TaskStats';
+import { TaskItem } from './components/TaskItem';
 import { SearchAndFilter, FilterState } from './components/SearchAndFilter';
 import { ToastContainer, ToastMessage } from './components/ToastContainer';
 import { ToastType } from './components/Toast';
@@ -12,7 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './com
 import { Button } from './components/ui/button';
 import { Loader2, Trash2 } from 'lucide-react';
 
-function AppModern() {
+function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -229,7 +229,7 @@ function AppModern() {
         </div>
 
         {/* Stats Dashboard */}
-        <TaskStatsDashboard tasks={tasks} />
+        <TaskStats tasks={tasks} />
 
         {/* Add Task Form */}
         <Card className="card-hover">
@@ -238,7 +238,7 @@ function AppModern() {
             <CardDescription>Add a new task with details, priority, and deadline</CardDescription>
           </CardHeader>
           <CardContent>
-            <TaskFormEnhanced onSubmit={handleAddTask} error={error} />
+            <TaskForm onSubmit={handleAddTask} error={error} />
           </CardContent>
         </Card>
 
@@ -289,7 +289,7 @@ function AppModern() {
             ) : (
               <div className="space-y-3">
                 {filteredAndSortedTasks.map(task => (
-                  <TaskItemEnhanced
+                  <TaskItem
                     key={task.id}
                     task={task}
                     onToggle={handleToggleTask}
@@ -308,4 +308,4 @@ function AppModern() {
   );
 }
 
-export default AppModern;
+export default App;

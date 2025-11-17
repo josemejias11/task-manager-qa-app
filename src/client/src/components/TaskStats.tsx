@@ -2,11 +2,11 @@ import { CheckCircle2, Circle, TrendingUp, AlertCircle } from 'lucide-react';
 import { Task } from '../types/task';
 import { Card, CardContent } from './ui/card';
 
-interface TaskStatsDashboardProps {
+interface TaskStatsProps {
   tasks: Task[];
 }
 
-export function TaskStatsDashboard({ tasks }: TaskStatsDashboardProps) {
+export function TaskStats({ tasks }: TaskStatsProps) {
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter(t => t.completed).length;
   const activeTasks = totalTasks - completedTasks;

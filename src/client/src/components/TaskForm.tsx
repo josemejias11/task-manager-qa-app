@@ -5,12 +5,12 @@ import { Input } from './ui/input';
 import { Select } from './ui/select';
 import { TaskCategory, TaskPriority, CreateTaskInput } from '../types/task';
 
-interface TaskFormEnhancedProps {
+interface TaskFormProps {
   onSubmit: (task: CreateTaskInput) => Promise<void>;
   error: string | null;
 }
 
-export function TaskFormEnhanced({ onSubmit, error }: TaskFormEnhancedProps) {
+export function TaskForm({ onSubmit, error }: TaskFormProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState<TaskPriority>('medium');
